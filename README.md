@@ -1,10 +1,9 @@
 # flame-dilution-method
 
 ### Overview
-Often, equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (within the dilution gas mixture) can also be a target species that the user needs to measure (as can often be the case with CO2 and N2). In this case 1 dilution gas is insufficient and 2 dilution gases must be used during the experiment. Calculating parameters and uncertainties for 2 dilution gases involves long equations and multiple parameters, that can be cumbersome and time-consuming to write within the constraints of the standard excel functions. This file defines the user defined functions for gas analysis (when 0, 1 or 2 dilution gases are used).
+Often, equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (within the dilution gas mixture) can also be the target species that the user needs to measure (as can often be the case with CO2 and N2). In this case one dilution gas is insufficient and two dilution gases must be used during the experiment. Calculating parameters and uncertainties for two dilution gases involves long equations and multiple parameters, that can be cumbersome and time-consuming to write within the constraints of the standard excel functions. This file defines the user defined functions for gas analysis (when zero, one or two dilution gases are used).
 
-Equations and parameters are labelled as per publication below:
-https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja/
+Equations and parameters are labelled and defined in Hayakawa et. al, 2020. 
 
 ### Functions
 These files perform calculations, given an excel spreadsheet of results:

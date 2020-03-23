@@ -1,7 +1,7 @@
 # flame-dilution-method
 
 ### Overview
-Often, equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (the gas of interest) within the dilution gas can be the one which is also the target species that the user needs to measure. In this case 1 dilution gas is insufficient and 2 dilution gases must be used. This file defines the equations for gas analysis where the product gas may or may not contain a dilution gas. 
+Often, equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (within the dilution gas mixture) can also be a target species that the user needs to measure (as can often be the case with CO2 and N2). In this case 1 dilution gas is insufficient and 2 dilution gases must be used during the experiment. Calculating parameters and uncertainties for 2 dilution gases involves long equations and multiple parameters, that can be cumbersome and time-consuming to write within the constraints of the standard excel functions. This file defines the user defined functions for gas analysis (when 0, 1 or 2 dilution gases are used).
 
 Equations and parameters are labelled as per publication below:
 https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja/
@@ -25,9 +25,11 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 2. Spreadsheet structure assumes the use of a datalogger and thermocouples, as well as massflowmeters that contain appropriate calibration values. Columns and code should be adjusted if the user is using a different number of mass flowmeters 
 
 3. User must populate: mass flow meter full-scale calibration values (assigned an arbitrary colour for classification and when mass flowmeters are swapped during experiment), datalogger sheet number, tracer gas value (0,1 or 2..), sheet number (which is sequential and matches tab names 1,2,3...), Xi-tr which is the concentration of tracer gas in the dilution gas, start and end times for the datalogger (if a data logger is used), and measured mole fractions of target and tracer species saved as sequentially numbered data sheets. Please note that Epsilontr values are the measured mole fraction of the tracer species and should also be included in these data sheets. 
-Please see paper below for experimental method and further information:
 
-https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja/
+Please see references for experimental method and further information:
+## References
+<a id="1">[1]</a> 
+Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, https://doi.org/10.1299/mej.19-00193, https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja, 抄録:
 
 ### Contributions
 

@@ -9,6 +9,9 @@ Dim coliterator As Integer
 Dim GasCurrentSelector As Integer 'Condition select of current row - checks if return value should be for gas type 1 or 2
 Dim GasBelowSelector As Integer  'Condition select of row below -chekcs if return value should be for gas type 1 or 2
 Dim X_Xi As Double
+Dim Z As Double
+Dim XLarge As Double
+
 
 Dim TracerGasNum1 As Single
 Dim Xitr1 As Double
@@ -28,7 +31,7 @@ Dim Z As Double
 'Subroutine loops through all all rows for which column H has values and pastes the relevant uncertainties into the correct column
 'User must select the leftmost, uppermost cell from where the uncertainties selection start (Column BY cell 51 ish, skin coloured section of document)
 
-Public Sub term1and2_Click()
+Public Sub Main()
 
 Uncertainty = 0.02
 Multip = 10000
@@ -62,13 +65,13 @@ TracerGasNum2 = GasBelowSelector = Cells(celres.Row + rowiterator + 1, 8).Value
 
 If TracerGasNum1 = 0 Or TracerGasNum1 = TracerGasNum2 Or TracerGasNum1 = 1 Then
 '----------assigning values gas 1-------------------------------
-Xitr1 = Cells(celres.Row + rowiterator, 27).Value
+Xitr1 = 10000 * Cells(celres.Row + rowiterator, 27).Value
 increm = WorksheetFunction.RoundDown(((celres.Column - 77) / 6), 0)
 Smallx1 = Cells(celres.Row + rowiterator, (59 + 2 * increm)).Value 'small x - varies on gas
 Epsilontr1 = Cells(celres.Row + rowiterator, 57).Value
 Qd1 = Cells(celres.Row + rowiterator, 38).Value
 '----------assigning values gas 2 to cells in row below-------------------------------
-Xitr2 = Cells(celres.Row + rowiterator + 1, 27).Value
+Xitr2 = 10000 * Cells(celres.Row + rowiterator + 1, 27).Value
 Smallx2 = Cells(celres.Row + rowiterator + 1, (59 + 2 * increm)).Value 'small x - varies on gas
 Epsilontr2 = Cells(celres.Row + rowiterator + 1, 57).Value
 Qd2 = Cells(celres.Row + rowiterator + 1, 38).Value
@@ -77,7 +80,7 @@ Qd2 = Cells(celres.Row + rowiterator + 1, 38).Value
 ElseIf TracerGasNum2 = Gas2Selector = 1 Then
 '----------assigning values gas 1 to cells in row above-------------------------------
 TracerGasNum1 = Cells(celres.Row + rowiterator - 1, 8).Value
-Xitr1 = Cells(celres.Row + rowiterator - 1, 27).Value
+Xitr1 = 10000 * Cells(celres.Row + rowiterator - 1, 27).Value
 increm = WorksheetFunction.RoundDown(((celres.Column - 77) / 6), 0)
 Smallx1 = Cells(celres.Row + rowiterator - 1, (59 + 2 * increm)).Value 'small x - varies on gas
 Epsilontr1 = Cells(celres.Row + rowiterator - 1, 57).Value
@@ -85,7 +88,7 @@ Qd1 = Cells(celres.Row + rowiterator - 1, 38).Value
 
 '----------assigning values gas 2-------------------------------
 TracerGasNum2 = Cells(celres.Row + rowiterator, 8).Value
-Xitr2 = Cells(celres.Row + rowiterator, 27).Value
+Xitr2 = 10000 * Cells(celres.Row + rowiterator, 27).Value
 Smallx2 = Cells(celres.Row + rowiterator, (59 + 2 * increm)).Value 'small x - varies on gas
 Epsilontr2 = Cells(celres.Row + rowiterator, 57).Value
 Qd2 = Cells(celres.Row + rowiterator, 38).Value
@@ -104,26 +107,23 @@ End If
 ' ----------Call function to return Qs values to cell-------------------
 ' This function calculates Qs values and returns them to column BW (e.g col 75)
 
-MsgBox "Starting Qs values calculation"
-MsgBox "Starting Z values calculation"
-
-Do Until IsEmpty(Cells(celres.Row + rowiterator, 8))
-    Cells(celres.Row + rowiterator, 76).Value = Zfunc()
-    Cells(celres.Row + rowiterator, 75).Value = Qsfunc()
-    rowiterator = rowiterator + 1
-Loop
- 
-
- ' ----------Call function to reassign uncertainties 1 and 2 values of cell-------------------
- 'loop to populate uncertainty section rows for as far down as column H (tracer gas) has a value, for all gas types,in order they are listed in the smallx values section
-MsgBox "Starting X_Xi_delta_Xi_tr uncertainty calculation"
-
 Do Until WorksheetFunction.CountA(Columns(celres.Column + coliterator)) = 0 _
 And WorksheetFunction.CountA(Columns(celres.Column + coliterator + 1)) = 0 _
 And WorksheetFunction.CountA(Columns(celres.Column + coliterator + 2)) = 0
 
-Do Until IsEmpty(Cells(celres.Row + rowiterator, 8))
-    Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Xi1_Delta_Xi_tr()
+    Do Until IsEmpty(Cells(celres.Row + rowiterator, 8))
+        If coliterator = 0 Then
+            Cells(celres.Row + rowiterator, 76).Value = Zfunc() = Z
+            Cells(celres.Row + rowiterator, 75).Value = Qsfunc() = Qs
+        Else
+            MsgBox "Assigned Z and Qs values"
+        End If
+        Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value = XLargefunc()
+        Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Xi1_Delta_Xi_tr()
+        
+    'add line here to calculate Z= , Qs = etc. for future equations
+
+End If
     rowiterator = rowiterator + 1
 Loop
 

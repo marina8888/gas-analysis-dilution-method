@@ -25,7 +25,7 @@ Dim Smallx2 As Double
 Dim Epsilontr2 As Double
 Dim Qd2 As Single
 
-Dim Z As Double
+
 
 'Subroutine activated by "calculate uncertainty" button on the bottom left of the spreadsheet.
 'Subroutine loops through all all rows for which column H has values and pastes the relevant uncertainties into the correct column
@@ -115,15 +115,14 @@ And WorksheetFunction.CountA(Columns(celres.Column + coliterator + 2)) = 0
         If coliterator = 0 Then
             Cells(celres.Row + rowiterator, 76).Value = Zfunc() = Z
             Cells(celres.Row + rowiterator, 75).Value = Qsfunc() = Qs
+            Cells(celres.Row + rowiterator, celres.Column).Value = Xtrfunc()
         Else
             MsgBox "Assigned Z and Qs values"
         End If
         Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value = XLargefunc()
-        Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Xi1_Delta_Xi_tr()
+        Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Xi_Delta_Xi_tr()
         
     'add line here to calculate Z= , Qs = etc. for future equations
-
-End If
     rowiterator = rowiterator + 1
 Loop
 

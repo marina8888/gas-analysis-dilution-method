@@ -18,8 +18,7 @@ These files perform calculations, given an excel spreadsheet of results:
 0 - no dilution gas used
 1 - 1st dilution gas used 
 2- 2nd dilution gas used
-
-Please note that for using 2 dilution gases, the reading has to be repeated for both dilution gases (at the same diltuion gas flowrate). Hence the same condition has to be recorded twice, on two different rows, and the 1st dilution gas row must always be above the 2nd dilution gas row. If this is not practical during the experiment, rows should be rearranged manually so that the tracer gas column reads as 1,2,1,2... 
+Please note that for using 2 dilution gases, the reading has to be repeated for both dilution gases (at the same dilution gas flowrate). Hence the same condition has to be recorded twice, on two different rows, and the 1st dilution gas row must always be above the 2nd dilution gas row. If this is not practical during the experiment, rows should be rearranged manually so that the tracer gas column reads as 1,2,1,2... 
 
 2. Spreadsheet structure assumes the use of a datalogger and thermocouples, as well as massflowmeters that contain appropriate calibration values. Columns and code should be adjusted if the user is using a different number of mass flowmeters 
 

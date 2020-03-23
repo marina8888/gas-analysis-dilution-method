@@ -1,7 +1,7 @@
 # flame-dilution-method
 
 ### Overview
-Often, equipment used for product gas analysis has a limited range and a dilution gases are added so that the measured gas values (such as NOx) do not exceed tolerances. Often the tracer gas (the gas of interest) within the dilution gas can be the one which is also the target species that the user needs to measure. In this case 1 dilution gas is insufficient and 2 dilution gases must be used. This file defines the equations for gas analysis where the product gas may or may not contain a dilution gas. 
+Often, equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (the gas of interest) within the dilution gas can be the one which is also the target species that the user needs to measure. In this case 1 dilution gas is insufficient and 2 dilution gases must be used. This file defines the equations for gas analysis where the product gas may or may not contain a dilution gas. 
 
 Equations and parameters are labelled as per publication below:
 https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja/

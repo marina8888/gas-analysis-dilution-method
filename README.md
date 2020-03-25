@@ -16,7 +16,7 @@ These files perform calculations, given an excel spreadsheet of results:
 ### Standard Format 
 1. Calculations are valid whether there is no dilution gas, or when one or two dilution gases are used in the experiment. Each set of measured values should be populated on a new row and the equations used are decided based on the tracer gas value column. 
 0 - no dilution gas used
-1 - 1st dilution gas used 
+1 - single dilution gas method used (all values should be marked as 1)
 2- 2nd dilution gas used
 Please note that for using 2 dilution gases, the reading has to be repeated for both dilution gases (at the same dilution gas flowrate). Hence the same condition has to be recorded twice, on two different rows, and the 1st dilution gas row must always be above the 2nd dilution gas row. If this is not practical during the experiment, rows should be rearranged manually so that the tracer gas column reads as 1,2,1,2... 
 

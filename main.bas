@@ -5,7 +5,6 @@ Attribute VB_Name = "Module1"
 'User must select the leftmost, uppermost cell from where the uncertainties selection start (Column BY cell 51 ish, skin coloured section of document)
 
 '------------initialising values for looping and moving cells---------------------
-
 Dim increm As Integer 'multiplier to select smallxvalue for the correct gas
 Dim rowiterator As Integer
 Dim coliterator As Integer
@@ -42,6 +41,21 @@ Dim X_Epsilon As Double
 Dim X_Q As Double
 Dim X_x As Double
 
+'-------------------------initialising uncertainty product terms----------------------------
+Dim X_Xi_Delta_Xi_tr1 As Double
+Dim X_Epsilon_Delta_Epsilon_tr1 As Double
+Dim X_Q_Delta_Qd1 As Double
+Dim X_x_Delta_Smallx1 As Double
+Dim Delta_Largex1 As Double
+
+Dim X_Xi_Delta_Xi_tr2 As Double
+Dim X_Epsilon_Delta_Epsilon_tr2 As Double
+Dim X_Q_Delta_Qd2 As Double
+Dim X_x_Delta_Smallx2 As Double
+Dim Delta_Largex2 As Double
+            
+       
+'-------------------------initialising uncertainty constants----------------------------
 Dim MFMUncertainty As Single
 Dim FTIRUncertainty As Single
 
@@ -90,7 +104,7 @@ MsgBox "My tracergas values are " & TracerGasNum2 & ", " & TracerGasNum1
         TracerGasNum2 = Cells(celres.Row + rowiterator + 1, 8).Value
         GasBelowSelector = Cells(celres.Row + rowiterator + 1, 8).Value
 
-        If TracerGasNum1 = 0 Or TracerGasNum1 = TracerGasNum2 Or TracerGasNum1 = 1 Then
+        If TracerGasNum1 = 0 Or TracerGasNum1 = TracerGasNum2 Or GasCurrentSelector = 1 Then
             '----------assigning values gas 1-------------------------------
             Xitr1 = 10000 * Cells(celres.Row + rowiterator, 27).Value
             Rangetr1 = Cells(celres.Row + rowiterator, 58).Value
@@ -108,7 +122,7 @@ MsgBox "My tracergas values are " & TracerGasNum2 & ", " & TracerGasNum1
             Qd2 = Cells(celres.Row + rowiterator + 1, 38).Value
 
 
-        ElseIf TracerGasNum2 = 1 Then
+        ElseIf GasBelowSelector = 1 Then
             '----------assigning values gas 1 to cells in row above-------------------------------
             TracerGasNum1 = Cells(celres.Row + rowiterator - 1, 8).Value
             Rangetr1 = Cells(celres.Row + rowiterator - 1, 58).Value
@@ -149,12 +163,25 @@ MsgBox "My tracergas values are " & TracerGasNum2 & ", " & TracerGasNum1
         End If
             
             Cells(celres.Row + rowiterator, celres.Column + coliterator + 0).Value = Largexfunc()
-            Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value = X_Xi_Delta_Xi_tr()
-            Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Epsilon_Delta_Epsilon_tr()
-            Cells(celres.Row + rowiterator, celres.Column + coliterator + 3).Value = X_Q_Delta_Qd() 'No idea what Delta_Qd() is - check this
-            Cells(celres.Row + rowiterator, celres.Column + coliterator + 4).Value = X_x_Delta_Smallx()
-            Cells(celres.Row + rowiterator, celres.Column + coliterator + 5).Value = Delta_Largex()
+            Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value = X_Xi_Delta_Xi_trfunc()
+            Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value = X_Epsilon_Delta_Epsilon_trfunc()
+            Cells(celres.Row + rowiterator, celres.Column + coliterator + 3).Value = X_Q_Delta_Qdfunc() 'No idea what Delta_Qd() is - check this
+            Cells(celres.Row + rowiterator, celres.Column + coliterator + 4).Value = X_x_Delta_Smallxfunc()
             
+            If GasBelowSelector = 1 Then
+                X_Xi_Delta_Xi_tr1 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value
+                X_Epsilon_Delta_Epsilon_tr1 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value
+                X_Q_Delta_Qd1 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 3).Value
+                X_x_Delta_Smallx1 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 4).Value
+                
+                X_Xi_Delta_Xi_tr2 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 1).Value
+                X_Epsilon_Delta_Epsilon_tr2 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 2).Value
+                X_Q_Delta_Qd2 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 3).Value
+                X_x_Delta_Smallx2 = Cells(celres.Row + rowiterator, celres.Column + coliterator + 4).Value
+                
+            End If
+'--------final uncertainty calculation (zero if on first dilution gas set------------------------------------------------------------
+            Cells(celres.Row + rowiterator, celres.Column + coliterator + 5).Value = Delta_Largexfunc()
             '--------------------------reset to the start of the row------------------------------------------------------------------
             rowiterator = 0
     Loop

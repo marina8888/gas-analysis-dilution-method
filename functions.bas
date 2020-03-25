@@ -106,7 +106,7 @@ ElseIf GasBelowSelector = 1 Then
 End If
 End Function
 
-Private Function X_Xi_Delta_Xi_tr() As Double
+Private Function X_Xi_Delta_Xi_trfunc() As Double
 ' This function calculates first two terms of XLarge overall uncertainty. Result must be squared before using in the combined uncertainty equation.
 
 
@@ -146,7 +146,7 @@ End If
 
 End Function
 
-Private Function X_Epsilon_Delta_Epsilon_tr() As Double
+Private Function X_Epsilon_Delta_Epsilon_trfunc() As Double
 ' This function calculates second two terms of XLarge overall uncertainty. Result must be squared before using in the combined uncertainty equation.
 
 
@@ -186,7 +186,7 @@ End If
 End Function
 
 
-Private Function X_Q_Delta_Qd() As Double
+Private Function X_Q_Delta_Qdfunc() As Double
 ' This function calculates second two terms of XLarge overall uncertainty. Result must be squared before using in the combined uncertainty equation.
 
 
@@ -226,7 +226,7 @@ End If
 End Function
 
 
-Private Function X_x_Delta_Smallx() As Double 'still incomplete
+Private Function X_x_Delta_Smallxfunc() As Double 'still incomplete
 ' This function calculates second two terms of XLarge overall uncertainty. Result must be squared before using in the combined uncertainty equation.
 
 
@@ -265,7 +265,7 @@ End If
 
 End Function
 
-Private Function Delta_Largex() As Double 'still incomplete
+Private Function Delta_Largexfunc() As Double 'still incomplete
 ' This function calculates second two terms of XLarge overall uncertainty. Result must be squared before using in the combined uncertainty equation.
 
 
@@ -273,27 +273,19 @@ Private Function Delta_Largex() As Double 'still incomplete
 
 ' 0 = no dilution gas;
 If TracerGasNum1 = 0 Then
-    X_Q = 0
-    MsgBox "used case no dilution which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = 0
+    Delta_Largex() = 0
     
 ' same gas = dilution gas, simple dilution calculation only;
 ElseIf TracerGasNum1 = TracerGasNum2 Then
-    X_Q = 0
-    MsgBox "used case only one dilution which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = 0
+    Delta_Largex() = Sqr(X_Xi_Delta_Xi_tr1 ^ 2 + X_Epsilon_Delta_Epsilon_tr1 ^ 2 + X_x_Delta_Smallx1 ^ 2)
     
 ' full dilution method return gas 1 value
 ElseIf GasCurrentSelector = 1 Then
-    X_x = Abs(1 + ((Qd1 * (Epsilontr1 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2))
-    MsgBox "used gas 1 type which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = Qd1 * MFMUncertainty * X_Q
+    Delta_Largex() = 0
 
 ' full dilution method return gas 2 value
 ElseIf GasBelowSelector = 1 Then
-    X_Q = Abs((Smallx1 * Qd1 * (Epsilontr1 - Epsilontr2) * (Xitr2 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2)
-    MsgBox "used gas 2 type which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = Qd2 * MFMUncertainty * X_Q
+    Delta_Largex() = Sqr(X_Xi_Delta_Xi_tr1 ^ 2 + X_Xi_Delta_Xi_tr2 ^ 2 + X_Epsilon_Delta_Epsilon_tr1 ^ 2 + X_Epsilon_Delta_Epsilon_tr2 ^ 2 + X_Q_Delta_Qd1 ^ 2 + X_Q_Delta_Qd2 ^ 2 + X_x_Delta_Smallx1 ^ 2)
     
 End If
  

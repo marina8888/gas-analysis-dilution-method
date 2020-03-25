@@ -17,6 +17,7 @@ Dim TracerGasNum1 As Single
 Dim Rangetr1 As Integer
 Dim Xitr1 As Double
 Dim Smallx1 As Double
+Dim Rangex1 As Double
 Dim Epsilontr1 As Double
 Dim Qd1 As Single
 
@@ -25,6 +26,7 @@ Dim TracerGasNum2 As Single
 Dim Rangetr2 As Integer
 Dim Xitr2 As Double
 Dim Smallx2 As Double
+Dim Rangex2 As Double
 Dim Epsilontr2 As Double
 Dim Qd2 As Single
 
@@ -38,9 +40,11 @@ Dim Largex As Double
 Dim X_Xi As Double
 Dim X_Epsilon As Double
 Dim X_Q As Double
-Dim X_X As Double
+Dim X_x As Double
 
-Dim Uncertainty As Single
+Dim MFMUncertainty As Single
+Dim FTIRUncertainty As Single
+
 
 
 Public Sub Main()
@@ -92,23 +96,26 @@ MsgBox "My tracergas values are " & TracerGasNum2 & ", " & TracerGasNum1
             Rangetr1 = Cells(celres.Row + rowiterator, 58).Value
             increm = (coliterator - 2) / 6
             Smallx1 = Cells(celres.Row + rowiterator, (59 + 2 * increm)).Value 'small x - varies on gas
+            Rangex1 = Cells(celres.Row + rowiterator, (60 + 2 * increm)).Value 'range x - varies on gas
             Epsilontr1 = Cells(celres.Row + rowiterator, 57).Value
             Qd1 = Cells(celres.Row + rowiterator, 38).Value
             '----------assigning values gas 2 to cells in row below-------------------------------
             Xitr2 = 10000 * Cells(celres.Row + rowiterator + 1, 27).Value
             Rangetr2 = Cells(celres.Row + rowiterator + 1, 58).Value
             Smallx2 = Cells(celres.Row + rowiterator + 1, (59 + 2 * increm)).Value 'small x - varies on gas
+            Rangex2 = Cells(celres.Row + rowiterator + 1, (60 + 2 * increm)).Value 'range x - varies on gas
             Epsilontr2 = Cells(celres.Row + rowiterator + 1, 57).Value
             Qd2 = Cells(celres.Row + rowiterator + 1, 38).Value
 
 
-        ElseIf TracerGasNum2 = Gas2Selector = 1 Then
+        ElseIf TracerGasNum2 = 1 Then
             '----------assigning values gas 1 to cells in row above-------------------------------
             TracerGasNum1 = Cells(celres.Row + rowiterator - 1, 8).Value
             Rangetr1 = Cells(celres.Row + rowiterator - 1, 58).Value
             Xitr1 = 10000 * Cells(celres.Row + rowiterator - 1, 27).Value
             increm = (coliterator - 2) / 6
             Smallx1 = Cells(celres.Row + rowiterator - 1, (59 + 2 * increm)).Value 'small x - varies on gas
+            Rangex1 = Cells(celres.Row + rowiterator - 1, (60 + 2 * increm)).Value 'range x - varies on gas
             Epsilontr1 = Cells(celres.Row + rowiterator - 1, 57).Value
             Qd1 = Cells(celres.Row + rowiterator - 1, 38).Value
             
@@ -117,6 +124,7 @@ MsgBox "My tracergas values are " & TracerGasNum2 & ", " & TracerGasNum1
             Rangetr2 = Cells(celres.Row + rowiterator, 58).Value
             Xitr2 = 10000 * Cells(celres.Row + rowiterator, 27).Value
             Smallx2 = Cells(celres.Row + rowiterator, (59 + 2 * increm)).Value 'small x - varies on gas
+            Rangex2 = Cells(celres.Row + rowiterator, (60 + 2 * increm)).Value 'range x - varies on gas
             Epsilontr2 = Cells(celres.Row + rowiterator, 57).Value
             Qd2 = Cells(celres.Row + rowiterator, 38).Value
 

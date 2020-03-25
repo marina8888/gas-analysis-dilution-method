@@ -19,9 +19,11 @@ Attribute VB_Name = "Module2"
 '--------------------------------------regarding the terms in the overall uncertainty equation----------------------------------------------------------------------------
 ' Uncertainty - set constant per flowmeter, taken from manufacturer data. In the experiment this is a constant 2%. Also the FTIR measurement system error is 2%.
 
-'The uncertainty of the tracer gas in the dilution gas e.g Delta_Xi_tr = Xitr1 (or Xitr2) * FTIRUncertainty
-'Uncertainty of measuring the tracer gas species by the gas analyser Delta_Epsilon_tr = Rangetr * FTIRUncertainty
-'Uncertainty in the volumetric flowrate of the dilution gas Delta_Epsilon_tr = Rangetr * MFMUncertainty
+'The uncertainty of the tracer gas in the dilution gas                   Delta_Xi_tr = Xitr1 (or Xitr2) * FTIRUncertainty
+'Uncertainty of measuring the tracer gas species by the gas analyser     Delta_Epsilon_tr = Rangetr * FTIRUncertainty
+'Uncertainty in the volumetric flowrate of the dilution gas              Delta_Qd = Qd * MFMUncertainty
+'Uncertainty of measurement of the target species by the gas analyser    Delta_Epsilon_tr = Rangex * FTIRUncertainty
+
 '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Private Function Zfunc() As Double
@@ -124,7 +126,7 @@ ElseIf TracerGasNum1 = TracerGasNum2 Then
 ' full dilution method return gas 1 value
 ElseIf GasCurrentSelector = 1 Then
     X_Xi = Abs(-(((Qd2 ^ 2) * Smallx1 * (Epsilontr1 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2))
-    MsgBox "used gas 1 type which is " & X_X & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
+    MsgBox "used gas 1 type which is " & X_x & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
     X_Xi_Delta_Xi_tr = Xitr1 * FTIRUncertainty * X_Xi
 
 ' full dilution method return gas 2 value
@@ -136,7 +138,7 @@ ElseIf GasBelowSelector = 1 Then
 End If
  
 Else
-    MsgBox "Error - stuck on uncertainty tracer gas term 1 or 2"
+    MsgBox "Error - stuck on uncertainty Xi term"
 
 End If
 
@@ -177,7 +179,7 @@ ElseIf GasBelowSelector = 1 Then
 End If
  
 Else
-    MsgBox "Error - stuck on uncertainty tracer gas term 1 or 2"
+    MsgBox "Error - stuck on uncertainty epsilon term"
 
 End If
 
@@ -217,7 +219,7 @@ ElseIf GasBelowSelector = 1 Then
 End If
  
 Else
-    MsgBox "Error - stuck on uncertainty tracer gas term 1 or 2"
+    MsgBox "Error - stuck on uncertainty qd term"
 
 End If
 
@@ -232,32 +234,32 @@ Private Function X_x_Delta_Smallx() As Double 'still incomplete
 
 ' 0 = no dilution gas;
 If TracerGasNum1 = 0 Then
-    X_Q = 0
-    MsgBox "used case no dilution which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = 0
+    X_x = 1
+    MsgBox "used case no dilution which is " & X_x & "values are " & Smallx1 & ", " & Epsilontr1 & ", " & Xitr1 & ". "
+    X_x_Delta_Smallx() = X_x * Rangex1 * FTIRUncertainty
     
 ' same gas = dilution gas, simple dilution calculation only;
 ElseIf TracerGasNum1 = TracerGasNum2 Then
-    X_Q = 0
-    MsgBox "used case only one dilution which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = 0
+    X_x = Xitr1 / (Xitr1 - Epsilontr1)
+    MsgBox "used case only one dilution which is " & X_x & "values are " & Smallx1 & ", " & Epsilontr1 & ", " & Xitr1 & ". "
+    X_x_Delta_Smallx() = X_x * Rangex1 * FTIRUncertainty
     
 ' full dilution method return gas 1 value
 ElseIf GasCurrentSelector = 1 Then
-    X_Q = Abs((-Smallx1 * Qd2 * (Epsilontr1 - Epsilontr2) * (Xitr2 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2)
-    MsgBox "used gas 1 type which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = Qd1 * MFMUncertainty * X_Q
+    X_x = Abs(1 + ((Qd1 * (Epsilontr1 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2))
+    MsgBox "used gas 1 type which is " & X_x & "values are " & Smallx1 & ", " & Epsilontr1 & ", " & Xitr1 & ". "
+    X_x_Delta_Smallx() = X_x * Rangex1 * FTIRUncertainty
 
 ' full dilution method return gas 2 value
 ElseIf GasBelowSelector = 1 Then
-    X_Q = Abs((Smallx1 * Qd1 * (Epsilontr1 - Epsilontr2) * (Xitr2 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2)
-    MsgBox "used gas 2 type which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
-    X_Q_Delta_Qd() = Qd2 * MFMUncertainty * X_Q
+    X_x = Abs(1 + ((Qd1 * (Epsilontr1 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2))
+    MsgBox "used gas 2 type which is " & X_x & "values are " & Smallx1 & ", " & Epsilontr1 & ", " & Xitr1 & ". "
+    X_x_Delta_Smallx() = X_x * Rangex2 * FTIRUncertainty
     
 End If
  
 Else
-    MsgBox "Error - stuck on uncertainty tracer gas term 1 or 2"
+    MsgBox "Error - stuck on uncertainty deltasmallx term"
 
 End If
 
@@ -283,7 +285,7 @@ ElseIf TracerGasNum1 = TracerGasNum2 Then
     
 ' full dilution method return gas 1 value
 ElseIf GasCurrentSelector = 1 Then
-    X_Q = Abs((-Smallx1 * Qd2 * (Epsilontr1 - Epsilontr2) * (Xitr2 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2)
+    X_x = Abs(1 + ((Qd1 * (Epsilontr1 - Epsilontr2)) / (((Xitr1 - Epsilontr1) * Qd1) - (Xitr2 - Epsilontr2) * Qd2) ^ 2))
     MsgBox "used gas 1 type which is " & X_Q & "values are " & Smallx1 & ", " & -Epsilontr1 & ", " & Xitr1 & ". "
     X_Q_Delta_Qd() = Qd1 * MFMUncertainty * X_Q
 
@@ -296,7 +298,7 @@ ElseIf GasBelowSelector = 1 Then
 End If
  
 Else
-    MsgBox "Error - stuck on uncertainty tracer gas term 1 or 2"
+    MsgBox "Error - stuck on overall uncertainty term"
 
 End If
 

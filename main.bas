@@ -68,7 +68,7 @@ Set celres = Application.InputBox("Select first to start uncertainty calculation
 If celres Is Nothing Then
     MsgBox "Cell not selected!"
     End If
-    
+        
 Select Case celres.Count
 Case Is = 1
 x = True

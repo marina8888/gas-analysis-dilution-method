@@ -27,6 +27,7 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 
 3. User must populate: mass flow meter full-scale calibration values (assigned an arbitrary colour for classification and when mass flowmeters are swapped during experiment), datalogger sheet number, tracer gas value (0,1 or 2..), sheet number (which is sequential and matches tab names 1,2,3...), Xi-tr which is the concentration of tracer gas in the dilution gas, start and end times for the datalogger (if a data logger is used), and measured mole fractions of target and tracer species saved as sequentially numbered data sheets. Please note that Epsilontr values are the measured mole fraction of the tracer species and should also be included in these data sheets. 
 
+4. Please note that colours listed on template (especially for MFM full scale value) can change depending on colour theme that the user has installed locally. 
 Please see references for experimental method and further information:
 ### References 
 <a id="1">[1]</a> Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, https://doi.org/10.1299/mej.19-00193, https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja, 抄録:

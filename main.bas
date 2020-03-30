@@ -15,6 +15,12 @@ Dim GasCurrentSelector() As Long 'Dilution gas type and condition selector
 Dim TotalRows As Integer
 Dim Counter As Long 'Your counting variable to step through your entire array
 Dim Result As Boolean 'Your result variable, will be set to False if something is not equal to 0, otherwise it's default value is True
+Dim InletGasNum As Integer 'Constant, number of inlet gases including dilution gas (still counted as +1 when 2 difference concentrations are used)
+Dim TodaysDate As Integer 'Used to map datalogger vaues to correct spreadsheet- column 3 should match logger spreadshet
+Dim SearchValue, MatchRange As Range
+Dim wsnum As Integer 'Worksheet number based on datalogger times
+Dim WorksheetName As String
+Dim MyArr As Variant
 
 '----------initialising parameters taken available in experiment for dilution gas 1--------
 Dim Rangetr1() As Variant
@@ -112,16 +118,17 @@ ReDim X_Q_Delta_Qd2(TotalRows)
 ReDim X_x_Delta_Smallx2(TotalRows)
 ReDim Delta_Largex2(TotalRows)
 
+InletGasNum = 5
 
 increm = 0
 r = 0
-coliterator = 1
+coliterator = 0
 
 MFMUncertainty = 0.02
 FTIRUncertainty = 0.02
-
-'------Find total number of rows-----------------------------------------
-
+TodaysDate = Cells(celres.Row, 3).Value
+wsnum = 1
+WorksheetName = "logger_" + CStr(TodaysDate) + "(" + CStr(wsnum) + ")"
 
 
 '-------------------------------------------assigning row values using loop--------------------------------------------------
@@ -143,8 +150,43 @@ Else: For Counter = 0 To UBound(GasCurrentSelector) 'Loops through your array
 Next Counter 'Increment counting variable to proceed to the next index within your array
 End If
 
+
+
+'--------------------------------------------------assigning datalogger values------------------------------------------------
+For coliterator = 1 To InletGasNum
+
+    For r = 0 To TotalRows
+    If Cells(celres.Row + r, 28).Value > Cells(celres.Row + r + 1, 28).Value + 250 Then
+    wsnum = wsnum + 1 'Use next datalogger worksheet
+    End If
+    ReDim MyArr((Cells(celres.Row, 28).Value - Cells(celres.Row, 29).Value))
+        Cells(celres.Row + r, 30 + (2 * coliterator)).Value = UpperLog()
+        Cells(celres.Row + r, 31 + (2 * coliterator)).Value = LowerLog()
+    Next r
+
+Next coliterator
+coliterator = 1
+
+'------------------------------------------------assigning calcs from datalogger values---------------------------------------
+
 For r = 0 To TotalRows
-    '----------assigning values gas 1-------------------------------
+    Cells(celres.Row + r, 10).Value = UpperEq()
+    Cells(celres.Row + r, 11).Value = LowerEq()
+    Cells(celres.Row + r, 12).Value = UpperE()
+    Cells(celres.Row + r, 13).Value = LowerE()
+    Cells(celres.Row + r, 14).Value = RoundedE()
+    
+    
+    
+    
+Next r
+
+
+
+
+'-----------------------------------------------------------gas values--------------------------------------------------------
+For r = 0 To TotalRows
+    '----------assigning values gas 1------------------------------------
     Xitr1(r) = 10000 * Cells(celres.Row + r, 27).Value
     Rangetr1(r) = Cells(celres.Row + r, 58).Value
     Epsilontr1(r) = Cells(celres.Row + r, 57).Value
@@ -155,7 +197,8 @@ For r = 0 To TotalRows
     Epsilontr2(r) = Cells(celres.Row + r + 1, 57).Value
     Qd2(r) = Cells(celres.Row + r + 1, 38).Value
 Next r
-        
+
+    
 
 '-------print values to resopective rows (only once) for the rows that remain the same regardless of type of target gas------
 '----------Hence print Z, Qs, Xtr (LargeX for the target gas that is also the tracer gas-------------------
@@ -170,7 +213,11 @@ For r = 0 To TotalRows
     Cells(celres.Row + r, celres.Column).Value = Xtr()
 Next r
 
+
+
+
 Do While (59 + (2 * (coliterator - 1) / 6)) < celres.Column
+
     '--------final uncertainty calculation which might require both gas 1 and 2 values---------------------------------------------------
     For r = 0 To TotalRows
         Cells(celres.Row + r, celres.Column + coliterator + 0).Value = Largex()
@@ -180,8 +227,8 @@ Do While (59 + (2 * (coliterator - 1) / 6)) < celres.Column
         Cells(celres.Row + r, celres.Column + coliterator + 4).Value = X_x_Delta_Smallx()
     Next r
     
+    '--------Once the gas 2 column has also been populated, only then can both gas 1 and 2 uncertainty values can be set---------------------------------------
     For r = 0 To TotalRows
-            '--------Once the gas 2 column has also been populated, only then can both gas 1 and 2 uncertainty values can be set---------------------------------------
         X_Xi_Delta_Xi_tr1(r) = Cells(celres.Row + r, celres.Column + coliterator + 1).Value
         X_Epsilon_Delta_Epsilon_tr1(r) = Cells(celres.Row + r, celres.Column + coliterator + 2).Value
         X_Q_Delta_Qd1(r) = Cells(celres.Row + r, celres.Column + coliterator + 3).Value
@@ -192,11 +239,13 @@ Do While (59 + (2 * (coliterator - 1) / 6)) < celres.Column
         X_Q_Delta_Qd2(r) = Cells(celres.Row + r + 1, celres.Column + coliterator + 3).Value
         X_x_Delta_Smallx2(r) = Cells(celres.Row + r + 1, celres.Column + coliterator + 4).Value
     Next r
+    
     For r = 0 To TotalRows
         Cells(celres.Row + r, celres.Column + coliterator + 5).Value = Delta_Largex()
     Next r
-'-----------------------recalculate the above 6 parameters for every target gas-------------------------------------------------------
-coliterator = coliterator + 6
+    
+    '-----------------------recalculate the above 6 parameters for every target gas (where gas parameters repeat every 6 rows)-------------------------------------
+    coliterator = coliterator + 6
 
 Loop
 
@@ -245,7 +294,47 @@ Loop
 'Uncertainty of measurement of the target species by the gas analyser    Delta_Epsilon_tr = Rangex * FTIRUncertainty
 
 '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Private Function UpperLog() As Single
+'drag values from log file - first find and multiply by mfm factor,  where 0.2 = 5V datalogger measurement
 
+MyArr = Range(WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator).Value, WorksheetFunction.Match(Cells(celres.Row, 29).Value, Sheets(WorksheetName).Column(1).Value, 0))): WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator), WorksheetFunction.Match(Cells(celres.Row, 28).Value, Sheets(WorksheetName).Column(1).Value, 0)).Value
+
+UpperLog = WorksheetFunction.Index(celres.Row + r, 30 + (2 * coliterator), WorksheetFunction.Match(ActiveSheet.Cells(celres.Row + r, 2).Value, Columns(1), 0)) * 0.2 * WorksheetFunction.Max(MyArr)
+
+End Function
+
+Private Function LowerLog() As Single
+MyArr = Range(WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator).Value, _
+WorksheetFunction.Match(Cells(celres.Row, 29).Value, Sheets(WorksheetName).Column(1).Value, 0))): WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator), WorksheetFunction.Match(Cells(celres.Row, 28).Value, Sheets(WorksheetName).Column(1).Value, 0)).Value
+
+LowerLog = WorksheetFunction.Index(celres.Row + r, 30 + (2 * coliterator), WorksheetFunction.Match(ActiveSheet.Cells(celres.Row + r, 2).Value, Columns(1), 0)) * 0.2 * WorksheetFunction.Min(MyArr)
+
+End Function
+
+Private Function UpperEq() As Single
+
+End Function
+
+Private Function LowerEq() As Single
+
+End Function
+
+Private Function UpperE() As Single
+
+End Function
+
+Private Function LowerE() As Single
+
+End Function
+
+
+Private Function RoundedE() As Single
+
+End Function
+
+    
+    
+    
 Private Function Z() As Single
 
 

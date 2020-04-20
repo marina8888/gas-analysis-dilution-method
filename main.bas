@@ -18,8 +18,8 @@ Dim Result As Boolean 'Your result variable, will be set to False if something i
 Dim InletGasNum As Integer 'Constant, number of inlet gases including dilution gas (still counted as +1 when 2 difference concentrations are used)
 Dim TodaysDate As Integer 'Used to map datalogger vaues to correct spreadsheet- column 3 should match logger spreadshet
 Dim SearchValue, MatchRange As Range
-Dim wsnum As Integer 'Worksheet number based on datalogger times
-Dim WorksheetName As String
+Dim wsnum As Integer 'Worksheet number for datalogger
+Dim WorksheetName As Variant
 Dim MyArr As Variant
 
 '----------initialising parameters taken available in experiment for dilution gas 1--------
@@ -117,6 +117,7 @@ ReDim X_Epsilon_Delta_Epsilon_tr2(TotalRows)
 ReDim X_Q_Delta_Qd2(TotalRows)
 ReDim X_x_Delta_Smallx2(TotalRows)
 ReDim Delta_Largex2(TotalRows)
+ReDim WorksheetName(TotalRows)
 
 InletGasNum = 5
 
@@ -126,15 +127,15 @@ coliterator = 0
 
 MFMUncertainty = 0.02
 FTIRUncertainty = 0.02
-TodaysDate = Cells(celres.Row, 3).Value
-wsnum = 1
-WorksheetName = "logger_" + CStr(TodaysDate) + "(" + CStr(wsnum) + ")"
 
 
 '-------------------------------------------assigning row values using loop--------------------------------------------------
 For r = 0 To TotalRows
     '----------assigning tracer gas 1 and 2 values to define how many dilution gases user is using and selectors to define which row calculations take place-------
     GasCurrentSelector(r) = Cells(celres.Row + r, 8).Value
+    TodaysDate = Cells(celres.Row + r, 3).Value
+    wsnum = Cells(celres.Row + r, 4).Value
+    WorksheetName(r) = "logger_" + CStr(TodaysDate) + "(" + CStr(wsnum) + ")"
 Next r
 
 'Select mode

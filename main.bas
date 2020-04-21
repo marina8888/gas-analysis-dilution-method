@@ -7,7 +7,7 @@ Option Explicit
 
 '------------initialising values for looping and moving cells---------------------
 Dim celres As Range
-Dim Mode As Integer
+Dim Mode As Variant
 Dim increm As Integer 'multiplier to select smallxvalue for the correct gas
 Dim r As Integer
 Dim coliterator As Integer
@@ -57,14 +57,11 @@ Dim X_Q_Delta_Qd2() As Variant
 Dim X_x_Delta_Smallx2() As Variant
 Dim Delta_Largex2() As Variant
             
-       
 '-------------------------initialising uncertainty constants----------------------------
 Dim MFMUncertainty As Single
 Dim FTIRUncertainty As Single
 
-
-
-Public Sub ArrayVer()
+Public Sub Main()
 
 '------------user select starting cell-------------------------------
 Dim x As Boolean
@@ -85,121 +82,10 @@ End Select
 
 Loop
 
-
-'---------resizing dynamic arrays------------------------------------
-
+'--------finding total rows and redementioning all arrays to total row size----------
 TotalRows = FirstEmtpyRow() - 1
+Call ReDimArrays(TotalRows)
 
-ReDim GasCurrentSelector(TotalRows)
-
-ReDim Rangetr1(TotalRows)
-ReDim Xitr1(TotalRows)
-ReDim Smallx1(TotalRows)
-ReDim Rangex1(TotalRows)
-ReDim Epsilontr1(TotalRows)
-ReDim Qd1(TotalRows)
-
-ReDim Rangetr2(TotalRows)
-ReDim Xitr2(TotalRows)
-ReDim Smallx2(TotalRows)
-ReDim Rangex2(TotalRows)
-ReDim Epsilontr2(TotalRows)
-ReDim Qd2(TotalRows)
-
-ReDim X_Xi_Delta_Xi_tr1(TotalRows)
-ReDim X_Epsilon_Delta_Epsilon_tr1(TotalRows)
-ReDim X_Q_Delta_Qd1(TotalRows)
-ReDim X_x_Delta_Smallx1(TotalRows)
-ReDim Delta_Largex1(TotalRows)
-
-ReDim X_Xi_Delta_Xi_tr2(TotalRows)
-ReDim X_Epsilon_Delta_Epsilon_tr2(TotalRows)
-ReDim X_Q_Delta_Qd2(TotalRows)
-ReDim X_x_Delta_Smallx2(TotalRows)
-ReDim Delta_Largex2(TotalRows)
-ReDim WorksheetName(TotalRows)
-
-InletGasNum = 5
-
-increm = 0
-r = 0
-coliterator = 0
-
-MFMUncertainty = 0.02
-FTIRUncertainty = 0.02
-
-
-'-------------------------------------------assigning row values using loop--------------------------------------------------
-For r = 0 To TotalRows
-    '----------assigning tracer gas 1 and 2 values to define how many dilution gases user is using and selectors to define which row calculations take place-------
-    GasCurrentSelector(r) = Cells(celres.Row + r, 8).Value
-    TodaysDate = Cells(celres.Row + r, 3).Value
-    wsnum = Cells(celres.Row + r, 4).Value
-    WorksheetName(r) = "logger_" + CStr(TodaysDate) + "(" + CStr(wsnum) + ")"
-Next r
-
-'Select mode
-If Application.WorksheetFunction.Sum(GasCurrentSelector) = 0 Then
-    Mode = 0
-
-Else: For Counter = 0 To UBound(GasCurrentSelector) 'Loops through your array
-    If GasCurrentSelector(Counter) <> 1 Then
-        Mode = 2
-        Exit For
-    Else: Mode = 1
-    End If
-Next Counter 'Increment counting variable to proceed to the next index within your array
-End If
-
-
-
-'--------------------------------------------------assigning datalogger values------------------------------------------------
-For coliterator = 1 To InletGasNum
-
-    For r = 0 To TotalRows
-    If Cells(celres.Row + r, 28).Value > Cells(celres.Row + r + 1, 28).Value + 250 Then
-    wsnum = wsnum + 1 'Use next datalogger worksheet
-    End If
-    ReDim MyArr((Cells(celres.Row, 28).Value - Cells(celres.Row, 29).Value))
-        Cells(celres.Row + r, 30 + (2 * coliterator)).Value = UpperLog()
-        Cells(celres.Row + r, 31 + (2 * coliterator)).Value = LowerLog()
-    Next r
-
-Next coliterator
-coliterator = 1
-
-'------------------------------------------------assigning calcs from datalogger values---------------------------------------
-
-For r = 0 To TotalRows
-    Cells(celres.Row + r, 10).Value = UpperEq()
-    Cells(celres.Row + r, 11).Value = LowerEq()
-    Cells(celres.Row + r, 12).Value = UpperE()
-    Cells(celres.Row + r, 13).Value = LowerE()
-    Cells(celres.Row + r, 14).Value = RoundedE()
-    
-    
-    
-    
-Next r
-
-
-
-
-'-----------------------------------------------------------gas values--------------------------------------------------------
-For r = 0 To TotalRows
-    '----------assigning values gas 1------------------------------------
-    Xitr1(r) = 10000 * Cells(celres.Row + r, 27).Value
-    Rangetr1(r) = Cells(celres.Row + r, 58).Value
-    Epsilontr1(r) = Cells(celres.Row + r, 57).Value
-    Qd1(r) = Cells(celres.Row + r, 38).Value
-    '----------assigning values gas 2 to cells in row below-------------------------------
-    Xitr2(r) = 10000 * Cells(celres.Row + r + 1, 27).Value
-    Rangetr2(r) = Cells(celres.Row + r + 1, 58).Value
-    Epsilontr2(r) = Cells(celres.Row + r + 1, 57).Value
-    Qd2(r) = Cells(celres.Row + r + 1, 38).Value
-Next r
-
-    
 
 '-------print values to resopective rows (only once) for the rows that remain the same regardless of type of target gas------
 '----------Hence print Z, Qs, Xtr (LargeX for the target gas that is also the tracer gas-------------------
@@ -209,6 +95,7 @@ For r = 0 To TotalRows
     Rangex1(r) = Cells(celres.Row + r, (60 + 2 * increm)).Value 'range x - varies on gas
     Smallx2(r) = Cells(celres.Row + r + 1, (59 + 2 * increm)).Value 'small x - varies on gas
     Rangex2(r) = Cells(celres.Row + r + 1, (60 + 2 * increm)).Value 'range x - varies on gas
+    Cells(celres.Row + r, 77).Value = UpperEq()
     Cells(celres.Row + r, 76).Value = Z()
     Cells(celres.Row + r, 75).Value = Qs()
     Cells(celres.Row + r, celres.Column).Value = Xtr()
@@ -221,11 +108,11 @@ Do While (59 + (2 * (coliterator - 1) / 6)) < celres.Column
 
     '--------final uncertainty calculation which might require both gas 1 and 2 values---------------------------------------------------
     For r = 0 To TotalRows
-        Cells(celres.Row + r, celres.Column + coliterator + 0).Value = Largex()
-        Cells(celres.Row + r, celres.Column + coliterator + 1).Value = X_Xi_Delta_Xi_tr()
-        Cells(celres.Row + r, celres.Column + coliterator + 2).Value = X_Epsilon_Delta_Epsilon_tr()
-        Cells(celres.Row + r, celres.Column + coliterator + 3).Value = X_Q_Delta_Qd() 'No idea what Delta_Qd() is - check this
-        Cells(celres.Row + r, celres.Column + coliterator + 4).Value = X_x_Delta_Smallx()
+        Cells(celres.Row + r, celres.Column + coliterator + 1).Value = Largex()
+        X_Xi_Delta_Xi_tr1(r) = X_Xi_Delta_Xi_trfunc()
+        X_Epsilon_Delta_Epsilon_tr1(r) = X_Epsilon_Delta_Epsilon_trfunc()
+        X_Q_Delta_Qd1(r) = X_Q_Delta_Qdfunc() 'No idea what Delta_Qd() is - check this
+        X_x_Delta_Smallx1(r) = X_x_Delta_Smallxfunc()
     Next r
     
     '--------Once the gas 2 column has also been populated, only then can both gas 1 and 2 uncertainty values can be set---------------------------------------
@@ -295,8 +182,102 @@ Loop
 'Uncertainty of measurement of the target species by the gas analyser    Delta_Epsilon_tr = Rangex * FTIRUncertainty
 
 '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Private Function UpperLog() As Single
+Private Function ReDimArrays(TotalRows As Integer)
+
+
+'---------resizing dynamic arrays------------------------------------
+
+ReDim GasCurrentSelector(TotalRows)
+
+ReDim Rangetr1(TotalRows)
+ReDim Xitr1(TotalRows)
+ReDim Smallx1(TotalRows)
+ReDim Rangex1(TotalRows)
+ReDim Epsilontr1(TotalRows)
+ReDim Qd1(TotalRows)
+
+ReDim Rangetr2(TotalRows)
+ReDim Xitr2(TotalRows)
+ReDim Smallx2(TotalRows)
+ReDim Rangex2(TotalRows)
+ReDim Epsilontr2(TotalRows)
+ReDim Qd2(TotalRows)
+
+ReDim X_Xi_Delta_Xi_tr1(TotalRows)
+ReDim X_Epsilon_Delta_Epsilon_tr1(TotalRows)
+ReDim X_Q_Delta_Qd1(TotalRows)
+ReDim X_x_Delta_Smallx1(TotalRows)
+ReDim Delta_Largex1(TotalRows)
+
+ReDim X_Xi_Delta_Xi_tr2(TotalRows)
+ReDim X_Epsilon_Delta_Epsilon_tr2(TotalRows)
+ReDim X_Q_Delta_Qd2(TotalRows)
+ReDim X_x_Delta_Smallx2(TotalRows)
+ReDim Delta_Largex2(TotalRows)
+ReDim WorksheetName(TotalRows)
+ReDim Mode(TotalRows)
+
+InletGasNum = 5
+
+increm = 0
+r = 0
+coliterator = 0
+
+MFMUncertainty = 0.02
+FTIRUncertainty = 0.02
+
+
+
+End Function
+
+
+
+Private Function Init()
+
+'-------------------------------------------assigning row values using loop--------------------------------------------------
+For r = 0 To TotalRows
+    '----------assigning tracer gas 1 and 2 values to define how many dilution gases user is using and selectors to define which row calculations take place-------
+    GasCurrentSelector(r) = Cells(celres.Row + r, 8).Value
+    TodaysDate = Cells(celres.Row + r, 3).Value
+    wsnum = Cells(celres.Row + r, 4).Value
+    WorksheetName(r) = "logger_" + CStr(TodaysDate) + "(" + CStr(wsnum) + ")"
+Next r
+
+'Select mode
+For r = 0 To TotalRows - 1
+    If GasCurrentSelector(r) = 0 Then
+        Mode(r) = 0
+
+    ElseIf CurrentGasSelector(r) = CurrentGasSelector(r + 1) Then
+        Mode(r) = 1
+    Else: Mode(r) = 2
+Next r
+End If
+
+Mode(TotalRows) = Mode(TotalRows - 1)
+
+
+'-----------------------------------------------------------gas values--------------------------------------------------------
+For r = 0 To TotalRows
+    '----------assigning values gas 1------------------------------------
+    Xitr1(r) = 10000 * Cells(celres.Row + r, 27).Value
+    Rangetr1(r) = Cells(celres.Row + r, 58).Value
+    Epsilontr1(r) = Cells(celres.Row + r, 57).Value
+    Qd1(r) = Cells(celres.Row + r, 38).Value
+    '----------assigning values gas 2 to cells in row below-------------------------------
+    Xitr2(r) = 10000 * Cells(celres.Row + r + 1, 27).Value
+    Rangetr2(r) = Cells(celres.Row + r + 1, 58).Value
+    Epsilontr2(r) = Cells(celres.Row + r + 1, 57).Value
+    Qd2(r) = Cells(celres.Row + r + 1, 38).Value
+Next r
+
+    
+End Function
+
+Private Function UpperLog(coliterator) As Single
 'drag values from log file - first find and multiply by mfm factor,  where 0.2 = 5V datalogger measurement
+
+Worksheets("Sheet1").Range("A1").Formula = "=$A$4+$A$10"
 
 MyArr = Range(WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator).Value, WorksheetFunction.Match(Cells(celres.Row, 29).Value, Sheets(WorksheetName).Column(1).Value, 0))): WorksheetFunction.Index(Sheets(WorksheetName).Column(8 + coliterator), WorksheetFunction.Match(Cells(celres.Row, 28).Value, Sheets(WorksheetName).Column(1).Value, 0)).Value
 
@@ -313,15 +294,14 @@ LowerLog = WorksheetFunction.Index(celres.Row + r, 30 + (2 * coliterator), Works
 End Function
 
 Private Function UpperEq() As Single
-
+UpperEq = ((4.76 / (Cells(celres.Row + r, 33).Value)) * (2 * (Cells(celres.Row + r, 34).Value)) + (0.75 * (Cells(celres.Row + r, 36).Value)))
 End Function
 
 Private Function LowerEq() As Single
-
+LowerEq = ((4.76 / (Cells(celres.Row + r, 32).Value)) * (2 * (Cells(celres.Row + r, 35).Value)) + (0.75 * (Cells(celres.Row + r, 37).Value)))
 End Function
 
 Private Function UpperE() As Single
-
 End Function
 
 Private Function LowerE() As Single
@@ -342,19 +322,19 @@ Private Function Z() As Single
 ' This tion calculates Z (dilution ratio) and returns it
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    Z = 1
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    Z = Xitr1(r) / (Xitr1(r) - Epsilontr1(r))
    
    ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
    Z = 1 + (Qd1(r) * (Epsilontr1(r) - Epsilontr2(r)) / ((Qd1(r) * (Xitr1(r) - Epsilontr1(r))) - (Qd2(r) * (Xitr2(r) - Epsilontr2(r)))))
    
    ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
    Z = 1 + (Qd2(r) * (Epsilontr1(r) - Epsilontr2(r)) / ((Qd1(r) * (Xitr1(r) - Epsilontr1(r))) - (Qd2(r) * (Xitr2(r) - Epsilontr2(r)))))
    
 Else: MsgBox "Error - stuck on z value calcs"
@@ -369,15 +349,15 @@ Private Function Qs() As Double
 ' This tion calculates Qs (sample line flowrate) and returns it
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    Qs = 0
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    Qs = Qd1(r) * Xitr1(r) / (Epsilontr1(r) - 1)
    
 ' full dilution method return gas 1 or 2 value (should be same for both)
-ElseIf Mode = 2 Then
+ElseIf Mode(r) = 2 Then
    Qs = Qd1(r) * (((Xitr1(r) - Xitr2(r)) / (Epsilontr1(r) - Epsilontr2(r))) - 1)
    
 Else: MsgBox "Error - stuck on qs values"
@@ -394,11 +374,11 @@ Private Function Xtr() As Double
 
 'if no dilution gas or only 1 dilution gas, tracer gas mole fraction in product gas would not need to be measured
 'in this case, treat this cell as if calculating another product gas, i.e Epsilontr1 = smallx1 = largex1 / Z1
-If Mode = 0 Or Mode = 1 Then
+If Mode(r) = 0 Or Mode(r) = 1 Then
    Xtr = Z() * Smallx1(r)
 
 ' full dilution method return gas 1 or 2 value (should be same for both)
-ElseIf Mode = 2 Then
+ElseIf Mode(r) = 2 Then
    Xtr = ((Xitr1(r) * Epsilontr2(r)) - (Xitr2(r) * Epsilontr1(r))) / ((Xitr1(r) - Epsilontr1(r)) - (Xitr2(r) - Epsilontr2(r)))
    
 Else
@@ -412,13 +392,13 @@ Private Function Largex() As Double
 
 ' This tion calculates XLarge (object mole fraction of gas species) and returns it
 
-If Mode = 0 Or Mode = 1 Then
+If Mode(r) = 0 Or Mode(r) = 1 Then
    Largex = Z() * Smallx1(r)
    
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
    Largex = Z() * Smallx1(r)
    
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
    Largex = Z() * Smallx2(r)
 
 Else
@@ -435,20 +415,21 @@ Private Function X_Xi_Delta_Xi_tr() As Double
 ' --------------Calculating X_Xi value based on tracer gas type----------
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    X_Xi_Delta_Xi_tr = 0
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    X_Xi = (Abs(-Smallx1(r) * Epsilontr1(r) / (Xitr1(r) - Epsilontr1(r)) ^ 2))
    X_Xi_Delta_Xi_tr = Xitr1(r) * FTIRUncertainty * X_Xi
    
 ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
-   X_Xi_Delta_Xi_tr = Xitr1(r) * FTIRUncertainty * X_Xi
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
+    X_Xi = Abs((Qd2(r) * Qd2(r) * Smallx1(r) * (Epsilontr1(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
+    X_Xi_Delta_Xi_tr = Xitr1(r) * FTIRUncertainty * X_Xi
 
 ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
    X_Xi = Abs((Qd1(r) * Qd2(r) * Smallx1(r) * (Epsilontr1(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
    X_Xi_Delta_Xi_tr = Xitr2(r) * FTIRUncertainty * X_Xi
 
@@ -468,23 +449,23 @@ Private Function X_Epsilon_Delta_Epsilon_tr() As Double
 ' --------------Calculating X_Epsilon value based on tracer gas type----------
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    X_Epsilon = 0
    X_Epsilon_Delta_Epsilon_tr = 0
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    X_Epsilon = (Abs(Smallx1(r) * Xitr1(r) / (Xitr1(r) - Epsilontr1(r)) ^ 2))
    X_Epsilon_Delta_Epsilon_tr = Xitr1(r) * FTIRUncertainty * X_Epsilon
    
 ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
    X_Epsilon = Abs((Smallx1(r) * Qd1(r) * ((Xitr1(r) - Epsilontr2(r)) * Qd1(r)) - ((Xitr2(r) - Epsilontr2(r)) * Qd2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
    X_Epsilon_Delta_Epsilon_tr = Xitr1(r) * FTIRUncertainty * X_Epsilon
 
 ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
-   X_Epsilon = Abs((Smallx1(r) * Qd1(r) * ((Xitr1(r) - Epsilontr2(r)) * -Qd1(r)) - ((Xitr2(r) - Epsilontr1(r)) * Qd2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
+   X_Epsilon = Abs((Smallx1(r) * Qd1(r) * ((-Xitr1(r) - Epsilontr2(r)) * Qd1(r)) + ((Xitr2(r) - Epsilontr1(r)) * Qd2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
    X_Epsilon_Delta_Epsilon_tr = Xitr2(r) * FTIRUncertainty * X_Epsilon
 
 Else
@@ -503,22 +484,22 @@ Private Function X_Q_Delta_Qd() As Double
 ' --------------Calculating X_Epsilon value based on tracer gas type----------
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    X_Q = 0
    X_Q_Delta_Qd = 0
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    X_Q = 0
    X_Q_Delta_Qd = 0
    
 ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
    X_Q = Abs((-Smallx1(r) * Qd2(r) * (Epsilontr1(r) - Epsilontr2(r)) * (Xitr2(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
    X_Q_Delta_Qd = Qd1(r) * MFMUncertainty * X_Q
 
 ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
    X_Q = Abs((Smallx1(r) * Qd1(r) * (Epsilontr1(r) - Epsilontr2(r)) * (Xitr2(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2)
    X_Q_Delta_Qd = Qd2(r) * MFMUncertainty * X_Q
 
@@ -538,22 +519,22 @@ Private Function X_x_Delta_Smallx() As Double 'still incomplete
 ' --------------Calculating X_Epsilon value based on tracer gas type----------
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
    X_x = 1
    X_x_Delta_Smallx = X_x * Rangex1(r) * FTIRUncertainty
    
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
    X_x = Xitr1(r) / (Xitr1(r) - Epsilontr1(r))
    X_x_Delta_Smallx = X_x * Rangex1(r) * FTIRUncertainty
    
 ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
    X_x = Abs(1 + ((Qd1(r) * (Epsilontr1(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2))
    X_x_Delta_Smallx = X_x * Rangex1(r) * FTIRUncertainty
 
 ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
    X_x = Abs(1 + ((Qd1(r) * (Epsilontr1(r) - Epsilontr2(r))) / (((Xitr1(r) - Epsilontr1(r)) * Qd1(r)) - (Xitr2(r) - Epsilontr2(r)) * Qd2(r)) ^ 2))
    X_x_Delta_Smallx = X_x * Rangex2(r) * FTIRUncertainty
 
@@ -572,19 +553,19 @@ Private Function Delta_Largex() As Double 'still incomplete
 ' --------------Calculating X_Epsilon value based on tracer gas type----------
 
 ' 0 = no dilution gas;
-If Mode = 0 Then
+If Mode(r) = 0 Then
     Delta_Largex = 0
     
 ' same gas = dilution gas, simple dilution calculation only;
-ElseIf Mode = 1 Then
+ElseIf Mode(r) = 1 Then
     Delta_Largex = Sqr(X_Xi_Delta_Xi_tr1(r) ^ 2 + X_Epsilon_Delta_Epsilon_tr1(r) ^ 2 + X_x_Delta_Smallx1(r) ^ 2)
     
 ' full dilution method return gas 1 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 1 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 1 Then
     Delta_Largex = 0
 
 ' full dilution method return gas 2 value
-ElseIf Mode = 2 And GasCurrentSelector(r) = 2 Then
+ElseIf Mode(r) = 2 And GasCurrentSelector(r) = 2 Then
     Delta_Largex = Sqr(X_Xi_Delta_Xi_tr1(r) ^ 2 + X_Xi_Delta_Xi_tr2(r) ^ 2 + X_Epsilon_Delta_Epsilon_tr1(r) ^ 2 + X_Epsilon_Delta_Epsilon_tr2(r) ^ 2 + X_Q_Delta_Qd1(r) ^ 2 + X_Q_Delta_Qd2(r) ^ 2 + X_x_Delta_Smallx1(r) ^ 2)
  
 Else: MsgBox "Error - stuck on overall uncertainty term"

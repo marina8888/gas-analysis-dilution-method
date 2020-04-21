@@ -1,0 +1,21 @@
+*.cfg
+
+Excel files - these are used as references to build the python code only
+*.bas
+*.frm
+~$*.xls*
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+bin/
+include/
+lib/
+*.idea/

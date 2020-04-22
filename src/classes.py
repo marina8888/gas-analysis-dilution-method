@@ -10,12 +10,12 @@ class Workbook():
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number
         self.df = self.prepare_df()
-        self.df = self.df.values.tolist()
-
-        # defining all variables that are stored directly in spreadsheet
-        self.gas_type = self.lists_to_array(int, 7)
-        print("gases types are: " + str(self.gas_type))
-        self.mode = self.mode()
+        self.df=self.split_df()
+        # self.df = self.df.values.tolist()
+        #
+        # # defining all variables that are stored directly in spreadsheet
+        # self.gas_type = self.lists_to_array(int, 7)
+        # print("gases types are: " + str(self.gas_type))
 
     def prepare_df(self):
         self.df = self.df.iloc[self.start_row_number - 2:]
@@ -24,7 +24,9 @@ class Workbook():
         return self.df
 
     def split_df(self):
-        for
+        self.df= self.df[self.df['Unnamed: 7'] == '0']
+        print(self.df)
+        return self.df
 
 
     def lists_to_array(self, datatype, col_num: int):
@@ -34,8 +36,9 @@ class Workbook():
         return list
 
     def mode(self):
-        while self.list_of_lists[7])=0
-        list = (self.list_of_lists[col_num])
-        for i in range(0, len(list)):
-            list[i] = datatype(list[i])
-        return list
+        pass
+        # while self.df[7])==0:
+        #     list = (self.df[col_num])
+        #     for i in range(0, len(list)):
+        #         list[i] = datatype(list[i])
+        #     return list

@@ -9,21 +9,32 @@ class Workbook():
         self.df = pd.read_excel(workbook_name, sheet_name='Main')
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number
-
-        self.list_of_lists = self.df_to_list_of_lists()
+        self.df = self.prepare_df()
+        self.df = self.df.values.tolist()
 
         # defining all variables that are stored directly in spreadsheet
-        self.gas_type = self.import_as_array(int, 7)
+        self.gas_type = self.lists_to_array(int, 7)
         print("gases types are: " + str(self.gas_type))
+        self.mode = self.mode()
 
-
-    def df_to_list_of_lists(self):
+    def prepare_df(self):
         self.df = self.df.iloc[self.start_row_number - 2:]
         self.df = self.df.reset_index(drop=True)
         self.df = self.df.T
-        return self.df.values.tolist()
+        return self.df
 
-    def import_as_array(self, datatype, col_num: int):
+    def split_df(self):
+        for
+
+
+    def lists_to_array(self, datatype, col_num: int):
+        list = (self.df[col_num])
+        for i in range(0, len(list)):
+            list[i] = datatype(list[i])
+        return list
+
+    def mode(self):
+        while self.list_of_lists[7])=0
         list = (self.list_of_lists[col_num])
         for i in range(0, len(list)):
             list[i] = datatype(list[i])

@@ -30,6 +30,7 @@ class Workbook():
 
     # initialising new columns for storing variables
     def init_cols(self):
+        #for mode0 and mode1 calculations, use 1 as default, e.g Qd1=Qd and X_Epsilon1=X_Epilson
         self.df['Qd1_upper'] = None
         self.df['Qd1_lower'] = None
         self.df['Qd2_upper'] = None
@@ -138,29 +139,34 @@ class Workbook():
                                                                                 + (0.75 * self.df_mode2.iloc[:, 36]))
 
     def Qd(self):
-        self.df['Qd1_upper'] = None
-        self.df['Qd1_lower'] = None
-        self.df['Qd2_upper'] = None
-        self.df['Qd2_lower'] = None
+        self.df_mode0['Qd1_upper'] = self.df_mode0['Qd Ar/CO2 upper']
+        self.df_mode0['Qd1_lower'] = self.df_mode0['Qd Ar/CO2 lower']
+        self.df_mode0['Qd2_upper'] = None
+        self.df_mode0['Qd2_lower'] = None
 
-        self.df['Qd1_upper'] = None
-        self.df['Qd1_lower'] = None
-        self.df['Qd2_upper'] = None
-        self.df['Qd2_lower'] = None
+        self.df_mode1['Qd1_upper'] = self.df_mode1['Qd Ar/CO2 upper']
+        self.df_mode1['Qd1_lower'] = self.df_mode1['Qd Ar/CO2 lower']
+        self.df_mode1['Qd2_upper'] = None
+        self.df_mode1['Qd2_lower'] = None
 
-        self.df['Qd1_upper'] = None
-        self.df['Qd1_lower'] = None
-        self.df['Qd2_upper'] = None
-        self.df['Qd2_lower'] = None
-        pass
+        self.df_mode2['Qd1_upper'] = None
+        self.df_mode2['Qd1_lower'] = None
+        self.df_mode2['Qd2_upper'] = None
+        self.df_mode2['Qd2_lower'] = None
 
 
     def Epsilon(self):
-    self.df['Epsilontr1'] = None
-    self.df['Epsilontr2'] = None
+        self.df_mode0['Epsilontr1'] = self.df_mode0[' ξtr 1,2 ppmv']
+        self.df_mode0['Epsilontr2'] = None
+
+        self.df_mode1['Epsilontr1'] = self.df_mode1[' ξtr 1,2 ppmv']
+        self.df_mode1['Epsilontr2'] = None
+
+        self.df_mode2['Epsilontr1'] = None
+        self.df_mode2['Epsilontr2'] = None
 
     def Qs(self):
-    self.df['Qs'] = None
+        self.df['Qs'] = None
 
 
     def Z(self):

@@ -1,3 +1,4 @@
+#before running this code pip install pandas, matplotlib and numpy libraries to your environment:
 import pandas as pd
 from classes import Workbook
 import basicvariables
@@ -5,17 +6,17 @@ import basicvariables
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
 
-
+#this main () code will only run while the spreadsheet column headers match the code:
 def main():
     warnings.filterwarnings("ignore")
 
-    # gases = input("please input the gases as a comma seperated list: ")
+    # gases = input("please input the gases as a comma seperated list (but not H2 and O2): ")
     # gas_list=gases.split()
     # workbook_name = input("please input the filepath of workbook you will be working with today: ")
     # test = Workbook(workbook_name, 15, gas_list)
 
     test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 15,
-                    ['O2', 'N2', 'Air', 'CH4'])
+                    ['O2', 'N2', 'Air', 'CH4', 'Blah', 'Blah2'])
     # fill columns for basic/inital values
     print(test.df.columns.values)
     test.Qd()

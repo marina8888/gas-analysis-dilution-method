@@ -45,20 +45,29 @@ class Workbook():
         self.df['upper_eq'] = None
         self.df['lower_eq'] = None
 
-        for gas in self.gas_list:
+        spike_cols = [col for col in self.df.columns if col.startswith('ppmv')]
+        for gas, col in zip(self.gas_list, self.df[spike_cols]):
+            self.df.rename(columns={'ppmv': 'x_' + gas},inplace=True)
+            print(col)
+        # for gas, col in zip(self.gas_list, self.df.iteritems()):
+        #     # assign through cycling through all columns named 'ppmv' and 'range':
+        #     self.df.rename(columns={'ppmv': 'x_' + gas},inplace=True)
+                # self.df.rename(columns={'ppmv': 'x_' + gas}, inplace=True)
+                # self.df.rename(columns={'range_' + gas}, inplace=True)
             # values per gas
-            self.df['x_'+ gas] = None
-            self.df['X_'+ gas] = None
-            self.df['X_Xi1_'+ gas] = None
-            self.df['X_Xi2_'+ gas] = None
-            self.df['X_Epsilon1_'+ gas] = None
-            self.df['X_Epsilon2_'+ gas] = None
-            self.df['X_Q1_'+ gas] = None
-            self.df['X_Q2_'+ gas] = None
-            self.df['X_x_'+ gas] = None
+            # self.df['x_'+ gas] = None
+            # self.df['X_'+ gas] = None
+            # # self.df['range_'+ gas]= None
+            # self.df['X_Xi1_'+ gas] = None
+            # self.df['X_Xi2_'+ gas] = None
+            # self.df['X_Epsilon1_'+ gas] = None
+            # self.df['X_Epsilon2_'+ gas] = None
+            # self.df['X_Q1_'+ gas] = None
+            # self.df['X_Q2_'+ gas] = None
+            # self.df['X_x_'+ gas] = None
 
             #uncertainty term final
-            self.df['delta_X_'+ gas] = None
+            # self.df['delta_X_'+ gas] = None
 
     # splitting df by tracer gas column into mode0 (no gas) mode 1 and 2
     def split_df_mode0(self):
@@ -224,22 +233,32 @@ class Workbook():
             * self.df_2['Qd2_upper'])/ (((self.df_2['Xitr1'] - self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2'] -
             self.df_2['Epsilontr2'])*self.df_2['Qd2_upper'])))
 
-        def X_gas():
-            pass
+    def X_gas(self):
+        if self.df_0 is not None:
+            for gas in self.gas_list:
+                self.df_0['X_'+gas] = self.df_0['Z']* self.df_0['x_'+ gas]
 
-        def X_Xi1_gas():
-            pass
+        if self.df_1 is not None:
+            for gas in self.gas_list:
+                self.df_1['X_'+gas] = self.df_1['Z']* self.df_1['x_'+ gas]
 
-        def X_Epsilon_gas():
-            pass
+        if self.df_2 is not None:
+            for gas in self.gas_list:
+                self.df_2['X_'+gas] = self.df_2['Z']* self.df_2['x_'+ gas]
 
-        def X_Q_gas():
-            pass
+    def X_Xi1_gas(self):
+        pass
 
-        def X_x_gas():
-            pass
+    def X_Epsilon_gas(self):
+        pass
 
-        def delta_X_gas():
-            pass
+    def X_Q_gas(self):
+        pass
+
+    def X_x_gas(self):
+        pass
+
+    def delta_X_gas(self):
+        pass
 
 

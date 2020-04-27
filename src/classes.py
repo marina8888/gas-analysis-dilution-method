@@ -1,6 +1,7 @@
 import pandas as pd
 import copy
 
+
 # class workbook imports variables as arrays from excel file given an excel starting row number from which data collection begins
 # intialises a list of lists (from a pandas dataframe) and into np arrays that represent each variable
 class Workbook():
@@ -140,7 +141,6 @@ class Workbook():
             self.df_mode2['lower_eq'] = (4.76 / (self.df_mode2.iloc[:, 31])) * ((2 * self.df_mode2.iloc[:, 34])
                                                                                 + (0.75 * self.df_mode2.iloc[:, 36]))
 
-
     def Qd(self):
 
         if self.df_mode0 is not None:
@@ -152,7 +152,7 @@ class Workbook():
             self.df_mode1['Qd1_lower'] = self.df_mode1['Qd Ar/CO2 lower']
 
         if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type']== '1', 'Qd1_upper']=self.df_mode2['Qd Ar/CO2 upper']
+            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qd1_upper'] = self.df_mode2['Qd Ar/CO2 upper']
             self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qd1_lower'] = self.df_mode2['Qd Ar/CO2 lower']
 
         if self.df_mode2 is not None:
@@ -161,11 +161,10 @@ class Workbook():
             self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Qd2_lower'] = self.df_mode2[
                 'Qd Ar/CO2 lower']
 
-        self.df_mode2['Qd1_upper']=self.df_mode2['Qd1_upper'].fillna(method='ffill')
-        self.df_mode2['Qd1_lower']=self.df_mode2['Qd1_lower'].fillna(method='ffill')
-        self.df_mode2['Qd2_upper']=self.df_mode2['Qd2_upper'].fillna(method='backfill')
-        self.df_mode2['Qd2_lower']=self.df_mode2['Qd2_lower'].fillna(method='backfill')
-
+        self.df_mode2['Qd1_upper'] = self.df_mode2['Qd1_upper'].fillna(method='ffill')
+        self.df_mode2['Qd1_lower'] = self.df_mode2['Qd1_lower'].fillna(method='ffill')
+        self.df_mode2['Qd2_upper'] = self.df_mode2['Qd2_upper'].fillna(method='backfill')
+        self.df_mode2['Qd2_lower'] = self.df_mode2['Qd2_lower'].fillna(method='backfill')
 
     def Epsilon(self):
         if self.df_mode0 is not None:
@@ -178,40 +177,45 @@ class Workbook():
             self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Epsilontr1'] = self.df_mode2[' ξtr 1,2 ppmv']
             self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Epsilontr2'] = self.df_mode2[' ξtr 1,2 ppmv']
 
-        self.df_mode2['Epsilontr1']=self.df_mode2['Epsilontr1'].fillna(method='ffill')
-        self.df_mode2['Epsilontr2']=self.df_mode2['Epsilontr2'].fillna(method='backfill')
+        self.df_mode2['Epsilontr1'] = self.df_mode2['Epsilontr1'].fillna(method='ffill')
+        self.df_mode2['Epsilontr2'] = self.df_mode2['Epsilontr2'].fillna(method='backfill')
 
     def Xitr(self):
         if self.df_mode0 is not None:
-            self.df_mode0['Xitr1']=10000*self.df_mode0['Xtr %']
+            self.df_mode0['Xitr1'] = 10000 * self.df_mode0['Xtr %']
 
         if self.df_mode1 is not None:
-            self.df_mode1['Xitr1']=10000*self.df_mode1['Xtr %']
+            self.df_mode1['Xitr1'] = 10000 * self.df_mode1['Xtr %']
 
         if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type']=='1', 'Xitr1']=10000*self.df_mode2['Xtr %']
-            self.df_mode2.loc[self.df_mode2['Tracer gas type']=='2', 'Xitr2']=10000*self.df_mode2['Xtr %']
+            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Xitr1'] = 10000 * self.df_mode2['Xtr %']
+            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Xitr2'] = 10000 * self.df_mode2['Xtr %']
 
-        self.df_mode2['Xitr1']=self.df_mode2['Xitr1'].fillna(method='ffill')
-        self.df_mode2['Xitr2']=self.df_mode2['Xitr2'].fillna(method='backfill')
+        self.df_mode2['Xitr1'] = self.df_mode2['Xitr1'].fillna(method='ffill')
+        self.df_mode2['Xitr2'] = self.df_mode2['Xitr2'].fillna(method='backfill')
 
     def Qs(self):
         self.df_mode0['Qs'] = 0
-        self.df_mode1['Qs'] = self.df_mode1['Qd1_upper'] * self.df_mode1['Xtr %'] / (self.df_mode1['Epsilontr1'] - 1)
-        # self.df_mode2['Qs'] = self.df_mode2['Qd1_upper'] * self.df_mode2['Xtr %'] / (self.df_mode2['Epsilontr1'] - 1)
+        self.df_mode1['Qs'] = self.df_mode1['Qd1_upper'] * (
+                (self.df_mode1['Xitr1'] / self.df_mode1['Epsilontr1']) - 1)
 
-    # Qd1(r) * (((Xitr1(r) - Xitr2(r)) / (Epsilontr1(r) - Epsilontr2(r))) - 1)
+        self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qs'] = self.df_mode2['Qd1_upper'] * (
+                    ((self.df_mode2['Xitr1'] - self.df_mode2['Xitr2']) / (
+                            self.df_mode2['Epsilontr1'] - self.df_mode2['Epsilontr2'])) - 1)
 
+        self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Qs'] = self.df_mode2['Qd2_upper'] * (
+                    ((self.df_mode2['Xitr1'] - self.df_mode2['Xitr2']) / (
+                            self.df_mode2['Epsilontr1'] - self.df_mode2['Epsilontr2'])) - 1)
 
-    # def Z(self):
-    #     if self.df_mode0 is not None:
-    #         self.df_mode0['Z'] = 1
-    #     if self.df_mode1 is not None:
-    #         self.df_mode1['Z'] = (10000 * self.df_mode1['Xtr %']) / (
-    #                 (10000 * self.df_mode1['Xtr %']) - (self.df_mode1[' ξtr 1,2 ppmv']))
-    #     if self.df_mode2 is not None:
-    #         if self.df_mode2['Tracer gas type'] == '1':
-    #             self.df_mode2['Z'] = 1 + (self.df_mode2['Qd Ar/CO2 upper'] * (self.df_mode2[' ξtr 1,2 ppmv'])
-    #                                       pass
-    #                                       elif self.df_mode2['Tracer gas type'] == '2':
-    #                                       pass
+        def Z(self):
+            if self.df_mode0 is not None:
+                self.df_mode0['Z'] = 1
+            if self.df_mode1 is not None:
+                self.df_mode1['Z'] = (10000 * self.df_mode1['Xtr %']) / (
+                        (10000 * self.df_mode1['Xtr %']) - (self.df_mode1[' ξtr 1,2 ppmv']))
+            if self.df_mode2 is not None:
+                if self.df_mode2['Tracer gas type'] == '1':
+                    self.df_mode2['Z'] = 1 + (self.df_mode2['Qd Ar/CO2 upper'] * (self.df_mode2[' ξtr 1,2 ppmv'])
+                                              pass
+                                              elif self.df_mode2['Tracer gas type'] == '2':
+                                              pass

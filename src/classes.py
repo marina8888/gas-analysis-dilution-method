@@ -5,18 +5,19 @@ import copy
 # class workbook imports variables as arrays from excel file given an excel starting row number from which data collection begins
 # intialises a list of lists (from a pandas dataframe) and into np arrays that represent each variable
 class Workbook():
-    def __init__(self, workbook_name, start_row_number: int):
+    def __init__(self, workbook_name, start_row_number: int, gas_list: list):
         self.df = pd.read_excel(workbook_name, sheet_name='Main')
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number
+        self.gas_list = gas_list
 
+        # add new cols and prepare dataframe with correct headers:
         self.prepare_df()
         self.init_cols()
 
-        # called in this order because mode 1 is least selective
-        self.df_mode0 = self.split_df_mode0()
-        self.df_mode1 = self.split_df_mode1()
-        self.df_mode2 = self.split_df_mode2()
+        self.df_0 = self.split_df_mode0()
+        self.df_1 = self.split_df_mode1()
+        self.df_2 = self.split_df_mode2()
 
     def prepare_df(self):
         # cut sheet for relevant data only
@@ -44,29 +45,30 @@ class Workbook():
         self.df['upper_eq'] = None
         self.df['lower_eq'] = None
 
-        # values per gas
-        self.df['x1'] = None
-        # self.df['x2'] = None
-        self.df['X1'] = None
-        # self.df['X2'] = None
-        self.df['X_Xi1'] = None
-        self.df['X_Xi2'] = None
-        self.df['X_Epsilon1'] = None
-        self.df['X_Epsilon2'] = None
-        self.df['X_Q1'] = None
-        self.df['X_Q2'] = None
-        self.df['X_x'] = None
-        self.df['X_x'] = None
+        for gas in self.gas_list:
+            # values per gas
+            self.df['x_'+ gas] = None
+            self.df['X_'+ gas] = None
+            self.df['X_Xi1_'+ gas] = None
+            self.df['X_Xi2_'+ gas] = None
+            self.df['X_Epsilon1_'+ gas] = None
+            self.df['X_Epsilon2_'+ gas] = None
+            self.df['X_Q1_'+ gas] = None
+            self.df['X_Q2_'+ gas] = None
+            self.df['X_x_'+ gas] = None
+
+            #uncertainty term final
+            self.df['delta_X_'+ gas] = None
 
     # splitting df by tracer gas column into mode0 (no gas) mode 1 and 2
     def split_df_mode0(self):
-        self.df_mode0 = self.df[self.df['Tracer gas type'] == '0']
-        return self.df_mode0
+        self.df_0 = self.df[self.df['Tracer gas type'] == '0']
+        return self.df_0
 
     def split_df_mode1(self):
         # create a new empty dataframe with same columns and number of columns as previous dataframe
-        df_mode1 = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
-        df_mode1 = df_mode1.iloc[0:0].apply(copy.deepcopy)
+        df_1 = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
+        df_1 = df_1.iloc[0:0].apply(copy.deepcopy)
         # initalising first and second col values to check
         last_tgt = ''
         this_tgt = ''
@@ -78,14 +80,14 @@ class Workbook():
             if (last_tgt != ''):
                 # if dataframe rows are consecutively equal, write to new dataframe
                 if ((this_tgt == '1' and last_tgt == '1') or (this_tgt == '2' and last_tgt == '2')):
-                    df_mode1.loc[len(df_mode1)] = self.df.iloc[row_id - 1]
+                    df_1.loc[len(df_1)] = self.df.iloc[row_id - 1]
             last_tgt = this_tgt
-        return df_mode1
+        return df_1
 
     def split_df_mode2(self):
         # create a new empty dataframe with same columns and number of columns as previous dataframe
-        df_mode2 = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
-        df_mode2 = df_mode2.iloc[0:0].apply(copy.deepcopy)
+        df_2 = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
+        df_2 = df_2.iloc[0:0].apply(copy.deepcopy)
         # initalising first and second col values to check
         last_tgt = ''
         this_tgt = ''
@@ -97,10 +99,10 @@ class Workbook():
             if (last_tgt != ''):
                 # if the last tgt was 1 and this is 2 then write both rows to the new dataset
                 if (this_tgt == '2' and last_tgt == '1'):
-                    df_mode2.loc[len(df_mode2)] = self.df.iloc[row_id - 1].apply(copy.deepcopy)
-                    df_mode2.loc[len(df_mode2)] = self.df.iloc[row_id].apply(copy.deepcopy)
+                    df_2.loc[len(df_2)] = self.df.iloc[row_id - 1].apply(copy.deepcopy)
+                    df_2.loc[len(df_2)] = self.df.iloc[row_id].apply(copy.deepcopy)
             last_tgt = this_tgt
-        return df_mode2
+        return df_2
 
     def lists_to_array(self, datatype, col_num: int):
         self.df = self.df.T
@@ -111,111 +113,133 @@ class Workbook():
         return list
 
     def concat(self):
-        self.df_mode0 = self.df_mode0.reset_index(drop=True)
-        self.df_mode1 = self.df_mode1.reset_index(drop=True)
-        self.df_mode2 = self.df_mode2.reset_index(drop=True)
-        split_dataframes = [self.df_mode0, self.df_mode1, self.df_mode2]
+        self.df_0 = self.df_0.reset_index(drop=True)
+        self.df_1 = self.df_1.reset_index(drop=True)
+        self.df_2 = self.df_2.reset_index(drop=True)
+        split_dataframes = [self.df_0, self.df_1, self.df_2]
         self.df = pd.concat(split_dataframes)
         self.df = self.df.reset_index(drop=True)
 
     # below are methods for calculating values in all three dataframes- basic variables for plotting or uncertainty calcs
     def upper_eq(self):
-        if self.df_mode0 is not None:
-            self.df_mode0['upper_eq'] = (4.76 / (self.df_mode0.iloc[:, 32])) * ((2 * self.df_mode0.iloc[:, 33])
-                                                                                + (0.75 * self.df_mode0.iloc[:, 35]))
-        if self.df_mode1 is not None:
-            self.df_mode1['upper_eq'] = (4.76 / (self.df_mode1.iloc[:, 32])) * ((2 * self.df_mode1.iloc[:, 33])
-                                                                                + (0.75 * self.df_mode1.iloc[:, 35]))
-        if self.df_mode2 is not None:
-            self.df_mode2['upper_eq'] = (4.76 / (self.df_mode2.iloc[:, 32])) * ((2 * self.df_mode2.iloc[:, 33])
-                                                                                + (0.75 * self.df_mode2.iloc[:, 35]))
+        if self.df_0 is not None:
+            self.df_0['upper_eq'] = (4.76 / (self.df_0.iloc[:, 32])) * ((2 * self.df_0.iloc[:, 33])
+                                                                        + (0.75 * self.df_0.iloc[:, 35]))
+        if self.df_1 is not None:
+            self.df_1['upper_eq'] = (4.76 / (self.df_1.iloc[:, 32])) * ((2 * self.df_1.iloc[:, 33])
+                                                                        + (0.75 * self.df_1.iloc[:, 35]))
+        if self.df_2 is not None:
+            self.df_2['upper_eq'] = (4.76 / (self.df_2.iloc[:, 32])) * ((2 * self.df_2.iloc[:, 33])
+                                                                        + (0.75 * self.df_2.iloc[:, 35]))
 
     def lower_eq(self):
-        if self.df_mode0 is not None:
-            self.df_mode0['lower_eq'] = (4.76 / (self.df_mode0.iloc[:, 31])) * ((2 * self.df_mode0.iloc[:, 34])
-                                                                                + (0.75 * self.df_mode0.iloc[:, 36]))
-        if self.df_mode1 is not None:
-            self.df_mode1['lower_eq'] = (4.76 / (self.df_mode1.iloc[:, 31])) * ((2 * self.df_mode1.iloc[:, 34])
-                                                                                + (0.75 * self.df_mode1.iloc[:, 36]))
-        if self.df_mode2 is not None:
-            self.df_mode2['lower_eq'] = (4.76 / (self.df_mode2.iloc[:, 31])) * ((2 * self.df_mode2.iloc[:, 34])
-                                                                                + (0.75 * self.df_mode2.iloc[:, 36]))
+        if self.df_0 is not None:
+            self.df_0['lower_eq'] = (4.76 / (self.df_0.iloc[:, 31])) * ((2 * self.df_0.iloc[:, 34])
+                                                                        + (0.75 * self.df_0.iloc[:, 36]))
+        if self.df_1 is not None:
+            self.df_1['lower_eq'] = (4.76 / (self.df_1.iloc[:, 31])) * ((2 * self.df_1.iloc[:, 34])
+                                                                        + (0.75 * self.df_1.iloc[:, 36]))
+        if self.df_2 is not None:
+            self.df_2['lower_eq'] = (4.76 / (self.df_2.iloc[:, 31])) * ((2 * self.df_2.iloc[:, 34])
+                                                                        + (0.75 * self.df_2.iloc[:, 36]))
 
     def Qd(self):
 
-        if self.df_mode0 is not None:
-            self.df_mode0['Qd1_upper'] = self.df_mode0['Qd Ar/CO2 upper']
-            self.df_mode0['Qd1_lower'] = self.df_mode0['Qd Ar/CO2 lower']
+        if self.df_0 is not None:
+            self.df_0['Qd1_upper'] = self.df_0['Qd Ar/CO2 upper']
+            self.df_0['Qd1_lower'] = self.df_0['Qd Ar/CO2 lower']
 
-        if self.df_mode1 is not None:
-            self.df_mode1['Qd1_upper'] = self.df_mode1['Qd Ar/CO2 upper']
-            self.df_mode1['Qd1_lower'] = self.df_mode1['Qd Ar/CO2 lower']
+        if self.df_1 is not None:
+            self.df_1['Qd1_upper'] = self.df_1['Qd Ar/CO2 upper']
+            self.df_1['Qd1_lower'] = self.df_1['Qd Ar/CO2 lower']
 
-        if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qd1_upper'] = self.df_mode2['Qd Ar/CO2 upper']
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qd1_lower'] = self.df_mode2['Qd Ar/CO2 lower']
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Qd1_upper'] = self.df_2['Qd Ar/CO2 upper']
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Qd1_lower'] = self.df_2['Qd Ar/CO2 lower']
 
-        if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Qd2_upper'] = self.df_mode2[
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Qd2_upper'] = self.df_2[
                 'Qd Ar/CO2 upper']
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Qd2_lower'] = self.df_mode2[
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Qd2_lower'] = self.df_2[
                 'Qd Ar/CO2 lower']
-
-        self.df_mode2['Qd1_upper'] = self.df_mode2['Qd1_upper'].fillna(method='ffill')
-        self.df_mode2['Qd1_lower'] = self.df_mode2['Qd1_lower'].fillna(method='ffill')
-        self.df_mode2['Qd2_upper'] = self.df_mode2['Qd2_upper'].fillna(method='backfill')
-        self.df_mode2['Qd2_lower'] = self.df_mode2['Qd2_lower'].fillna(method='backfill')
+            self.df_2['Qd1_upper'] = self.df_2['Qd1_upper'].fillna(method='ffill')
+            self.df_2['Qd1_lower'] = self.df_2['Qd1_lower'].fillna(method='ffill')
+            self.df_2['Qd2_upper'] = self.df_2['Qd2_upper'].fillna(method='backfill')
+            self.df_2['Qd2_lower'] = self.df_2['Qd2_lower'].fillna(method='backfill')
 
     def Epsilon(self):
-        if self.df_mode0 is not None:
-            self.df_mode0['Epsilontr1'] = self.df_mode0[' ξtr 1,2 ppmv']
+        if self.df_0 is not None:
+            self.df_0['Epsilontr1'] = self.df_0[' ξtr 1,2 ppmv']
 
-        if self.df_mode1 is not None:
-            self.df_mode1['Epsilontr1'] = self.df_mode1[' ξtr 1,2 ppmv']
+        if self.df_1 is not None:
+            self.df_1['Epsilontr1'] = self.df_1[' ξtr 1,2 ppmv']
 
-        if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Epsilontr1'] = self.df_mode2[' ξtr 1,2 ppmv']
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Epsilontr2'] = self.df_mode2[' ξtr 1,2 ppmv']
-
-        self.df_mode2['Epsilontr1'] = self.df_mode2['Epsilontr1'].fillna(method='ffill')
-        self.df_mode2['Epsilontr2'] = self.df_mode2['Epsilontr2'].fillna(method='backfill')
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Epsilontr1'] = self.df_2[' ξtr 1,2 ppmv']
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Epsilontr2'] = self.df_2[' ξtr 1,2 ppmv']
+            self.df_2['Epsilontr1'] = self.df_2['Epsilontr1'].fillna(method='ffill')
+            self.df_2['Epsilontr2'] = self.df_2['Epsilontr2'].fillna(method='backfill')
 
     def Xitr(self):
-        if self.df_mode0 is not None:
-            self.df_mode0['Xitr1'] = 10000 * self.df_mode0['Xtr %']
+        if self.df_0 is not None:
+            self.df_0['Xitr1'] = 10000 * self.df_0['Xtr %']
 
-        if self.df_mode1 is not None:
-            self.df_mode1['Xitr1'] = 10000 * self.df_mode1['Xtr %']
+        if self.df_1 is not None:
+            self.df_1['Xitr1'] = 10000 * self.df_1['Xtr %']
 
-        if self.df_mode2 is not None:
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Xitr1'] = 10000 * self.df_mode2['Xtr %']
-            self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Xitr2'] = 10000 * self.df_mode2['Xtr %']
-
-        self.df_mode2['Xitr1'] = self.df_mode2['Xitr1'].fillna(method='ffill')
-        self.df_mode2['Xitr2'] = self.df_mode2['Xitr2'].fillna(method='backfill')
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Xitr1'] = 10000 * self.df_2['Xtr %']
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Xitr2'] = 10000 * self.df_2['Xtr %']
+            self.df_2['Xitr1'] = self.df_2['Xitr1'].fillna(method='ffill')
+            self.df_2['Xitr2'] = self.df_2['Xitr2'].fillna(method='backfill')
 
     def Qs(self):
-        self.df_mode0['Qs'] = 0
-        self.df_mode1['Qs'] = self.df_mode1['Qd1_upper'] * (
-                (self.df_mode1['Xitr1'] / self.df_mode1['Epsilontr1']) - 1)
+        if self.df_0 is not None:
+            self.df_0['Qs'] = 0
 
-        self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '1', 'Qs'] = self.df_mode2['Qd1_upper'] * (
-                    ((self.df_mode2['Xitr1'] - self.df_mode2['Xitr2']) / (
-                            self.df_mode2['Epsilontr1'] - self.df_mode2['Epsilontr2'])) - 1)
+        if self.df_1 is not None:
+            self.df_1['Qs'] = self.df_1['Qd1_upper'] * (
+                    (self.df_1['Xitr1'] / self.df_1['Epsilontr1']) - 1)
 
-        self.df_mode2.loc[self.df_mode2['Tracer gas type'] == '2', 'Qs'] = self.df_mode2['Qd2_upper'] * (
-                    ((self.df_mode2['Xitr1'] - self.df_mode2['Xitr2']) / (
-                            self.df_mode2['Epsilontr1'] - self.df_mode2['Epsilontr2'])) - 1)
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Qs'] = self.df_2['Qd1_upper'] * (
+            ((self.df_2['Xitr1'] - self.df_2['Xitr2']) / (
+            self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])) - 1)
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Qs'] = self.df_2['Qd2_upper'] * (
+            ((self.df_2['Xitr1'] - self.df_2['Xitr2']) / (
+            self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])) - 1)
 
-        def Z(self):
-            if self.df_mode0 is not None:
-                self.df_mode0['Z'] = 1
-            if self.df_mode1 is not None:
-                self.df_mode1['Z'] = (10000 * self.df_mode1['Xtr %']) / (
-                        (10000 * self.df_mode1['Xtr %']) - (self.df_mode1[' ξtr 1,2 ppmv']))
-            if self.df_mode2 is not None:
-                if self.df_mode2['Tracer gas type'] == '1':
-                    self.df_mode2['Z'] = 1 + (self.df_mode2['Qd Ar/CO2 upper'] * (self.df_mode2[' ξtr 1,2 ppmv'])
-                                              pass
-                                              elif self.df_mode2['Tracer gas type'] == '2':
-                                              pass
+    def Z(self):
+        if self.df_0 is not None:
+            self.df_0['Z'] = 1
+
+        if self.df_1 is not None:
+            self.df_1['Z'] = self.df_1['Xitr1'] / (self.df_1['Xitr1'] - self.df_1['Epsilontr1'])
+
+        if self.df_2 is not None:
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Z'] = 1 + (((self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])
+            * self.df_2['Qd1_upper'])/ (((self.df_2['Xitr1'] - self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2'] -
+            self.df_2['Epsilontr2'])*self.df_2['Qd2_upper'])))
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Z'] = 1 + (((self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])
+            * self.df_2['Qd2_upper'])/ (((self.df_2['Xitr1'] - self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2'] -
+            self.df_2['Epsilontr2'])*self.df_2['Qd2_upper'])))
+
+        def X_gas():
+            pass
+
+        def X_Xi1_gas():
+            pass
+
+        def X_Epsilon_gas():
+            pass
+
+        def X_Q_gas():
+            pass
+
+        def X_x_gas():
+            pass
+
+        def delta_X_gas():
+            pass
+
+

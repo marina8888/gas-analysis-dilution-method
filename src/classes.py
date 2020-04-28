@@ -1,15 +1,21 @@
 import pandas as pd
 import copy
+import numpy as np
 
 
 # class workbook imports variables as arrays from excel file given an excel starting row number from which data collection begins
 # intialises a list of lists (from a pandas dataframe) and into np arrays that represent each variable
 class Workbook():
-    def __init__(self, workbook_name, start_row_number: int, gas_list: list):
+    def __init__(self, workbook_name, start_row_number: int, gas_list: list, gas_list_percent: list):
         self.df = pd.read_excel(workbook_name, sheet_name='Main')
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number
         self.gas_list = gas_list
+        self.new_gas_list = copy.deepcopy(gas_list)
+        self.gas_list_percent = gas_list_percent
+
+        new_var='CO2'
+        self.new_gas_list.insert(0, new_var)
 
         # add new cols and prepare dataframe with correct headers:
         self.prepare_df()
@@ -45,29 +51,41 @@ class Workbook():
         self.df['upper_eq'] = None
         self.df['lower_eq'] = None
 
-        spike_cols = [col for col in self.df.columns if col.startswith('ppmv')]
-        for gas, col in zip(self.gas_list, self.df[spike_cols]):
-            self.df.rename(columns={'ppmv': 'x_' + gas},inplace=True)
-            print(col)
-        # for gas, col in zip(self.gas_list, self.df.iteritems()):
-        #     # assign through cycling through all columns named 'ppmv' and 'range':
-        #     self.df.rename(columns={'ppmv': 'x_' + gas},inplace=True)
-                # self.df.rename(columns={'ppmv': 'x_' + gas}, inplace=True)
-                # self.df.rename(columns={'range_' + gas}, inplace=True)
-            # values per gas
-            # self.df['x_'+ gas] = None
-            # self.df['X_'+ gas] = None
-            # # self.df['range_'+ gas]= None
-            # self.df['X_Xi1_'+ gas] = None
-            # self.df['X_Xi2_'+ gas] = None
-            # self.df['X_Epsilon1_'+ gas] = None
-            # self.df['X_Epsilon2_'+ gas] = None
-            # self.df['X_Q1_'+ gas] = None
-            # self.df['X_Q2_'+ gas] = None
-            # self.df['X_x_'+ gas] = None
+        dups = self.df.columns.get_loc('ppmv')
+        for gas, index in zip(self.gas_list, np.where(dups == True)[0].tolist()):
+            self.df.columns.values[index] = 'x_' + gas
 
-            #uncertainty term final
-            # self.df['delta_X_'+ gas] = None
+        dups2 = self.df.columns.get_loc('range')
+        for gas, index in zip(self.new_gas_list, np.where(dups2 == True)[0].tolist()):
+            self.df.columns.values[index] = 'range_' + gas
+
+        dups3 = self.df.columns.get_loc('%')
+        for gas, index in zip(self.gas_list_percent, np.where(dups3 == True)[0].tolist()):
+            self.df.columns.values[index] = 'x_' + gas
+
+        dups4 = self.df.columns.get_loc('range %')
+        for gas, index in zip(self.gas_list_percent, np.where(dups4 == True)[0].tolist()):
+            self.df.columns.values[index] = 'range_' + gas
+
+        for gas in self.gas_list:
+            # values per gas
+            self.df['X_'+ gas] = None
+            self.df['X_Xi1_'+ gas] = None
+            self.df['Delta_Xitr1_' + gas] = None
+            self.df['X_Xi2_'+ gas] = None
+            self.df['Delta_Xitr2_' + gas] = None
+            self.df['X_Epsilon1_'+ gas] = None
+            self.df['Delta_Epsilontr1_' + gas] = None
+            self.df['X_Epsilon2_'+ gas] = None
+            self.df['Delta_Epsilontr2_' + gas] = None
+            self.df['X_Q1_'+ gas] = None
+            self.df['Delta_Qd1_' + gas] = None
+            self.df['X_Q2_'+ gas] = None
+            self.df['Delta_Qd2_' + gas] = None
+            self.df['X_x_'+ gas] = None
+
+            # uncertainty term final
+            self.df['delta_X_'+ gas] = None
 
     # splitting df by tracer gas column into mode0 (no gas) mode 1 and 2
     def split_df_mode0(self):
@@ -247,7 +265,22 @@ class Workbook():
                 self.df_2['X_'+gas] = self.df_2['Z']* self.df_2['x_'+ gas]
 
     def X_Xi1_gas(self):
-        pass
+        if self.df_0 is not None:
+            for gas in self.gas_list:
+                self.df_0['X_Xi1_'+ gas] = 0
+                self.df['Delta_Xitr1_' + gas] = 0
+
+        if self.df_1 is not None:
+            for gas in self.gas_list:
+                self.df_1['X_Xi1_'+ gas] = 0
+                self.df['Delta_Xitr1_' + gas] = None
+
+        if self.df_2 is not None:
+            for gas in self.gas_list:
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Xi1'+ gas] = None
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Delta_Xitr1' + gas] = None
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Xi2' + gas] = None
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Delta_Xitr2' + gas] = None
 
     def X_Epsilon_gas(self):
         pass

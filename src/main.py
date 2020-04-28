@@ -6,19 +6,16 @@ import basicvariables
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
 
-#this main () code will only run while the spreadsheet column headers match the code:
+# ensure that all column headers match to code- that they are correct
+# however, change the range columns for H2, O2 to 'range %' !
+
 def main():
     warnings.filterwarnings("ignore")
 
-    # gases = input("please input the gases as a comma seperated list (but not H2 and O2): ")
-    # gas_list=gases.split()
-    # workbook_name = input("please input the filepath of workbook you will be working with today: ")
-    # test = Workbook(workbook_name, 15, gas_list)
+    test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 15,
+                    ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
-    test = Workbook('test1.xlsx', 15,
-                    ['O2', 'N2', 'Air', 'CH4', 'Blah', 'Blah2'])
-    # fill columns for basic/inital values
-    print(test.df.columns.values)
+    #fill columns with basic initial values
     test.Qd()
     test.Epsilon()
     test.Xitr()
@@ -26,7 +23,9 @@ def main():
     test.Z()
     test.upper_eq()
     test.lower_eq()
-    # test.X_gas()
+    print(test.df.columns.values)
+
+    test.X_gas()
     # test.X_Xi1_gas()
     # test.X_Epsilon_gas()
     # test.X_Q_gas():
@@ -34,7 +33,7 @@ def main():
     # test.delta_X_gas():
     # fill columns for gas specific values and uncertainties
 
-    # complete and print
+    # concat and print
     test.concat()
     print(test.df_0['Z'])
     print(test.df_1['Z'])

@@ -14,8 +14,10 @@ class Workbook():
         self.co2_gas_list = copy.deepcopy(gas_list)
         self.gas_list_percent = gas_list_percent
         self.full_gas_list = self.gas_list + self.gas_list_percent
-        self.mfm_uncert = 0.02
+
+        self.tr_gas_uncert = 0.02
         self.ftir_uncert = 0.02
+        self.mfm_uncert = 0.01
 
         new_var = 'CO2'
         self.co2_gas_list.insert(0, new_var)
@@ -259,7 +261,7 @@ class Workbook():
                             ((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper']) - (
                             (self.df_2['Xitr2'] -
                              self.df_2['Epsilontr2']) * self.df_2['Qd2_upper'])))
-#need to add H2 and O2 later
+
     def X_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
@@ -273,13 +275,11 @@ class Workbook():
             for gas in self.full_gas_list:
                 self.df_2['X_' + gas] = self.df_2['Z'] * self.df_2['x_' + gas]
 
-    # need to add H2 and O2 later
     def X_Xi_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
                 self.df_0['X_Xi1_' + gas] = 0
                 self.df_0['Delta_Xitr1_' + gas] = self.df_0['Xitr1'] * self.ftir_uncert
-
 
         if self.df_1 is not None:
             for gas in self.full_gas_list:
@@ -289,23 +289,19 @@ class Workbook():
 
         if self.df_2 is not None:
             for gas in self.full_gas_list:
+                self.df_2['Delta_Xitr1_' + gas] = self.df_2['Xitr1'] * self.tr_gas_uncert
+                self.df_2['Delta_Xitr2_' + gas] = self.df_2['Xitr2'] * self.tr_gas_uncert
+
                 # setting values for tracer gas 1 values for X_Xi and Delta_Xitr
                 self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Xi1_' + gas] = abs((- self.df_2['x_' + gas]
                 * (self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])*(self.df_2['Qd1_upper'])**2)/(((self.df_2['Xitr1']
                 -self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2'] - self.df_2['Epsilontr2'])*
                 self.df_2['Qd2_upper']))**2)
 
-                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Delta_Xitr1_' + gas] = self.df_2['Xitr1'] \
-                * self.ftir_uncert
-
-
-                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Xi2_' + gas] = abs((- self.df_2['x_' + gas]
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Xi2_' + gas] = abs((self.df_2['x_' + gas]
                 * (self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])*(self.df_2['Qd1_upper']*self.df_2['Qd2_upper']))/\
                 (((self.df_2['Xitr1'] - self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2']
                 - self.df_2['Epsilontr2'])* self.df_2['Qd2_upper']))**2)
-
-                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Delta_Xitr2_' + gas] = self.df_2['Xitr2'] \
-                * self.ftir_uncert
 
                 # setting values for tracer gas 2 values for X_Xi and Delta_Xitr
                 self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Xi1_' + gas] = abs((- self.df_2['x_' + gas]
@@ -313,29 +309,107 @@ class Workbook():
                 (((self.df_2['Xitr1'] -self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2'] -
                 self.df_2['Epsilontr2'])*self.df_2['Qd2_upper']))**2)
 
-                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Delta_Xitr1_' + gas] = self.df_2['Xitr1'] \
-                * self.ftir_uncert
-
-
-                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Xi2_' + gas] = abs((- self.df_2['x_' + gas]
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Xi2_' + gas] = abs((self.df_2['x_' + gas]
                 * (self.df_2['Epsilontr1'] - self.df_2['Epsilontr2'])*(self.df_2['Qd1_upper'])**2)/\
                 (((self.df_2['Xitr1'] - self.df_2['Epsilontr1'])*self.df_2['Qd1_upper'])-((self.df_2['Xitr2']
                 - self.df_2['Epsilontr2'])* self.df_2['Qd2_upper']))**2)
 
-                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Delta_Xitr2_' + gas] = self.df_2['Xitr2'] \
-                * self.ftir_uncert
+
+    def X_Epsilon_gas(self):
+        if self.df_0 is not None:
+            for gas in self.full_gas_list:
+                self.df_0['X_Epsilon1_' + gas] = 0
+                self.df_0['Delta_Epsilontr1_' + gas] = self.df_0['range_CO2'] * self.ftir_uncert
+
+        if self.df_1 is not None:
+            for gas in self.full_gas_list:
+                self.df_1['X_Epsilon1_' + gas] = abs(self.df_1['Xitr1'] * self.df_1['x_' + gas] / (
+                self.df_1['Xitr1'] - self.df_1['Epsilontr1'])**2 )
+                self.df_1['Delta_Epsilontr1_' + gas] = self.df_1['range_CO2'] * self.ftir_uncert
+
+        if self.df_2 is not None:
+            for gas in self.full_gas_list:
+                self.df_2['Delta_Epsilontr1_' + gas] = self.df_2['range_CO2']* self.ftir_uncert
+                self.df_2['Delta_Epsilontr2_' + gas] = self.df_2['range_CO2']* self.ftir_uncert
+
+                # setting values for tracer gas 1 values for X_Epsilon and Delta_Epsilontr
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Epsilon1' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd1_upper']*((self.df_2['Xitr1'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Epsilon2' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd1_upper']*(-(self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                # setting values for tracer gas 2 values for X_Epsilon and Delta_Epsilontr
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Epsilon1' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd2_upper']*((self.df_2['Xitr1'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Epsilon2' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd2_upper']*(-(self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
 
 
-                print(self.df_2['X_Xi1_'+ gas])
-                print(self.df_2['Delta_Xitr1_' + gas])
-                print(self.df_2['X_Xi2_'+ gas])
-                print(self.df_2['Delta_Xitr2_' + gas])
-    # def X_Epsilon_gas(self):
-    #     pass
-    #
-    # def X_Q_gas(self):
-    #     pass
-    #
+
+    def X_Q_gas(self):
+        if self.df_0 is not None:
+            for gas in self.full_gas_list:
+                self.df_0['X_Q1_' + gas] = 0
+                self.df_0['Delta_Qd1_' + gas] = 0
+
+        if self.df_1 is not None:
+            for gas in self.full_gas_list:
+                self.df_1['X_Q1_' + gas] = 0
+                self.df_1['Delta_Qd1_' + gas] = 0
+
+        if self.df_2 is not None:
+            for gas in self.full_gas_list:
+                self.df_2['Delta_Qd1_' + gas] = self.df_2['Q1_upper']* self.mfm_uncert
+                self.df_2['Delta_Qd2_' + gas] = self.df_2['Q2_upper']* self.mfm_uncert
+
+                # setting values for tracer gas 1 values for X_Epsilon and Delta_Epsilontr
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Q1_' + gas] = \
+                abs((-self.df_2['x_' + gas] * self.df_2['Qd2_upper']*(self.df_2['Epsilontr1'] - self.df_2['Epsilontr2']) *
+                (self.df_2['Xitr2'] - self.df_2['Epsilontr2'])) / \
+                (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper'])
+                - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_Q2_' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd1_upper']*(self.df_2['Epsilontr1'] - self.df_2['Epsilontr2']) *
+                (self.df_2['Xitr2'] - self.df_2['Epsilontr2'])) / \
+                (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper'])
+                - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                # setting values for tracer gas 2 values for X_Epsilon and Delta_Epsilontr
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Q1_' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd2_upper']*((self.df_2['Xitr1'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_Q1_' + gas] = \
+                abs((self.df_2['x_' + gas] * self.df_2['Qd2_upper']*(-(self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd2_upper'])) / (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) *
+                self.df_2['Qd1_upper']) - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper'])) ** 2)
     # def X_x_gas(self):
     #     pass
     #

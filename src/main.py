@@ -23,14 +23,12 @@ def main():
 
     test.Qs()
     test.Z()
-
     test.upper_eq()
     test.lower_eq()
-    test.X_Xi_gas()
 
-    # test.X_Xi1_gas()
-    # test.X_Epsilon_gas()
-    # test.X_Q_gas():
+    test.X_Xi_gas()
+    test.X_Epsilon_gas()
+    test.X_Q_gas()
     # test.X_x_gas():
     # test.delta_X_gas():
     # fill columns for gas specific values and uncertainties

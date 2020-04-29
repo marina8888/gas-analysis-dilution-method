@@ -19,13 +19,15 @@ def main():
     test.Qd()
     test.Epsilon()
     test.Xitr()
+    test.X_gas()
+
     test.Qs()
     test.Z()
+
     test.upper_eq()
     test.lower_eq()
-    print(test.df.columns.values)
+    test.X_Xi_gas()
 
-    test.X_gas()
     # test.X_Xi1_gas()
     # test.X_Epsilon_gas()
     # test.X_Q_gas():

@@ -410,8 +410,23 @@ class Workbook():
                 (((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper'])
                 - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
                 self.df_2['Qd2_upper'])) ** 2)
-    # def X_x_gas(self):
-    #     pass
-    #
-    # def delta_X_gas(self):
-    #     pass
+
+    def X_x_gas(self):
+        if self.df_0 is not None:
+            for gas in self.full_gas_list:
+                self.df_0['X_Q1_' + gas] = 0
+                self.df_0['Delta_Qd1_' + gas] = 0
+
+        if self.df_1 is not None:
+            for gas in self.full_gas_list:
+                self.df_1['X_Q1_' + gas] = 0
+                self.df_1['Delta_Qd1_' + gas] = 0
+
+    def delta_X_gas(self):
+        if self.df_0 is not None:
+            for gas in self.full_gas_list:
+                self.df_0['delta_X_' + gas] = 0
+
+        if self.df_1 is not None:
+            for gas in self.full_gas_list:
+                self.df_1['delta_X_' + gas] = 0

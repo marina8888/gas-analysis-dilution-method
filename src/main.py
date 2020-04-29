@@ -28,18 +28,17 @@ def main():
 
     test.X_Xi_gas()
     test.X_Epsilon_gas()
-    test.X_Q_gas()
+    # test.X_Q_gas()
     # test.X_x_gas():
     # test.delta_X_gas():
     # fill columns for gas specific values and uncertainties
 
     # concat and print
     test.concat()
-    print(test.df_0['Z'])
-    print(test.df_1['Z'])
-    print(test.df_2['Z'])
-    print(test.df['Z'])
-
+    print(test.df_0['X_Xi1_O2'])
+    print(test.df_1['X_Xi1_O2'])
+    print(test.df_2['X_Xi1_O2'])
+    print(test.df['X_Xi1_O2'])
     # graphs
 
 

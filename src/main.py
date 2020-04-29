@@ -19,10 +19,10 @@ def main():
     test.Qd()
     test.Epsilon()
     test.Xitr()
+    test.Z()
     test.X_gas()
 
     test.Qs()
-    test.Z()
     test.upper_eq()
     test.lower_eq()
 
@@ -35,9 +35,7 @@ def main():
 
     # concat and print
     test.concat()
-    this_gas_list = ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2']
-    for gas in this_gas_list:
-        print(test.df['X_' + gas], test.df['X_Xi1_' + gas], test.df['Delta_Xitr1_' + gas],test.df['delta_x_' + gas])
+    test.print_df_uncert()
 
     # graphs
 

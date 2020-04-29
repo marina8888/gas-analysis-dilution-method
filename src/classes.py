@@ -17,7 +17,7 @@ class Workbook():
 
         self.tr_gas_uncert = 0.02
         self.ftir_uncert = 0.02
-        self.mfm_uncert = 0.01
+        self.mfm_uncert = 0.02
 
         new_var = 'CO2'
         self.co2_gas_list.insert(0, new_var)
@@ -88,6 +88,7 @@ class Workbook():
             self.df['X_Q2_' + gas] = None
             self.df['Delta_Qd2_' + gas] = None
             self.df['X_x_' + gas] = None
+            self.df['delta_x_' + gas] = None
 
             # uncertainty term final
             self.df['delta_X_' + gas] = None
@@ -414,19 +415,53 @@ class Workbook():
     def X_x_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
-                self.df_0['X_Q1_' + gas] = 0
-                self.df_0['Delta_Qd1_' + gas] = 0
+                self.df_0['X_x_' + gas] = 0
+                self.df_0['delta_x_' + gas] = 0
 
         if self.df_1 is not None:
             for gas in self.full_gas_list:
-                self.df_1['X_Q1_' + gas] = 0
-                self.df_1['Delta_Qd1_' + gas] = 0
+                self.df_1['X_x_' + gas] = 0
+                self.df_1['delta_x_' + gas] = self.mfm_uncert* self.df_1['range_' + gas]
+
+        if self.df_2 is not None:
+            for gas in self.full_gas_list:
+                self.df_2['delta_x_' + gas] = self.mfm_uncert* self.df_2['range_' + gas]
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'X_x_' + gas] = \
+                abs(1+((self.df_2['Qd1_upper']*(self.df_2['Epsilontr1'] - self.df_2['Epsilontr2']))
+                /(((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper'])
+                - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper']))))
+
+                self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'X_x_' + gas] = \
+                abs(1+((self.df_2['Qd2_upper']*(self.df_2['Epsilontr1'] - self.df_2['Epsilontr2']))
+                /(((self.df_2['Xitr1'] - self.df_2['Epsilontr1']) * self.df_2['Qd1_upper'])
+                - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
+                self.df_2['Qd2_upper']))))
 
     def delta_X_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
                 self.df_0['delta_X_' + gas] = 0
 
+        # if self.df_1 is not None:
+        #     for gas in self.full_gas_list:
+        #         self.df_1['delta_X_' + gas] = np.sqrt(((self.df_1['X_Xi1_' + gas]*self.df_1['Delta_Xitr1_' + gas])**2)
+        #         + ((self.df_1['X_Epsilon1_' + gas]*self.df_1['Delta_Epsilontr1_' + gas])**2) +
+        #         ((self.df_1['delta_x_' + gas] * self.df_1['X_x_' + gas])**2))
+
         if self.df_1 is not None:
             for gas in self.full_gas_list:
-                self.df_1['delta_X_' + gas] = 0
+                self.df_1['delta_X_' + gas] = (((self.df_1['X_Xi1_' + gas]*self.df_1['Delta_Xitr1_' + gas])**2)
+                + ((self.df_1['X_Epsilon1_' + gas]*self.df_1['Delta_Epsilontr1_' + gas])**2) +
+                ((self.df_1['delta_x_' + gas] * self.df_1['X_x_' + gas])**2))**0.5
+
+        if self.df_2 is not None:
+            for gas in self.full_gas_list:
+                self.df_2['delta_X_' + gas] = ((((self.df_2['X_Xi1_' + gas]*self.df_2['Delta_Xitr1_' + gas])**2)
+                + ((self.df_2['X_Xi2_' + gas] * self.df_2['Delta_Xitr2_' + gas])** 2)
+                + ((self.df_2['X_Epsilon1_' + gas]*self.df_2['Delta_Epsilontr1_' + gas])**2)
+                + ((self.df_2['X_Epsilon2_' + gas]*self.df_2['Delta_Epsilontr2_' + gas])**2)
+                + ((self.df_2['X_Q1_' + gas]*self.df_2['Delta_Qd1_' + gas])**2)
+                + ((self.df_2['X_Q2_' + gas]*self.df_2['Delta_Qd2_' + gas])**2)
+                + ((self.df_2['delta_x_' + gas] * self.df_2['X_x_' + gas])**2))**0.5)

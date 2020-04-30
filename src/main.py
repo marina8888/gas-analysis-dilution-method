@@ -14,13 +14,16 @@ def main():
 
     test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 15,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test2 = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test2.xlsx', 18,
+                    ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
     workbookfuncs.create_workbook(test)
-
+    workbookfuncs.create_workbook(test2)
     # graphs
     # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
     # graphfuncs.plot_all('O2', test, 'blah%')
-    graphfuncs.plot_by_mode('O2', test, 'blah%')
+    # graphfuncs.plot_by_mode('O2', test, 'blah%')
+    graphfuncs.create_plot_multiple(test.full_gas_list, test, 'blah%', test2)
 
 if __name__ == "__main__":
     main()

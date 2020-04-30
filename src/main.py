@@ -24,8 +24,7 @@ def main():
 
 
     test.Qs()
-    test.upper_eq()
-    test.lower_eq()
+    test.eq()
 
     #fill uncertainty columns
     test.X_Xi_gas()
@@ -39,7 +38,7 @@ def main():
     # test.print_df_uncert()
 
     # graphs
-    graphfuncs.plot_eq_gas('O2', test, '100%')
+    graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
 
 
 if __name__ == "__main__":

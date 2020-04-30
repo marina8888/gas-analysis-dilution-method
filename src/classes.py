@@ -55,6 +55,8 @@ class Workbook():
         self.df['Z'] = None
         self.df['upper_eq'] = None
         self.df['lower_eq'] = None
+        self.df['mean_eq'] = None
+        self.df['error_eq'] = None
 
         dups = self.df.columns.get_loc('ppmv')
         for gas, index in zip(self.gas_list, np.where(dups == True)[0].tolist()):
@@ -137,12 +139,12 @@ class Workbook():
             last_tgt = this_tgt
         return df_2
 
-    def lists_to_array(self, datatype, col_name: str):
-        col_location = self.df.columns.get_loc(col_name)
-        new_df = self.df.T
+    @staticmethod
+    def lists_to_array(dataframe: pd.DataFrame, datatype, col_name):
+        col_location = dataframe.columns.get_loc(col_name)
+        new_df = dataframe.T
         new_df = new_df.values.tolist()
         list = (new_df[col_location])
-        print(list)
         for i in range(0, len(list)):
             list[i] = datatype(list[i])
         return list
@@ -156,6 +158,11 @@ class Workbook():
             print(self.df['X_Q2_' + gas], self.df['Delta_Qd2_' + gas], self.df['X_x_' + gas])
             print(self.df['delta_X_' + gas])
 
+    @staticmethod
+    def sort_two_lists(x_list: list, y_list: list):
+        x_list, y_list = [list(x) for x in zip(*sorted(zip(x_list, y_list), key=lambda pair: pair[0]))]
+        return (x_list, y_list)
+
     def concat(self):
         self.df_0 = self.df_0.reset_index(drop=True)
         self.df_1 = self.df_1.reset_index(drop=True)
@@ -165,27 +172,30 @@ class Workbook():
         self.df = self.df.reset_index(drop=True)
 
     # below are methods for calculating values in all three dataframes- basic variables for plotting or uncertainty calcs
-    def upper_eq(self):
+    def eq(self):
         if self.df_0 is not None:
             self.df_0['upper_eq'] = (4.76 / (self.df_0.iloc[:, 32])) * ((2 * self.df_0.iloc[:, 33])
                                                                         + (0.75 * self.df_0.iloc[:, 35]))
+            self.df_0['lower_eq'] = (4.76 / (self.df_0.iloc[:, 31])) * ((2 * self.df_0.iloc[:, 34])
+                                                                        + (0.75 * self.df_0.iloc[:, 36]))
+            self.df_0['mean_eq'] = (self.df_0['lower_eq'] + self.df_0['upper_eq'])/2
+            self.df_0['error_eq'] = (self.df_0['upper_eq'] - self.df_0['lower_eq'])/2
+
         if self.df_1 is not None:
             self.df_1['upper_eq'] = (4.76 / (self.df_1.iloc[:, 32])) * ((2 * self.df_1.iloc[:, 33])
                                                                         + (0.75 * self.df_1.iloc[:, 35]))
+            self.df_1['lower_eq'] = (4.76 / (self.df_1.iloc[:, 31])) * ((2 * self.df_1.iloc[:, 34])
+                                                                        + (0.75 * self.df_1.iloc[:, 36]))
+            self.df_1['mean_eq'] = (self.df_1['lower_eq'] + self.df_1['upper_eq']) / 2
+            self.df_1['error_eq'] = (self.df_1['upper_eq'] - self.df_1['lower_eq'])/2
+
         if self.df_2 is not None:
             self.df_2['upper_eq'] = (4.76 / (self.df_2.iloc[:, 32])) * ((2 * self.df_2.iloc[:, 33])
                                                                         + (0.75 * self.df_2.iloc[:, 35]))
-
-    def lower_eq(self):
-        if self.df_0 is not None:
-            self.df_0['lower_eq'] = (4.76 / (self.df_0.iloc[:, 31])) * ((2 * self.df_0.iloc[:, 34])
-                                                                        + (0.75 * self.df_0.iloc[:, 36]))
-        if self.df_1 is not None:
-            self.df_1['lower_eq'] = (4.76 / (self.df_1.iloc[:, 31])) * ((2 * self.df_1.iloc[:, 34])
-                                                                        + (0.75 * self.df_1.iloc[:, 36]))
-        if self.df_2 is not None:
             self.df_2['lower_eq'] = (4.76 / (self.df_2.iloc[:, 31])) * ((2 * self.df_2.iloc[:, 34])
                                                                         + (0.75 * self.df_2.iloc[:, 36]))
+            self.df_2['mean_eq'] = (self.df_2['lower_eq'] + self.df_2['upper_eq']) / 2
+            self.df_2['error_eq'] = (self.df_2['upper_eq'] - self.df_2['lower_eq']) / 2
 
     def Qd(self):
 

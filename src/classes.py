@@ -137,10 +137,12 @@ class Workbook():
             last_tgt = this_tgt
         return df_2
 
-    def lists_to_array(self, datatype, col_num: int):
-        self.df = self.df.T
-        self.df = self.df.values.tolist()
-        list = (self.df[col_num])
+    def lists_to_array(self, datatype, col_name: str):
+        col_location = self.df.columns.get_loc(col_name)
+        new_df = self.df.T
+        new_df = new_df.values.tolist()
+        list = (new_df[col_location])
+        print(list)
         for i in range(0, len(list)):
             list[i] = datatype(list[i])
         return list

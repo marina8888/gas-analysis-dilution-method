@@ -421,6 +421,7 @@ class Workbook():
                 - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
                 self.df_2['Qd2_upper'])) ** 2)
 
+
     def X_x_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
@@ -448,16 +449,11 @@ class Workbook():
                 - ((self.df_2['Xitr2'] - self.df_2['Epsilontr2']) *
                 self.df_2['Qd2_upper']))))
 
+
     def delta_X_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
                 self.df_0['delta_X_' + gas] = 0
-
-        # if self.df_1 is not None:
-        #     for gas in self.full_gas_list:
-        #         self.df_1['delta_X_' + gas] = np.sqrt(((self.df_1['X_Xi1_' + gas]*self.df_1['Delta_Xitr1_' + gas])**2)
-        #         + ((self.df_1['X_Epsilon1_' + gas]*self.df_1['Delta_Epsilontr1_' + gas])**2) +
-        #         ((self.df_1['delta_x_' + gas] * self.df_1['X_x_' + gas])**2))
 
         if self.df_1 is not None:
             for gas in self.full_gas_list:

@@ -1,7 +1,7 @@
 #before running this code pip install pandas, matplotlib and numpy libraries to your environment:
 import pandas as pd
 from classes import Workbook
-import basicvariables
+import graphfuncs
 
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
@@ -22,22 +22,24 @@ def main():
     test.Z()
     test.X_gas()
 
+
     test.Qs()
     test.upper_eq()
     test.lower_eq()
 
+    #fill uncertainty columns
     test.X_Xi_gas()
     test.X_Epsilon_gas()
     test.X_Q_gas()
     test.X_x_gas()
     test.delta_X_gas()
-    # fill columns for gas specific values and uncertainties
 
     # concat and print
     test.concat()
-    test.print_df_uncert()
+    # test.print_df_uncert()
 
     # graphs
+    graphfuncs.plot_eq_gas('O2', test, '100%')
 
 
 if __name__ == "__main__":

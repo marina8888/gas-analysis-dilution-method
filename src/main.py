@@ -1,7 +1,7 @@
 #before running this code pip install pandas, matplotlib and numpy libraries to your environment:
-import pandas as pd
 from classes import Workbook
 import graphfuncs
+import workbookfuncs
 
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
@@ -15,31 +15,12 @@ def main():
     test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 15,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
-    #fill columns with basic initial values
-    test.Qd()
-    test.Epsilon()
-    test.Xitr()
-    test.Z()
-    test.X_gas()
-
-
-    test.Qs()
-    test.eq()
-
-    #fill uncertainty columns
-    test.X_Xi_gas()
-    test.X_Epsilon_gas()
-    test.X_Q_gas()
-    test.X_x_gas()
-    test.delta_X_gas()
-
-    # concat and print
-    test.concat()
-    # test.print_df_uncert()
+    workbookfuncs.create_workbook(test)
 
     # graphs
-    graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
-
+    # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
+    # graphfuncs.plot_all('O2', test, 'blah%')
+    graphfuncs.plot_by_mode('O2', test, 'blah%')
 
 if __name__ == "__main__":
     main()

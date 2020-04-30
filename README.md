@@ -6,7 +6,7 @@ Often, the equipment used for product gas analysis has a limited measurement ran
 Equations and parameters are labelled and defined in Hayakawa et. al, 2020. 
 
 ### Notes
-Recently, the project has been moved from VBA to Python as the base language - using Pandas for data manipulation. The Woorkbook class will split the sheet based on number of dilution gases used and perform the relevant calculations. 
+Recently, the project has been moved from VBA to Python as the base language - using Pandas for data manipulation. The Woorkbook class will create three dataframes based on number of dilution gases used and perform the relevant calculations. 
 
 ### Functions
 These files perform calculations, given an excel spreadsheet of results:

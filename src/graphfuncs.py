@@ -56,7 +56,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0,
         y1_val = Workbook.lists_to_array(instance.df_1, float, 'X_' + gas)
         x1_error = Workbook.lists_to_array(instance.df_1, float, 'error_eq')
         y1_error = Workbook.lists_to_array(instance.df_1, float, 'delta_X_' + gas)
-        plt.errorbar(x1_val, y1_val, yerr=y1_error, fmt='none', color='darkgrey' if colour==0 else colour, zorder=8, figure=fig,  elinewidth=1)
+        # plt.errorbar(x1_val, y1_val, yerr=y1_error, fmt='none', color='darkgrey' if colour==0 else colour, zorder=8, figure=fig,  elinewidth=1)
 
         x2_val = Workbook.lists_to_array(instance.df_2, float, 'mean_eq')
         y2_val = Workbook.lists_to_array(instance.df_2, float, 'X_' + gas)
@@ -72,8 +72,8 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0,
         n_y2_val = local_dataframe['n_y2_val'].to_list()
 
         # CONCAT
-        n_x_val = x0_val + n_x2_val +x1_val
-        n_y_val = y0_val + n_y2_val +x1_val
+        n_x_val = x0_val + n_x2_val
+        n_y_val = y0_val + n_y2_val
 
         # SORT IT 😜
         tuples = list(zip(n_x_val, n_y_val))
@@ -82,7 +82,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0,
         n_y_val = [tup[1] for tup in tuples]
 
         # Polyfit trend
-        trend = np.polyfit(n_x_val, n_y_val, 32)
+        trend = np.polyfit(n_x_val, n_y_val, 16)
         trendpoly = np.poly1d(trend)
 
         # add axies names and details
@@ -101,7 +101,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0,
         if colour==0:
                 plt.plot(n_x_val, trendpoly(n_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='gray' if colour==0 else colour, zorder=9, figure=fig)
         plt.scatter(x0_val, y0_val,color='blue'if colour==0 else colour, zorder=10, s=20, label='no dilution gas'if i==0 else legend, figure=fig)
-        plt.scatter(x1_val, y1_val,color='green' if colour==0 else colour, zorder=10, s=20, label='single dilution gas'if i==0 else "", figure=fig)
+        # plt.scatter(x1_val, y1_val,color='green' if colour==0 else colour, zorder=10, s=20, label='single dilution gas'if i==0 else "", figure=fig)
         plt.scatter(x2_val, y2_val,color='orange'if colour==0 else colour, zorder=10, s=20, label='two dilution gases' if i==0 else "", figure=fig)
         plt.legend()
         return fig

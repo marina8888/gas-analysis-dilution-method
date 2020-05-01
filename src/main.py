@@ -12,19 +12,17 @@ import warnings
 def main():
     warnings.filterwarnings("ignore")
 
-    test1 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook345final(23012020)new.xlsx', 15,
+    test2 = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 9,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    test2 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20ERESULTSbook21final(09042020).xlsx', 24,
+    test1 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/100RESULTSbook18final(06042020).xlsx', 9,
                      ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    test3 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20RESULTSbook9final(05022020).xlsx', 15,
-                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    # test3 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook12final(04022020).xlsx', 15,
+    #                  ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     workbookfuncs.create_workbook(test1)
-    workbookfuncs.create_workbook(test2)
-    workbookfuncs.create_workbook(test3)
-
+    # workbookfuncs.create_workbook(test3)
     # test.df.to_csv('../excel/image_plots/out.csv')
 
-    graphfuncs.create_plot_multiple(test1.full_gas_list, test1, '30%')
+    graphfuncs.create_plot_multiple(test2.full_gas_list, test1, '100%')
 
 if __name__ == "__main__":
     main()

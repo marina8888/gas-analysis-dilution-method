@@ -25,11 +25,9 @@ class Workbook():
         # add new cols and prepare dataframe with correct headers:
         self.prepare_df()
         self.init_cols()
-
         self.df_0 = self.split_df_mode0()
         self.df_1 = self.split_df_mode1()
         self.df_2 = self.split_df_mode2()
-
     def prepare_df(self):
         # cut sheet for relevant data only
         self.df = self.df.iloc[self.start_row_number - 3:]
@@ -222,14 +220,14 @@ class Workbook():
 
     def Epsilon(self):
         if self.df_0 is not None:
-            self.df_0['Epsilontr1'] = self.df_0[' ξtr 1,2 ppmv']
+            self.df_0['Epsilontr1'] = self.df_0['Eps']
 
         if self.df_1 is not None:
-            self.df_1['Epsilontr1'] = self.df_1[' ξtr 1,2 ppmv']
+            self.df_1['Epsilontr1'] = self.df_1['Eps']
 
         if self.df_2 is not None:
-            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Epsilontr1'] = self.df_2[' ξtr 1,2 ppmv']
-            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Epsilontr2'] = self.df_2[' ξtr 1,2 ppmv']
+            self.df_2.loc[self.df_2['Tracer gas type'] == '1', 'Epsilontr1'] = self.df_2['Eps']
+            self.df_2.loc[self.df_2['Tracer gas type'] == '2', 'Epsilontr2'] = self.df_2['Eps']
             self.df_2['Epsilontr1'] = self.df_2['Epsilontr1'].fillna(method='ffill')
             self.df_2['Epsilontr2'] = self.df_2['Epsilontr2'].fillna(method='backfill')
 

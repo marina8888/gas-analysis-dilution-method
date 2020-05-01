@@ -12,10 +12,10 @@ import warnings
 def main():
     warnings.filterwarnings("ignore")
 
-    test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 4,
+    test = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/Final Results/10RESULTSBook22final(11042020).xlsx', 24,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    test2 = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test2.xlsx', 18,
-                    ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test2 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/Final Results/10RESULTSbook10(06022020).xlsx', 15,
+                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
     workbookfuncs.create_workbook(test)
     workbookfuncs.create_workbook(test2)
@@ -24,7 +24,7 @@ def main():
     # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
     # graphfuncs.plot_all('O2', test, 'blah%')
     # graphfuncs.plot_by_mode('O2', test, 'blah%')
-    graphfuncs.create_plot(test.full_gas_list, test, 'blah%')
+    graphfuncs.create_plot_multiple(test.full_gas_list, test, '10%', test2)
 
 if __name__ == "__main__":
     main()

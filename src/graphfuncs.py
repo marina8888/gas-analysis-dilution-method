@@ -13,7 +13,7 @@ def plot_simple(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         y_val = Workbook.lists_to_array(instance.df, float,'X_'+gas)
         x_error = Workbook.lists_to_array(instance.df, float, 'error_eq')
         y_error = Workbook.lists_to_array(instance.df, float, 'delta_X_'+gas)
-        plt.errorbar(x_val, y_val, yerr=y_error, fmt='none', zorder=9, figure=fig)
+        plt.errorbar(x_val, y_val, yerr=y_error, fmt='none', zorder=9, color= 'darkgrey', figure=fig, elinewidth=1)
         # sort them so that polyfit gives correct result
         (x_val, y_val) = Workbook.sort_two_lists(x_val, y_val)
 
@@ -47,26 +47,27 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         y0_val = Workbook.lists_to_array(instance.df_0, float, 'X_' + gas)
         x0_error = Workbook.lists_to_array(instance.df_0, float, 'error_eq')
         y0_error = Workbook.lists_to_array(instance.df_0, float, 'delta_X_' + gas)
-        plt.errorbar(x0_val, y0_val, yerr=y0_error, fmt='none', color='blue', zorder=8, figure=fig)
+        plt.errorbar(x0_val, y0_val, yerr=y0_error, fmt='none', color='darkgrey', zorder=8, figure=fig, elinewidth=1)
 
         x1_val = Workbook.lists_to_array(instance.df_1, float, 'mean_eq')
         y1_val = Workbook.lists_to_array(instance.df_1, float, 'X_' + gas)
         x1_error = Workbook.lists_to_array(instance.df_1, float, 'error_eq')
         y1_error = Workbook.lists_to_array(instance.df_1, float, 'delta_X_' + gas)
-        plt.errorbar(x1_val, y1_val, yerr=y1_error, fmt='none', color='green', zorder=8, figure=fig)
+        plt.errorbar(x1_val, y1_val, yerr=y1_error, fmt='none', color='darkgrey', zorder=8, figure=fig,  elinewidth=1)
 
         x2_val = Workbook.lists_to_array(instance.df_2, float, 'mean_eq')
         y2_val = Workbook.lists_to_array(instance.df_2, float, 'X_' + gas)
         x2_error = Workbook.lists_to_array(instance.df_2, float, 'error_eq')
         y2_error = Workbook.lists_to_array(instance.df_2, float, 'delta_X_' + gas)
-        plt.errorbar(x2_val, y2_val, yerr=y2_error, fmt='none', color='orange', zorder=8, figure=fig)
+        plt.errorbar(x2_val, y2_val, yerr=y2_error, fmt='none', color='darkgrey', zorder=8, figure=fig,  elinewidth=1)
 
         x_val=x0_val+x1_val+x2_val
         y_val=y0_val+y1_val+y2_val
 
         # sort them so that polyfit gives correct result
         (x_val, y_val) = Workbook.sort_two_lists(x_val, y_val)
-
+        print(x_val)
+        print(y_val)
         # create line of best fit and error bars
         trend = np.polyfit(x_val, y_val, 6)
         trendpoly = np.poly1d(trend)

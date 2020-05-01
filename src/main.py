@@ -12,7 +12,7 @@ import warnings
 def main():
     warnings.filterwarnings("ignore")
 
-    test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 15,
+    test = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test1.xlsx', 4,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     test2 = Workbook('/Users/marina/Developer/GitHub/gas-analysis-dilution-method/excel/test2.xlsx', 18,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
@@ -24,7 +24,7 @@ def main():
     # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
     # graphfuncs.plot_all('O2', test, 'blah%')
     # graphfuncs.plot_by_mode('O2', test, 'blah%')
-    graphfuncs.create_plot_multiple(test.full_gas_list, test, 'blah%', test2)
+    graphfuncs.create_plot(test.full_gas_list, test, 'blah%')
 
 if __name__ == "__main__":
     main()

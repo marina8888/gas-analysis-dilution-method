@@ -436,12 +436,13 @@ class Workbook():
     def X_x_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
-                self.df_0['X_x_' + gas] = 0
-                self.df_0['delta_x_' + gas] = 0
+                self.df_0['X_x_' + gas] = 1
+                self.df_0['delta_x_' + gas] = self.mfm_uncert* self.df_0['range_' + gas]
 
         if self.df_1 is not None:
             for gas in self.full_gas_list:
-                self.df_1['X_x_' + gas] = 0
+                self.df_1['X_x_' + gas] = abs(self.df_1['Xitr1'] / (
+                self.df_1['Xitr1'] - self.df_1['Epsilontr1']))
                 self.df_1['delta_x_' + gas] = self.mfm_uncert* self.df_1['range_' + gas]
 
         if self.df_2 is not None:
@@ -464,7 +465,9 @@ class Workbook():
     def delta_X_gas(self):
         if self.df_0 is not None:
             for gas in self.full_gas_list:
-                self.df_0['delta_X_' + gas] = 0
+                self.df_0['delta_X_' + gas] = (((self.df_0['X_Xi1_' + gas]*self.df_0['Delta_Xitr1_' + gas])**2)
+                + ((self.df_0['X_Epsilon1_' + gas]*self.df_0['Delta_Epsilontr1_' + gas])**2) +
+                ((self.df_0['delta_x_' + gas] * self.df_0['X_x_' + gas])**2))**0.5
 
         if self.df_1 is not None:
             for gas in self.full_gas_list:

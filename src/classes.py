@@ -150,8 +150,7 @@ class Workbook():
         return list
 
     def print_df_uncert(self):
-        set_gas_list = ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'H2', 'O2']
-        for gas in set_gas_list:
+        for gas in self.full_gas_list:
             print(self.df['X_' + gas], self.df['X_Xi1_' + gas], self.df['Delta_Xitr1_' + gas], self.df['X_Xi2_' + gas])
             print(self.df['Delta_Xitr2_' + gas], self.df['X_Epsilon1_' + gas], self.df['Delta_Epsilontr1_' + gas], self.df['X_Epsilon2_' + gas])
             print(self.df['Delta_Epsilontr2_' + gas], self.df['X_Q1_' + gas], self.df['Delta_Qd1_' + gas])

@@ -12,19 +12,19 @@ import warnings
 def main():
     warnings.filterwarnings("ignore")
 
-    test = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/Final Results/10RESULTSBook22final(11042020).xlsx', 24,
+    test1 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook345final(23012020)new.xlsx', 15,
                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    test2 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/Final Results/10RESULTSbook10(06022020).xlsx', 15,
+    test2 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20ERESULTSbook21final(09042020).xlsx', 24,
                      ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-
-    workbookfuncs.create_workbook(test)
+    test3 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20RESULTSbook9final(05022020).xlsx', 15,
+                     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    workbookfuncs.create_workbook(test1)
     workbookfuncs.create_workbook(test2)
-    test.df.to_csv('../excel/image_plots/out.csv')
-    # graphs
-    # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
-    # graphfuncs.plot_all('O2', test, 'blah%')
-    # graphfuncs.plot_by_mode('O2', test, 'blah%')
-    graphfuncs.create_plot_multiple(test.full_gas_list, test, '10%', test2)
+    workbookfuncs.create_workbook(test3)
+
+    # test.df.to_csv('../excel/image_plots/out.csv')
+
+    graphfuncs.create_plot_multiple(test1.full_gas_list, test1, '30%')
 
 if __name__ == "__main__":
     main()

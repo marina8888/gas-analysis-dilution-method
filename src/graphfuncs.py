@@ -41,7 +41,7 @@ def plot_simple(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0):
         plt.legend()
         return fig
 
-def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0):
+def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0,legend=0):
         if fig==0:
                 fig = plt.figure(figsize=(6.5, 6))
 
@@ -63,25 +63,28 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0)
         x2_error = Workbook.lists_to_array(instance.df_2, float, 'error_eq')
         y2_error = Workbook.lists_to_array(instance.df_2, float, 'delta_X_' + gas)
         plt.errorbar(x2_val, y2_val, yerr=y2_error, fmt='none', color='darkgrey' if colour==0 else colour, zorder=8, figure=fig,  elinewidth=1)
-        #prepare line of best fit by grouping dilution gas pairs in df2
-        local_dataframe= pd.DataFrame({'n_x2_val': x2_val, 'n_y2_val': y2_val}).copy(deep=True)
-        # local_dataframe=local_dataframe.groupby(np.ceil(local_dataframe['x2_val'] * 1000) // 1000).mean()
-        local_dataframe = local_dataframe.groupby(local_dataframe['n_x2_val'].round(2)).mean()
-        n_x2_val=local_dataframe['n_x2_val'].to_list()
-        n_y2_val=local_dataframe['n_y2_val'].to_list()
-        n_x_val=x0_val+x1_val+n_x2_val
-        n_y_val=y0_val+y1_val+n_y2_val
+                #prepare line of best fit by grouping dilution gas pairs in df2
 
-        print(n_x_val)
-        print(n_y_val)
+        local_dataframe = pd.DataFrame({'n_x2_val': x2_val, 'n_y2_val': y2_val}).copy(deep=True)
+        local_dataframe['n_x2_val'] = local_dataframe['n_x2_val'].round(2)
+        local_dataframe = local_dataframe.groupby('n_x2_val').mean()
+        n_x2_val = local_dataframe.index.to_list()
+        n_y2_val = local_dataframe['n_y2_val'].to_list()
 
-        print(x2_val)
-        print(y2_val)
-        # sort them so that polyfit gives correct result
-        (n_x_val, n_y_val) = Workbook.sort_two_lists(n_x_val, n_y_val)
-        # create line of best fit and error bars
-        trend = np.polyfit(n_x_val, n_y_val, 7)
+        # CONCAT
+        n_x_val = x0_val + n_x2_val +x1_val
+        n_y_val = y0_val + n_y2_val +x1_val
+
+        # SORT IT 😜
+        tuples = list(zip(n_x_val, n_y_val))
+        tuples = sorted(tuples, key=lambda tup: tup[0])
+        n_x_val = [tup[0] for tup in tuples]
+        n_y_val = [tup[1] for tup in tuples]
+
+        # Polyfit trend
+        trend = np.polyfit(n_x_val, n_y_val, 32)
         trendpoly = np.poly1d(trend)
+
         # add axies names and details
         plt.title(gas + ', '+ heat_ratio + ' Heat Ratio', pad=15, figure=fig)
         plt.xlabel('equivalence ratio', figure=fig)
@@ -97,7 +100,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0, colour=0)
         # plot scatter graph
         if colour==0:
                 plt.plot(n_x_val, trendpoly(n_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='gray' if colour==0 else colour, zorder=9, figure=fig)
-        plt.scatter(x0_val, y0_val,color='blue'if colour==0 else colour, zorder=10, s=20, label='no dilution gas'if i==0 else "", figure=fig)
+        plt.scatter(x0_val, y0_val,color='blue'if colour==0 else colour, zorder=10, s=20, label='no dilution gas'if i==0 else legend, figure=fig)
         plt.scatter(x1_val, y1_val,color='green' if colour==0 else colour, zorder=10, s=20, label='single dilution gas'if i==0 else "", figure=fig)
         plt.scatter(x2_val, y2_val,color='orange'if colour==0 else colour, zorder=10, s=20, label='two dilution gases' if i==0 else "", figure=fig)
         plt.legend()
@@ -112,7 +115,8 @@ def create_plot_multiple(gas_list, instance: Workbook, heat_ratio: str, instance
     for gas in gas_list:
         new_fig = plot_by_mode(gas, instance, heat_ratio)
         if instance2 != 0:
-            plot_by_mode(gas, instance2, heat_ratio, new_fig, 1, 'firebrick')
+            plot_by_mode(gas, instance2, heat_ratio, new_fig, 1, 'firebrick', "previous data" )
         if instance3 != 0:
-            plot_by_mode(gas, instance3, heat_ratio, new_fig, 1, 'firebrick')
+            # plot_by_mode(gas, instance2, heat_ratio, new_fig, 1, 'pink', "high HCN and dilution gas flow")
+            plot_by_mode(gas, instance3, heat_ratio, new_fig, 1, 'firebrick', "previous data")
         plt.savefig('../excel/image_plots/'+heat_ratio + gas)

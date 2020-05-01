@@ -19,6 +19,7 @@ def main():
 
     workbookfuncs.create_workbook(test)
     workbookfuncs.create_workbook(test2)
+    test.df.to_csv('../excel/image_plots/out.csv')
     # graphs
     # graphfuncs.plot_all(test.full_gas_list, test, 'blah%')
     # graphfuncs.plot_all('O2', test, 'blah%')

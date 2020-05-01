@@ -15,7 +15,7 @@ These files perform calculations, given an excel spreadsheet of results:
 
 2. The graph functions file contains all functions to plot the graphs required
 
-3. To run, please run from the src/main folder.  
+3. Code is run from the main.py file and allows dataframes to be saved as csv and graphs to be saved to a seperate folder.  
 
 ### Standard Format 
 1. The code will only work given the requirements.txt is installed to the user's environment and that the inital column headers and formats listed in the code match the spreadsheet used. When running the code, as initial input, please list the starting row number (as given by excel) that the data is taken from (excluding MFM calibration data rows) and the gases for which data has been transferred into the spreadsheet as 2 seperate lists - first those measured by ppmv and then those measured by %. 
@@ -31,6 +31,12 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 4. User must populate: mass flow meter full-scale calibration values (assigned an arbitrary colour for classification and when mass flowmeters are swapped during experiment), datalogger sheet number, tracer gas value (0,1 or 2..), sheet number (which is sequential and matches tab names 1,2,3...), Xi-tr which is the concentration of tracer gas in the dilution gas, start and end times for the datalogger (if a data logger is used), and measured mole fractions of target and tracer species saved as sequentially numbered data sheets. Please note that Epsilontr values are the measured mole fraction of the tracer species and should also be included in these data sheets. 
 
 5. Please note that colours listed on template (especially for MFM full scale value) can change depending on colour theme that the user has installed locally. 
+
+### To Run
+1. Save all src/*.py files to one folder and open them in a text editor and ensure the code is run from main.py-please change the file paths in main.py and graphfuncs.py so that files are saved to a location on your computer (currently uses my computer's folder names)
+2. please ensure that the columns labels are the same (particularly tracer gas values, range %, and epsilon tr 1,2)
+3. Install/update python to python3: https://packaging.python.org/tutorials/installing-packages/
+4. Install 'Requirements Files' to use the correct libraries https://pip.pypa.io/en/stable/user_guide/
 
 Please see references for experimental method and further information:
 ### References 

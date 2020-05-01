@@ -18,7 +18,7 @@ def plot_simple(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         (x_val, y_val) = Workbook.sort_two_lists(x_val, y_val)
 
         # create line of best fit and error bars
-        trend = np.polyfit(x_val, y_val, 9)
+        trend = np.polyfit(x_val, y_val, 6)
         trendpoly = np.poly1d(trend)
         # add axies names and details
         plt.title(heat_ratio + ' Heat Ratio', pad=15, figure=fig)
@@ -33,7 +33,7 @@ def plot_simple(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         plt.grid(which='minor', linestyle=':', linewidth='0.5', color='silver', zorder=0, figure=fig)
 
         # plot scatter graph
-        plt.plot(x_val, trendpoly(x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='lightblue', zorder=8, figure=fig)
+        plt.plot(x_val, trendpoly(x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='gray', zorder=8, figure=fig)
         plt.scatter(x_val, y_val,color='darkblue', zorder=10, s=20, label='Marina experiment data' if i==0 else "", figure=fig)
         plt.legend()
         return fig
@@ -68,7 +68,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         (x_val, y_val) = Workbook.sort_two_lists(x_val, y_val)
 
         # create line of best fit and error bars
-        trend = np.polyfit(x_val, y_val, 9)
+        trend = np.polyfit(x_val, y_val, 6)
         trendpoly = np.poly1d(trend)
         # add axies names and details
         plt.title(heat_ratio + ' Heat Ratio', pad=15, figure=fig)
@@ -83,7 +83,7 @@ def plot_by_mode(gas, instance: Workbook, heat_ratio: str, fig=0, i=0):
         plt.grid(which='minor', linestyle=':', linewidth='0.5', color='silver', zorder=0, figure=fig)
 
         # plot scatter graph
-        plt.plot(x_val, trendpoly(x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='lightblue', zorder=9, figure=fig)
+        plt.plot(x_val, trendpoly(x_val), linestyle=':', dashes=(6, 5), linewidth='1.3', color='gray', zorder=9, figure=fig)
         plt.scatter(x0_val, y0_val,color='blue', zorder=10, s=20, label='no dilution gas'if i==0 else "", figure=fig)
         plt.scatter(x1_val, y1_val,color='green', zorder=10, s=20, label='single dilution gas'if i==0 else "", figure=fig)
         plt.scatter(x2_val, y2_val,color='orange', zorder=10, s=20, label='two dilution gases' if i==0 else "", figure=fig)

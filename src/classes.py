@@ -28,6 +28,7 @@ class Workbook():
         self.df_0 = self.split_df_mode0()
         self.df_1 = self.split_df_mode1()
         self.df_2 = self.split_df_mode2()
+
     def prepare_df(self):
         # cut sheet for relevant data only
         self.df = self.df.iloc[self.start_row_number - 3:]
@@ -55,6 +56,11 @@ class Workbook():
         self.df['lower_eq'] = None
         self.df['mean_eq'] = None
         self.df['error_eq'] = None
+        self.df['upper_heat'] = None
+        self.df['lower_heat'] = None
+        self.df['mean_heat'] = None
+        self.df['error_heat'] = None
+
 
         dups = self.df.columns.get_loc('ppmv')
         for gas, index in zip(self.gas_list, np.where(dups == True)[0].tolist()):
@@ -160,13 +166,34 @@ class Workbook():
         x_list, y_list = [list(x) for x in zip(*sorted(zip(x_list, y_list), key=lambda pair: pair[0]))]
         return (x_list, y_list)
 
-    def concat(self):
+    def concat_df(self):
         self.df_0 = self.df_0.reset_index(drop=True)
         self.df_1 = self.df_1.reset_index(drop=True)
         self.df_2 = self.df_2.reset_index(drop=True)
         split_dataframes = [self.df_0, self.df_1, self.df_2]
         self.df = pd.concat(split_dataframes)
         self.df = self.df.reset_index(drop=True)
+
+    @staticmethod
+    def concat_all(instance_list: list):
+        split_dataframes0=[]
+        split_dataframes1 = []
+        split_dataframes2 = []
+        for instance in instance_list:
+            instance.df_0 = instance.df_0.reset_index(drop=True)
+            instance.df_1 = instance.df_1.reset_index(drop=True)
+            instance.df_2 = instance.df_2.reset_index(drop=True)
+            split_dataframes0.append(instance.df_0)
+            split_dataframes0.append(instance.df_1)
+            split_dataframes0.append(instance.df_2)
+
+        df_new0 = pd.concat(split_dataframes0)
+        df_new1 = pd.concat(split_dataframes1)
+        df_new2 = pd.concat(split_dataframes2)
+        df_new0 = instance.df_new0.reset_index(drop=True)
+        df_new1 = instance.df_new1.reset_index(drop=True)
+        df_new2 = instance.df_new2.reset_index(drop=True)
+        return (df_new0, df_new1, df_new2)
 
     # below are methods for calculating values in all three dataframes- basic variables for plotting or uncertainty calcs
     def eq(self):
@@ -193,6 +220,26 @@ class Workbook():
                                                                         + (0.75 * self.df_2.iloc[:, 36]))
             self.df_2['mean_eq'] = (self.df_2['lower_eq'] + self.df_2['upper_eq']) / 2
             self.df_2['error_eq'] = (self.df_2['upper_eq'] - self.df_2['lower_eq']) / 2
+
+    def heat(self):
+
+        if self.df_0 is not None:
+            self.df_0['upper_heat'] = (316.84* self.df_0.iloc[:, 35])/((316.84* self.df_0.iloc[:, 35])+(802.3*self.df_0.iloc[:, 34]))
+            self.df_0['lower_heat'] = (316.84* self.df_0.iloc[:, 36])/((316.84* self.df_0.iloc[:, 36])+(802.3*self.df_0.iloc[:, 33]))
+            self.df_0['mean_heat'] = (self.df_0['lower_heat'] + self.df_0['upper_heat'])/2
+            self.df_0['error_heat'] = (self.df_0['upper_heat'] - self.df_0['lower_heat'])/2
+
+        if self.df_1 is not None:
+            self.df_1['upper_heat'] =(316.84* self.df_1.iloc[:, 35])/((316.84* self.df_1.iloc[:, 35])+(802.3*self.df_1.iloc[:, 34]))
+            self.df_1['lower_heat'] = (316.84* self.df_1.iloc[:, 36])/((316.84* self.df_1.iloc[:, 36])+(802.3*self.df_1.iloc[:, 33]))
+            self.df_1['mean_heat'] = (self.df_1['lower_heat'] + self.df_1['upper_heat']) / 2
+            self.df_1['error_heat'] = (self.df_1['upper_heat'] - self.df_1['lower_heat'])/2
+
+        if self.df_2 is not None:
+            self.df_2['upper_heat'] = (316.84* self.df_2.iloc[:, 35])/((316.84* self.df_2.iloc[:, 35])+(802.3*self.df_2.iloc[:, 34]))
+            self.df_2['lower_heat'] = (316.84* self.df_2.iloc[:, 36])/((316.84* self.df_2.iloc[:, 36])+(802.3*self.df_2.iloc[:, 33]))
+            self.df_2['mean_heat'] = (self.df_2['lower_heat'] + self.df_2['upper_heat']) / 2
+            self.df_2['error_heat'] = (self.df_2['upper_heat'] - self.df_2['lower_heat']) / 2
 
     def Qd(self):
 

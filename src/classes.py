@@ -108,7 +108,7 @@ class Workbook():
 
         # go over all rows in df.values
         for row_id in range(0, len(self.df.values)):
-            this_tgt = self.df.iloc[row_id][7]
+            this_tgt = self.df.iloc[row_id]['Tracer gas type']
             # leave out the first row for comparison
             if (last_tgt != ''):
                 # if dataframe rows are consecutively equal, write to new dataframe
@@ -127,7 +127,7 @@ class Workbook():
 
         # go over all rows in df.values
         for row_id in range(0, len(self.df.values)):
-            this_tgt = self.df.iloc[row_id][7]
+            this_tgt = self.df.iloc[row_id]['Tracer gas type']
             # leave out the first row for comparison
             if (last_tgt != ''):
                 # if the last tgt was 1 and this is 2 then write both rows to the new dataset

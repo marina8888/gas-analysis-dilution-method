@@ -1,34 +1,8 @@
-from classes import Workbook
-import graph_funcs
+from graph_creator import graph_funcs
 import matplotlib.pyplot as plt
+from excel_file.classes import Workbook
 
-
-#all functions in this file create a new plot, assist with creating workbooks,and are general 'create' fucntions
-
-def create_workbook(instance: Workbook):
-    #fill columns with basic initial values
-    instance.Qd()
-    instance.Epsilon()
-    instance.Xitr()
-    instance.Z()
-    instance.X_gas()
-
-    instance.Qs()
-    instance.heat()
-    instance.eq()
-
-
-    #fill uncertainty columns
-    instance.X_Xi_gas()
-    instance.X_Epsilon_gas()
-    instance.X_Q_gas()
-    instance.X_x_gas()
-    instance.delta_X_gas()
-    # concat and print
-    instance.concat_df()
-
-#
-def create_plot_by_eq(gas_list: list, instance_list: list, final_part_title: str, colour_list: list= None, legend_list:list=None):
+def plot_by_eq(gas_list: list, instance_list: list, final_part_title: str, colour_list: list= None, legend_list:list=None):
     for gas in gas_list:
         fig = plt.figure(figsize=(6.5, 6))
         # title artguments - first part+final part can be from list or variable (e.g gas, eq_ratio)
@@ -37,8 +11,8 @@ def create_plot_by_eq(gas_list: list, instance_list: list, final_part_title: str
         for instance, colour in zip(instance_list, colour_list):
             # concat all instances to three dataframes (df_0, df_1, df_2):
             df_list=Workbook.concat_all(instance_list)
-            df_list=graph_funcs.round_df_col(df_list, 'mean_eq')
-            df_list=graph_funcs.round_df_col(df_list, 'mean_heat')
+            df_list= graph_funcs.round_df_col(df_list, 'mean_eq')
+            df_list= graph_funcs.round_df_col(df_list, 'mean_heat')
 
             # assign these three dfs to a dictionary containing x and y values:
             d = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + gas, 'delta_X_' + gas, df_list, 'mean_eq')
@@ -49,7 +23,7 @@ def create_plot_by_eq(gas_list: list, instance_list: list, final_part_title: str
             graph_funcs.plot_scatter(d, fig, legend_list)
         plt.savefig('../excel/image_plots/' + 'test' + gas)
 
-def create_plot_by_heat(gas_list: list, instance_list: list, final_part_title: str, colour_list: list=None, legend_list:list=None):
+def plot_by_heat(gas_list: list, instance_list: list, final_part_title: str, colour_list: list=None, legend_list:list=None):
     #Create and format new plot for each gas only:
     for gas in gas_list:
         fig = plt.figure(figsize=(6.5, 6))

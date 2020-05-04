@@ -1,9 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from classes import Workbook
+from excel_file.classes import Workbook
 import numpy as np
-from itertools import groupby
-import operator
 
 # all functions in this file are a custom set of methods/options to use when creating a new graph plot
 plt.style.use('seaborn-notebook')

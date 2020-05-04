@@ -1,8 +1,7 @@
 # before running this code pip install pandas, matplotlib and numpy libraries to your environment:
-from classes import Workbook
-import graph_funcs
-import create_funcs
-
+from excel_file.classes import Workbook
+from excel_file import create_workbook
+from graph_creator import create_graphs
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
 
@@ -40,7 +39,7 @@ def main():
     # instance_list = [test1, test2, test3, test4, test5, test6]
     instance_list = [test1, test3]
     for instance in instance_list:
-        create_funcs.create_workbook(instance)
+        create_workbook.create_workbook(instance)
         # if required: save to csv file:
         # test.df.to_csv('../excel/image_plots/out.csv')
 
@@ -50,8 +49,8 @@ def main():
     legend_list = ['100%', '60%', '40%', '30%', '20%', '10%']
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
 
-    #plot graphs for all gases and lists given above as input parameters to the graphs:
-    create_funcs.create_plot_by_eq(test1.gas_list_percent, instance_list, title, colour_list)
+    #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
+    create_graphs.plot_by_eq(test1.gas_list_percent, instance_list, title, colour_list)
 
 
 if __name__ == "__main__":

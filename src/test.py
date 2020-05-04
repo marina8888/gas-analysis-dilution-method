@@ -1,7 +1,7 @@
 # before running this code pip install pandas, matplotlib and numpy libraries to your environment:
-from classes import Workbook
-import graph_funcs
-import create_funcs
+from excel_file.classes import Workbook
+from graph_creator import graph_funcs
+from excel_file import create_workbook
 
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
 import warnings
@@ -20,7 +20,7 @@ def main():
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     instance_list = [test1, test3]
     for instance in instance_list:
-        create_funcs.create_workbook(instance)
+        create_workbook.create_workbook(instance)
 
     df_list=Workbook.concat_all(instance_list)
     # assign these three dfs to a dictionary containing x and y values:

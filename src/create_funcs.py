@@ -37,12 +37,11 @@ def create_plot_by_eq(gas_list: list, instance_list: list, final_part_title: str
         for instance, colour in zip(instance_list, colour_list):
             # concat all instances to three dataframes (df_0, df_1, df_2):
             df_list=Workbook.concat_all(instance_list)
+            df_list=graph_funcs.round_df_col(df_list, 'mean_eq')
+            df_list=graph_funcs.round_df_col(df_list, 'mean_heat')
+
             # assign these three dfs to a dictionary containing x and y values:
-            d = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + gas, 'delta_X_' + gas, df_list)
-            d=graph_funcs.add_legend_to_df(d, 'mean_eq', df_list)
-            d=graph_funcs.round_col(d, 'x0_val')
-            d=graph_funcs.round_col(d, 'x1_val')
-            d=graph_funcs.round_col(d, 'x2_val')
+            d = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + gas, 'delta_X_' + gas, df_list, 'mean_eq')
             # plot error bars based on dictionary values for all three dataframes
             graph_funcs.plot_error(d, fig, colour)
             graph_funcs.polyfit_xy(d, fig, colour)

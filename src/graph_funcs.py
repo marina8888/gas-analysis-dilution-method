@@ -13,7 +13,7 @@ plt.style.use('seaborn-notebook')
 # Below are data sorting functions that mostly take in data in dictionary format and return the data back in dictionary format
 # x y values can initally be accessed from passing in a list of three dataframes or an instance.
 # correct assign fumction should be selected based on whether user passes in instance or dataframe list:
-def assign_xy_from_inst(x_col: str, x_error: str, y_col: str, y_error: str, instance: Workbook):
+def assign_xy_from_inst(x_col: str, x_error: str, y_col: str, y_error: str, instance: Workbook, legend_parameter=None):
     # create a dictionary, d of x, y, x error and y error values to assign to values for each of the three dataframes
     df_list = [instance.df_0, instance.df_1, instance.df_2]
     d = {}
@@ -24,11 +24,13 @@ def assign_xy_from_inst(x_col: str, x_error: str, y_col: str, y_error: str, inst
         d["y{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, y_col)
         d["x{0}".format(num) + '_error'] = Workbook.lists_to_array(df_i, float, x_error)
         d["y{0}".format(num) + '_error'] = Workbook.lists_to_array(df_i, float, y_error)
+        if legend_parameter is not None:
+            d['legend{0}'.format(num)] = Workbook.lists_to_array(df_i, float, legend_parameter)
     return d
 
 
 # overwrite for a list of three dataframes instnead of an instance - some dataframes may not  belong to one specific workbook hence have no instance
-def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_list: list):
+def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_list: list, legend_parameter=None):
     if len(df_list) != 3:
         raise ValueError("df_list with length 3 was expected")
     d = {}
@@ -39,26 +41,18 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
         d["y{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, y_col)
         d["x{0}".format(num) + '_error'] = Workbook.lists_to_array(df_i, float, x_error)
         d["y{0}".format(num) + '_error'] = Workbook.lists_to_array(df_i, float, y_error)
+        if legend_parameter is not None:
+            d['legend{0}'.format(num)] = Workbook.lists_to_array(df_i, float, legend_parameter)
     return d
 
 
-def round_col(d: dict, value_to_round: str):
-    for value in d[value_to_round]:
-        value=round(value,2)
-        d[value_to_round].append(value)
-    return d
+def round_df_col(df_list: list, value_to_round: str):
+    for df in df_list:
+        print(df[value_to_round])
+        df.round({value_to_round:2})
+        print(df[value_to_round])
+    return df_list
 
-# append a list of potential rounded legend values as the 'legend' col in dictionary:
-def add_legend_to_df(d: dict, legend_parameter: str, df_list: list):
-    if len(df_list) != 3:
-        raise ValueError("df_list with length 3 was expected")
-    num_list = [0, 1, 2]
-    for df_i, num in df_list, num_list:
-        d['legend{0}'.format(num)] = Workbook.lists_to_array(df_i, float, legend_parameter)
-
-    for num in num_list:
-        d=round_col(d, 'legend'+num)
-    return d
 
 # sort large dataframe by legend values and split it into individual dictionaries:
 # def sort_split(d: dict, legend: str):

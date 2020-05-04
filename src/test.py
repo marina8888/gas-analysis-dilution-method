@@ -24,13 +24,10 @@ def main():
 
     df_list=Workbook.concat_all(instance_list)
     # assign these three dfs to a dictionary containing x and y values:
-    print(df_list)
     d = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + 'O2', 'delta_X_' + 'O2', df_list)
+    print(df_list)
     d = graph_funcs.add_legend_to_df(d, 'mean_eq', df_list)
     d = graph_funcs.round_col(d, 'x0_val')
-    print(d)
-    print(d['legend'])
-    print(d['x0_val'])
 
 if __name__ == "__main__":
     main()

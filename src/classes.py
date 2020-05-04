@@ -176,24 +176,26 @@ class Workbook():
 
     @staticmethod
     def concat_all(instance_list: list):
-        split_dataframes0=[]
+        split_dataframes0 = []
         split_dataframes1 = []
         split_dataframes2 = []
+        total_list=[]
         for instance in instance_list:
             instance.df_0 = instance.df_0.reset_index(drop=True)
             instance.df_1 = instance.df_1.reset_index(drop=True)
             instance.df_2 = instance.df_2.reset_index(drop=True)
             split_dataframes0.append(instance.df_0)
-            split_dataframes0.append(instance.df_1)
-            split_dataframes0.append(instance.df_2)
+            split_dataframes1.append(instance.df_1)
+            split_dataframes2.append(instance.df_2)
 
         df_new0 = pd.concat(split_dataframes0)
         df_new1 = pd.concat(split_dataframes1)
         df_new2 = pd.concat(split_dataframes2)
-        df_new0 = instance.df_new0.reset_index(drop=True)
-        df_new1 = instance.df_new1.reset_index(drop=True)
-        df_new2 = instance.df_new2.reset_index(drop=True)
-        return (df_new0, df_new1, df_new2)
+        df_new0 = df_new0.reset_index(drop=True)
+        df_new1 = df_new1.reset_index(drop=True)
+        df_new2 = df_new2.reset_index(drop=True)
+        total_list=[df_new0, df_new1, df_new2]
+        return total_list
 
     # below are methods for calculating values in all three dataframes- basic variables for plotting or uncertainty calcs
     def eq(self):

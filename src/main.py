@@ -19,10 +19,10 @@ def main():
     #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/60ERESULTSbook16final(0404020).xlsm',
     #     15,
     #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    # test3 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/40RESULTSbook19final(07042020)new.xlsx',
-    #     21,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test3 = Workbook(
+        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/40RESULTSbook19final(07042020)new.xlsx',
+        21,
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     # test4 = Workbook(
     #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook20final(08042020).xlsx',
     #     24,
@@ -38,20 +38,20 @@ def main():
 
     # create all columns and calculate uncertainties for all workbooks:
     # instance_list = [test1, test2, test3, test4, test5, test6]
-    instance_list = [test1]
+    instance_list = [test1, test3]
     for instance in instance_list:
         create_funcs.create_workbook(instance)
         # if required: save to csv file:
         # test.df.to_csv('../excel/image_plots/out.csv')
 
     # create lists and labels for all objects that need plotting:
-    title = 'title1'
+    title = 'concentration by equivalence ratio'
     colour_list = ['firebrick', 'pink', 'blue', 'green', 'orange', 'black']
     legend_list = ['100%', '60%', '40%', '30%', '20%', '10%']
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
 
     #plot graphs for all gases and lists given above as input parameters to the graphs:
-    create_funcs.create_plot_by_heat(test1.full_gas_list, instance_list, title, colour_list)
+    create_funcs.create_plot_by_eq(test1.full_gas_list, instance_list, title, colour_list)
 
 
 if __name__ == "__main__":

@@ -13,16 +13,19 @@ def plot_by_eq(gas_list: list, instance_list: [Workbook], final_part_title: str,
         eq_workbooks.round_col(legend)
         df_para_split_list=eq_workbooks.split_df_list_by_para(legend)
         # iterate over all legends (equivalence ratios) on one gas plot:
-        for d_mini, colour in zip(eq_workbooks.df_para_split_list, colour_list):
+        for df_mini in df_para_split_list:
             # assign these three dfs to a dictionary containing x and y values:
-            d_mini = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + gas, 'delta_X_' + gas, eq_workbooks.df_list, legend)
-            # d = graph_funcs.split_by_legend(d)
-            # print(d)
+            d_mini = graph_funcs.assign_xy_from_list('mean_heat', 'error_heat', 'X_' + gas, 'delta_X_' + gas, df_mini, legend)
+            print('x2,y2 values:')
+            print(d_mini['x2_val'])
+            print(d_mini['y2_val'])
+
             # plot error bars based on dictionary values for all three dataframes
-            graph_funcs.plot_error(d_mini, fig, colour)
-            graph_funcs.polyfit_xy(d_mini, fig, colour)
+
+            graph_funcs.plot_error(d_mini, fig, 'pink')
+            graph_funcs.polyfit_xy(d_mini, fig, 'pink')
             # plot scatter graph with legends (default legends and colours available here)
-            graph_funcs.plot_scatter(d_mini, fig, legend)
+            graph_funcs.plot_scatter(d_mini, fig, ['pink','pink','pink'])
         plt.savefig('../excel/image_plots/' + 'test' + gas)
 
 def plot_by_heat(gas_list: list, instance_list: [Workbook], final_part_title: str, colour_list: list=None, legend_list:list=None):

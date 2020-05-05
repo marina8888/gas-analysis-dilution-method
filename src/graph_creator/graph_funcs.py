@@ -33,10 +33,6 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
         raise ValueError("df_list with length 3 was expected")
     d = {}
     num_list = [0, 1, 2]
-    for df in df_list:
-        print(df['mean_heat'])
-        df = df.sort_values([legend_parameter]).copy(deep=True)
-        print(df['mean_heat'])
     for df_i, num in zip(df_list, num_list):
         d["x{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, x_col)
         d["y{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, y_col)
@@ -92,12 +88,13 @@ def polyfit_xy(d: dict, figure, colour=None):
 
     # polyfit to assign coefficients from an x,y dataset
     # poly1d to create a polynomial line from coefficient inputs
-    trend = np.polyfit(n_x_val, n_y_val, 32)
-    trendpoly = np.poly1d(trend)
+    if n_x2_val and n_y2_val is not None:
+        trend = np.polyfit(n_x_val, n_y_val, 32)
+        trendpoly = np.poly1d(trend)
 
     # plot polyfit line:
-    plt.plot(n_x_val, trendpoly(n_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3',
-             color='gray' if colour is None else colour, zorder=9, figure=figure)
+        plt.plot(n_x_val, trendpoly(n_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3',
+                 color='gray' if colour is None else colour, zorder=9, figure=figure)
 
 
 def format_graph(first_part_title, final_part_title, figure, x_label: str, y_label: str):

@@ -537,10 +537,40 @@ class Big_Workbook():
         df_list=[self.df_0, self.df_1, self.df_2]
         return df_list
 
-
     def round_col(self, value_to_round: str):
         for df in self.df_list:
             # ensure that column is in correct format before rounding:
             df[value_to_round] = df[value_to_round].astype(float)
             df[value_to_round]=df[value_to_round].round(2)
-            print(df[value_to_round])
+
+    #takes in a dataframe list (of three dataframes) and splits them into more dataframes by a col parameter
+    def split_df_list_by_para(self, parameter_to_split_by: str):
+        split_list=[]
+        for df in self.df_list:
+            for row_id in range (1, len(df.values)):
+                if df.iloc[row_id][parameter_to_split_by]==df.iloc[row_id-1][parameter_to_split_by]:
+                    new_df = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
+                    new_df = df.iloc[0:0].apply(copy.deepcopy)
+                    new_df.loc[len(new_df)] = df.iloc[row_id - 1].apply(copy.deepcopy)
+                    new_df.loc[len(new_df)] = self.df.iloc[row_id].apply(copy.deepcopy)
+                    split_list.append(new_df)
+                    print(new_df[parameter_to_split_by])
+        print(split_list)
+        return split_list
+        # df_2 = pd.DataFrame().reindex_like(self.df).apply(copy.deepcopy)
+        # df_2 = df_2.iloc[0:0].apply(copy.deepcopy)
+        # # initalising first and second col values to check
+        # last_tgt = ''
+        # this_tgt = ''
+        #
+        # # go over all rows in df.values
+        # for row_id in range(0, len(self.df.values)):
+        #     this_tgt = self.df.iloc[row_id]['Tracer gas type']
+        #     # leave out the first row for comparison
+        #     if (last_tgt != ''):
+        #         # if the last tgt was 1 and this is 2 then write both rows to the new dataset
+        #         if (this_tgt == '2' and last_tgt == '1'):
+        #             df_2.loc[len(df_2)] = self.df.iloc[row_id - 1].apply(copy.deepcopy)
+        #             df_2.loc[len(df_2)] = self.df.iloc[row_id].apply(copy.deepcopy)
+        #     last_tgt = this_tgt
+        # return df_2

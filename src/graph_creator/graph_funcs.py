@@ -33,7 +33,10 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
         raise ValueError("df_list with length 3 was expected")
     d = {}
     num_list = [0, 1, 2]
-
+    for df in df_list:
+        print(df['mean_heat'])
+        df = df.sort_values([legend_parameter]).copy(deep=True)
+        print(df['mean_heat'])
     for df_i, num in zip(df_list, num_list):
         d["x{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, x_col)
         d["y{0}".format(num) + '_val'] = Workbook.lists_to_array(df_i, float, y_col)
@@ -45,19 +48,15 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
 
 
 # sort large dataframe by legend values and split it into individual dictionaries:
-# def sort_split(d: dict, legend: str):
+# def split_by_legend(d: dict):
 #     #create a list to store each set of dictionaries
-#     dict_list=[]
-#
-#     d_sorted = sorted(d, key=legend)
-#     print(d['legend'])
-#     print(d['x0_val'])
-#     split_d={}
-#     for key, value in groupby(d_sorted):
-#         split_d[key]=value
-#     dict_list.append(split_d)
-#     return dict_list
-
+#     dict_dataframe=pd.DataFrame(d)
+#     print(dict_dataframe['legend0'])
+#     print(d['legend0'])
+#     # split_d={}
+#     # for key, value in groupby(d_sorted):
+#     #     split_d[key]=value
+#     # dict_list.append(split_d)
 
 # Below are plotting functions with no return values- they plot directly to a figure input
 # input x, y and error values from dictionary and use them to plot a errorbars:

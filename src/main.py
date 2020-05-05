@@ -46,11 +46,11 @@ def main():
     # create lists and labels for all objects that need plotting:
     title = 'concentration by equivalence ratio'
     colour_list = ['firebrick', 'pink']
-    legend_list = ['100%', '60%', '40%', '30%', '20%', '10%']
+    legend= 'mean_eq'
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
 
     #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
-    create_graphs.plot_by_eq(test1.gas_list_percent, instance_list, title, colour_list)
+    create_graphs.plot_by_eq(test1.gas_list_percent, instance_list, title, colour_list, legend)
 
 
 if __name__ == "__main__":

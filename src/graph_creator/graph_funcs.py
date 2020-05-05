@@ -44,14 +44,6 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
     return d
 
 
-def round_df_col(df_list: list, value_to_round: str):
-    for df in df_list:
-        print(df[value_to_round])
-        df.round({value_to_round:2})
-        print(df[value_to_round])
-    return df_list
-
-
 # sort large dataframe by legend values and split it into individual dictionaries:
 # def sort_split(d: dict, legend: str):
 #     #create a list to store each set of dictionaries

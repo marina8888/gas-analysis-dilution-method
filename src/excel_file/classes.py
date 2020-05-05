@@ -174,29 +174,6 @@ class Workbook():
         self.df = pd.concat(split_dataframes)
         self.df = self.df.reset_index(drop=True)
 
-    @staticmethod
-    def concat_all(instance_list: list):
-        split_dataframes0 = []
-        split_dataframes1 = []
-        split_dataframes2 = []
-        total_list=[]
-        for instance in instance_list:
-            instance.df_0 = instance.df_0.reset_index(drop=True)
-            instance.df_1 = instance.df_1.reset_index(drop=True)
-            instance.df_2 = instance.df_2.reset_index(drop=True)
-            split_dataframes0.append(instance.df_0)
-            split_dataframes1.append(instance.df_1)
-            split_dataframes2.append(instance.df_2)
-
-        df_new0 = pd.concat(split_dataframes0)
-        df_new1 = pd.concat(split_dataframes1)
-        df_new2 = pd.concat(split_dataframes2)
-        df_new0 = df_new0.reset_index(drop=True)
-        df_new1 = df_new1.reset_index(drop=True)
-        df_new2 = df_new2.reset_index(drop=True)
-        total_list=[df_new0, df_new1, df_new2]
-        return total_list
-
     # below are methods for calculating values in all three dataframes- basic variables for plotting or uncertainty calcs
     def eq(self):
         if self.df_0 is not None:
@@ -531,3 +508,39 @@ class Workbook():
                 + ((self.df_2['X_Q1_' + gas]*self.df_2['Delta_Qd1_' + gas])**2)
                 + ((self.df_2['X_Q2_' + gas]*self.df_2['Delta_Qd2_' + gas])**2)
                 + ((self.df_2['delta_x_' + gas] * self.df_2['X_x_' + gas])**2))**0.5)
+
+class Big_Workbook():
+    def __init__(self, instance_list: [Workbook]):
+        self.instance_list=instance_list
+        self.df_list = self.concat_instances()
+
+    def concat_instances(self):
+        #define split dataframes to store dfs from each instance:
+        split0=[]
+        split1=[]
+        split2=[]
+        for instance in self.instance_list:
+            instance.df_0.reset_index(drop=True)
+            split0.append(instance.df_0)
+            self.df_0 = pd.concat(split0)
+            self.df_0.reset_index(drop=True)
+
+            instance.df_1.reset_index(drop=True)
+            split1.append(instance.df_1)
+            self.df_1 = pd.concat(split1)
+            self.df_1.reset_index(drop=True)
+
+            instance.df_2.reset_index(drop=True)
+            split2.append(instance.df_2)
+            self.df_2 = pd.concat(split2)
+            self.df_2.reset_index(drop=True)
+        df_list=[self.df_0, self.df_1, self.df_2]
+        return df_list
+
+
+    def round_col(self, value_to_round: str):
+        for df in self.df_list:
+            # ensure that column is in correct format before rounding:
+            df[value_to_round] = df[value_to_round].astype(float)
+            df[value_to_round]=df[value_to_round].round(2)
+            print(df[value_to_round])

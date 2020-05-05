@@ -14,30 +14,30 @@ def main():
     # import workbooks as dataframe objects
     test1 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/60ERESULTSbook16final(0404020).xlsm', 15,
                      ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    # test2 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/60ERESULTSbook16final(0404020).xlsm',
-    #     15,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test2 = Workbook(
+         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/100RESULTS(hayakawa).xlsx',
+       15,
+         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     test3 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/40RESULTSbook19final(07042020)new.xlsx',
         21,
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    # test4 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook20final(08042020).xlsx',
-    #     24,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    # test5 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20ERESULTSbook21final(09042020).xlsx',
-    #     24,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
-    # test6 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/10RESULTSBook22final(11042020).xlsx',
-    #     24,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test4 = Workbook(
+        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30RESULTSbook20final(08042020).xlsx',
+        24,
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test5 = Workbook(
+        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20ERESULTSbook21final(09042020).xlsx',
+        24,
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    test6 = Workbook(
+        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/10RESULTSBook22final(11042020).xlsx',
+        24,
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
     # create all columns and calculate uncertainties for all workbooks:
     # instance_list = [test1, test2, test3, test4, test5, test6]
-    instance_list = [test1, test3]
+    instance_list = [test1, test3, test4, test5, test6]
     for instance in instance_list:
         create_workbook.create_workbook(instance)
         # if required: save to csv file:
@@ -45,12 +45,12 @@ def main():
 
     # create lists and labels for all objects that need plotting:
     title = 'concentration by equivalence ratio'
-    colour_list = ['firebrick', 'pink']
+    colour_list = ['firebrick', 'pink', 'blue', 'green', 'orange']
     legend= 'mean_eq'
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
-
+    legend_list=[0.90, 0.95, 1.0, 1.05, 1.10]
     #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
-    create_graphs.plot_by_eq(test1.gas_list_percent, instance_list, title, colour_list, legend)
+    create_graphs.plot_by_legend(test1.full_gas_list, instance_list, title, colour_list, legend, legend_list)
 
 
 if __name__ == "__main__":

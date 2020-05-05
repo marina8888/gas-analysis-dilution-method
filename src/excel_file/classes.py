@@ -513,6 +513,7 @@ class Big_Workbook():
     def __init__(self, instance_list: [Workbook]):
         self.instance_list=instance_list
         self.df_list = self.concat_instances()
+
     def concat_instances(self):
         #define split dataframes to store dfs from each instance:
         split0=[]
@@ -543,13 +544,12 @@ class Big_Workbook():
             df[value_to_round]=df[value_to_round].round(2)
 
     #takes in a dataframe list (of three dataframes) and splits them into more dataframes by a col parameter
-    def split_df_list_by_para(self, parameter_to_split_by: str):
-        eq_list=[0.6, 0.65, 0.7, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0, 1.05, 1.10, 1.15, 1.2, 1.25, 1.30, 1.35, 1.40, 1.45, 1.5, 1.55, 1.60, 1.65]
+    def split_df_list_by_para(self, parameter_to_split_by: str, legend_list):
         split_list = []
-        for eq in eq_list:
+        for l in legend_list:
             split = []
             for df in self.df_list:
-                new_df = df[df[parameter_to_split_by] == eq]
+                new_df = df[df[parameter_to_split_by] == l]
                 split.append(new_df)
             split_list.append(split)
         return split_list

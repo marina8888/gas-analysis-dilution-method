@@ -99,7 +99,7 @@ def polyfit_xy(d: dict, figure, colour=None):
 
 def format_graph(first_part_title, final_part_title, figure, x_label: str, y_label: str):
     # add title, axies names and layout
-    plt.title(first_part_title + ', ' + final_part_title, pad=15, figure=figure)
+    plt.title(first_part_title + ' ' + final_part_title, pad=15, figure=figure)
     plt.xlabel(x_label, figure=figure)
     plt.ylabel(y_label, figure=figure)
     plt.tight_layout()
@@ -111,11 +111,15 @@ def format_graph(first_part_title, final_part_title, figure, x_label: str, y_lab
     plt.grid(which='minor', linestyle=':', linewidth='0.5', color='silver', zorder=0, figure=figure)
 
 
-def plot_scatter(d: dict, figure, colour_list: list = None, legend_list: list = None):
-    if legend_list is None:
+def plot_scatter(d: dict, figure, colour_user_in: str = None, legend_user_in = None):
+    legend_list=[]
+    colour_list=[]
+    if legend_user_in is None:
         legend_list = ['no dilution gas', 'single dilution gas', 'two dilution gases']
-    if colour_list is None:
+    else: legend_list = [legend_user_in, "", ""]
+    if colour_user_in is None:
         colour_list = ['blue', 'green', 'orange']
+    else: colour_list = [colour_user_in, colour_user_in, colour_user_in]
     d_x = [d['x0_val'], d['x1_val'], d['x2_val']]
     d_y = [d['y0_val'], d['y1_val'], d['y2_val']]
 

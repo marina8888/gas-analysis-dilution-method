@@ -46,13 +46,25 @@ def assign_xy_from_list(x_col: str, x_error: str, y_col: str, y_error: str, df_l
 # Below are plotting functions with no return values- they plot directly to a figure input
 # input x, y and error values from dictionary and use them to plot a errorbars:
 def plot_error(d: dict, figure, colour=None):
-    d_x = [d['x0_val'], d['x1_val'], d['x2_val']]
-    d_y = [d['y0_val'], d['y1_val'], d['y2_val']]
-    d_err = [d['x0_error'], d['x1_error'], d['x2_error']]
-    for x, y, y_err in zip(d_x, d_y, d_err):
-        plt.errorbar(x, y, yerr=y_err, fmt='none', color='darkgrey' if colour == None else colour, zorder=8,
-                     figure=figure,
-                     elinewidth=1)
+    d_x=[]
+    d_y=[]
+    y_err=[]
+    num_list=[0,1,2]
+    for num in num_list:
+        d_x.extend(d["x" +str(num)+ '_val'])
+        d_y.extend((d["y" +str(num)+ '_val']))
+        y_err.extend((d["y" +str(num)+ '_error']))
+    # d_x.append(d['x0_val']) d['x0_val'], d['x1_val'], d['x2_val']
+    # d_y = [d['y0_val'], d['y1_val'], d['y2_val']]
+    # y_err = [d['x0_error'], d['x1_error'], d['x2_error']]
+    print(y_err)
+    print(d_x)
+    print(d_y)
+
+
+    for x, y, y_err in zip(d_x, d_y, y_err):
+        plt.errorbar(x=d_x, y=d_y, yerr=y_err, fmt='none', color='darkgrey' if colour == None else colour, zorder=8,
+                     figure=figure, elinewidth=1)
 
 
 # input dictionary and use dictionary values to create a single polyfit line for 3 dataframes:

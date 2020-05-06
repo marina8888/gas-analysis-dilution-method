@@ -4,9 +4,10 @@ Excel files - these are used as references to build the python code only
 *.bas
 *.frm
 ~$*.xls*
+
+Folders
 excel/
-
-
+chemin/
 bin/
 include/
 lib/

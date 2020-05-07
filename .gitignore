@@ -1,14 +1,14 @@
 *.cfg
 
-Excel files - these are used as references to build the python code only
 *.bas
 *.frm
-~$*.xls*
+*.xls*
 
-Folders
+
 excel_external/
 chemin_external/
 bin/
 include/
 lib/
-*.idea/
+.idea/
+__pycache__/

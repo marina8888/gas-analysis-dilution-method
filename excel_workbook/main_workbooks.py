@@ -41,7 +41,7 @@ def main():
     for instance in instance_list:
         create_workbook.create_workbook(instance)
         # if required: save to csv file:
-        # test.df.to_csv('../excel/image_plots/out.csv')
+        # test.df.to_csv('../excel_external/image_plots/out.csv')
 
     # create lists and labels for all objects that need plotting:
     title = 'concentration by equivalence ratio'

@@ -1,0 +1,191 @@
+PREMIX
+1
+0
+82
+1, 0, 0, pressure
+1, 0, 0, mass_density
+1, 0, 0, axial_velocity
+1, 0, 0, cross-section_area
+1, 0, 0, net_heat_production_from_gas-phase_reactions
+1, 0, 0, EINO
+1, 0, 0, EINO2
+1, 0, 0, EINOX
+1, 0, 0, EICO
+1, 0, 0, unburned_fuel_fraction
+1, 3, 0, temperature
+1, 3, 3, H2
+1, 0, 3, H
+1, 0, 3, O
+1, 0, 3, O2
+1, 0, 3, OH
+1, 0, 3, H2O
+1, 0, 3, HO2
+1, 0, 3, H2O2
+1, 0, 3, C
+1, 0, 3, CH
+1, 0, 3, CH2
+1, 0, 3, CH2(S)
+1, 0, 3, CH3
+1, 0, 3, CH4
+1, 0, 3, CO
+1, 0, 3, CO2
+1, 0, 3, HCO
+1, 0, 3, CH2O
+1, 0, 3, CH2OH
+1, 0, 3, CH3O
+1, 0, 3, CH3OH
+1, 0, 3, C2H
+1, 0, 3, C2H2
+1, 0, 3, C2H3
+1, 0, 3, C2H4
+1, 0, 3, C2H5
+1, 0, 3, C2H6
+1, 0, 3, HCCO
+1, 0, 3, CH2CO
+1, 0, 3, HCCOH
+1, 0, 3, N
+1, 0, 3, NH
+1, 0, 3, NH2
+1, 0, 3, NH3
+1, 0, 3, NNH
+1, 0, 3, NO
+1, 0, 3, NO2
+1, 0, 3, N2O
+1, 0, 3, HNO
+1, 0, 3, CN
+1, 0, 3, HCN
+1, 0, 3, H2CN
+1, 0, 3, HCNN
+1, 0, 3, HCNO
+1, 0, 3, HOCN
+1, 0, 3, HNCO
+1, 0, 3, NCO
+1, 0, 3, N2
+1, 0, 3, AR
+1, 0, 3, C3H7
+1, 0, 3, C3H8
+1, 0, 3, CH2CHO
+1, 0, 3, CH3CHO
+1, 3, 0, flow_rate
+3, 0, 0, net_reaction_rate
+3, 0, 0, heat_production_per_reaction
+3, 0, 0, mixture_viscosity
+3, 0, 0, mixture_thermal_conductivity
+3, 0, 0, mixture_binary_diffusion_coefficients
+1, 0, 0, molecular_weight
+3, 0, 0, sound_speed
+3, 0, 0, specific_heat_Cp
+3, 0, 0, heat_capacity_ratio
+3, 0, 0, mixture_enthalpy
+3, 0, 0, sensible_enthalpy
+3, 0, 0, entropy
+3, 0, 0, thermal-NO_production
+3, 0, 0, exhaust_in_ppmvd
+3, 0, 0, exhaust_in_ppmvd_15%_O2
+1, 0, 0, flame_speed
+3, 0, 0, use_reaction_string_instead_of_index
+33
+Global, (cgs), (SI), (British)
+Time, (sec), (sec), (sec), (min), (hr), (msec), (microsec)
+Distance, (cm), (m), (ft), (inch), (mm), (mil), (micron), (nm)
+Temperature, (K), (K), (F), (C), (R)
+PlasmaEnergies, (erg), (J), (lbf-ft), (eV), (K), (kJ), (cal), (kcal), (BTU)
+Pressure, (dyne/cm2), (Pa), (PSI), (atm), (bar), (torr), (mtorr)
+Area, (cm2), (m2), (ft2), (inch2)
+Volume, (cm3), (m3), (ft3), (inch3)
+Mass, (g), (kg), (lbm), (mg)
+SpecificVolume, (cm3/g), (m3/kg), (ft3/lbm), (m3/g)
+Density, (g/cm3), (kg/m3), (lbm/ft3), (kg/cm3)
+Velocity, (cm/sec), (m/sec), (ft/sec)
+MassFlowRate, (g/sec), (kg/sec), (lbm/sec), (lbm/hr), (mole/sec), (sccm@298.15K), (sccm@273.15K)
+VolumetricFlowRate, (cm3/sec), (m3/sec), (ft3/sec), (gallon/min)
+MassFlux, (g/cm2-sec), (kg/m2-sec), (lbm/ft2-sec), (kg/cm2-sec), (lbf-sec/ft3), (mole/cm2-sec)
+Heat, (erg), (J), (lbf-ft), (kJ), (cal), (kcal), (BTU)
+Energy, (erg/g), (J/kg), (lbf-ft/lbm), (J/g), (kJ/g), (cal/kg), (cal/g), (kcal/g), (BTU/lbm)
+Entropy, (erg/g-K), (J/kg-K), (lbf-ft/lbm-F), (J/g-K), (kJ/g-K), (cal/kg-K), (cal/g-K), (kcal/g-K), (BTU/lbm-F)
+HeatFlux, (erg/sec), (J/sec), (BTU/hr), (kJ/sec), (cal/sec), (kcal/sec), (BTU/sec), (lbf-ft/sec)
+HeatFluxDistance, (erg/cm-sec), (J/m-sec), (BTU/ft-hr), (J/cm-sec), (kJ/cm-sec), (cal/m-sec), (cal/cm-sec), (kcal/cm-sec), (BTU/ft-sec), (lbf/sec)
+HeatFluxArea, (erg/cm2-sec), (J/m2-sec), (BTU/ft2-hr), (J/cm2-sec), (kJ/cm2-sec), (cal/m2-sec), (cal/cm2-sec), (kcal/cm2-sec), (BTU/ft2-sec), (lbf/ft-sec)
+HeatProductionRate, (erg/cm3-sec), (J/m3-sec), (BTU/ft3-hr), (J/cm3-sec), (kJ/cm3-sec), (cal/m3-sec), (cal/cm3-sec), (kcal/cm3-sec), (BTU/ft3-sec), (lbf/ft2-sec)
+Power, (erg/sec), (watts), (horsepower), (kW), (cal/sec), (kcal/sec), (eV/sec), (lbf-ft/sec), (BTU/hr)
+SpecificFuelConsumption, (g/erg), (g/kW-h), (lbm/hp-h)
+SiteDensity, (mole/cm2), (mole/m2), (mole/ft2)
+LinearDepositionRate, (cm/sec), (m/sec), (ft/sec), (micron/min), (angs/sec), (angs/min), (angs/hr)
+Composition, (), (), (), (mole_fraction), (mass_fraction), (concentration), (partial_pressure), (dry_mole_fraction), (dry_mass_fraction), (number_density), (ppm)
+Concentration, (mole/cm3), (mole/m3), (mole/ft3), (mole/inch3)
+NumberDensity, (molecules/cm3), (molecules/m3), (molecules/ft3), (molecules/inch3)
+Sensitivity, (), (), (), (local_normalization), (maximum_normalization)
+RateofProduction, (mole/cm3-sec), (mole/m3-sec), (mole/ft3-sec), (g/cm3-sec), (1/sec)
+SurfaceRateofProduction, (mole/cm2-sec), (mole/m2-sec), (mole/ft2-sec), (g/cm2-sec)
+BulkRateofProduction, (mole/cm2-sec), (mole/m2-sec), (mole/ft2-sec), (g/cm2-sec), (cm/sec), (micron/min), (angs/sec), (angs/min), (angs/hr)
+70
+8 1 1 1 1 162 0 0 1 53 0 0 0 325 0 0 66 1 256 256 0 
+distance (cm) 2 0 0
+pressure (dyne/cm2) 1 0 0
+mass_density (g/cm3) 1 0 0
+axial_velocity (cm/s) 1 0 0
+cross-section_area (cm2) 1 0 0
+net_heat_production_from_gas-phase_reactions (erg/cm3-s) 1 0 0
+EINO (g-NO/kg-fuel) 1 0 0
+EINO2 (g-NO2/kg-fuel) 1 0 0
+EINOX (g-NOx/kg-fuel) 1 0 0
+EICO (g-CO/kg-fuel) 1 0 0
+unburned_fuel_fraction () 1 0 0
+temperature (K) 1 3 0
+mass_fraction_H2 () 1 3 3
+mass_fraction_H () 1 0 3
+mass_fraction_O () 1 0 3
+mass_fraction_O2 () 1 0 3
+mass_fraction_OH () 1 0 3
+mass_fraction_H2O () 1 0 3
+mass_fraction_HO2 () 1 0 3
+mass_fraction_H2O2 () 1 0 3
+mass_fraction_C () 1 0 3
+mass_fraction_CH () 1 0 3
+mass_fraction_CH2 () 1 0 3
+mass_fraction_CH2(S) () 1 0 3
+mass_fraction_CH3 () 1 0 3
+mass_fraction_CH4 () 1 0 3
+mass_fraction_CO () 1 0 3
+mass_fraction_CO2 () 1 0 3
+mass_fraction_HCO () 1 0 3
+mass_fraction_CH2O () 1 0 3
+mass_fraction_CH2OH () 1 0 3
+mass_fraction_CH3O () 1 0 3
+mass_fraction_CH3OH () 1 0 3
+mass_fraction_C2H () 1 0 3
+mass_fraction_C2H2 () 1 0 3
+mass_fraction_C2H3 () 1 0 3
+mass_fraction_C2H4 () 1 0 3
+mass_fraction_C2H5 () 1 0 3
+mass_fraction_C2H6 () 1 0 3
+mass_fraction_HCCO () 1 0 3
+mass_fraction_CH2CO () 1 0 3
+mass_fraction_HCCOH () 1 0 3
+mass_fraction_N () 1 0 3
+mass_fraction_NH () 1 0 3
+mass_fraction_NH2 () 1 0 3
+mass_fraction_NH3 () 1 0 3
+mass_fraction_NNH () 1 0 3
+mass_fraction_NO () 1 0 3
+mass_fraction_NO2 () 1 0 3
+mass_fraction_N2O () 1 0 3
+mass_fraction_HNO () 1 0 3
+mass_fraction_CN () 1 0 3
+mass_fraction_HCN () 1 0 3
+mass_fraction_H2CN () 1 0 3
+mass_fraction_HCNN () 1 0 3
+mass_fraction_HCNO () 1 0 3
+mass_fraction_HOCN () 1 0 3
+mass_fraction_HNCO () 1 0 3
+mass_fraction_NCO () 1 0 3
+mass_fraction_N2 () 1 0 3
+mass_fraction_AR () 1 0 3
+mass_fraction_C3H7 () 1 0 3
+mass_fraction_C3H8 () 1 0 3
+mass_fraction_CH2CHO () 1 0 3
+mass_fraction_CH3CHO () 1 0 3
+flow_rate (g/cm2-s) 1 3 0
+flame_speed (cm/s) 1 0 0
+0 0 0 
+1 0.000000e+00 

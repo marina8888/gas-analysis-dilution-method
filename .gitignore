@@ -6,8 +6,8 @@ Excel files - these are used as references to build the python code only
 ~$*.xls*
 
 Folders
-excel/
-chemin/
+excel_external/
+chemin_external/
 bin/
 include/
 lib/

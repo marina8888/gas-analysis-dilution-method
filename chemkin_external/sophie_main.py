@@ -4,7 +4,7 @@
 # ________________________________________________________________________________________________________________
 
 
-# Function to create a chemkin input file
+# Function to create a chemkin_external input file
 def createInFile(p, t, curv, grad, nadp, npts, ntot, xend, tin, up, ch4, nh3, o2, n2, filestr):
     conditions = open("input.inp", "w")
     conditions.write("!")
@@ -15,7 +15,7 @@ def createInFile(p, t, curv, grad, nadp, npts, ntot, xend, tin, up, ch4, nh3, o2
     conditions.write("\nMIX   ! Use Mixture-averaged Transport")
     conditions.write("\nPLAT   ! Plateau Profile for Initial Guess")
     conditions.write(
-        "\nRSTR /home/RFa/RFa050/chemkin/extPrem/Mendiara/" + filestr + "   ! Restart from Previous Solution")
+        "\nRSTR /home/RFa/RFa050/chemkin_external/extPrem/Mendiara/" + filestr + "   ! Restart from Previous Solution")
     conditions.write("\nTDIF   ! Use Thermal Diffusion (Soret Effect)")
 
     conditions.write("\n!")
@@ -72,7 +72,7 @@ def createInFile(p, t, curv, grad, nadp, npts, ntot, xend, tin, up, ch4, nh3, o2
 
 # ________________________________________________________________________________________________________________
 
-## extract function transfert the data from src (solution.out) to dst (solution.txt) and remove useless
+## extract function transfert the data from excel_workbook (solution.out) to dst (solution.txt) and remove useless
 ## information for calculation process
 ## Caution open the files before using the function and close them after
 
@@ -245,7 +245,7 @@ while last < 2:  # While no go to end of calcultion condition is observed (loopl
     while u <= Umax and last < 2:  # While u of iteration iter is smaller than Umax and that there is no error finishing calculation
         # (loople for parametric study, with a condition out if some error is detected last=2)
 
-        ### 3.1.0 For iteration ite, create input file and launch chemkin
+        ### 3.1.0 For iteration ite, create input file and launch chemkin_external
 
         createInFile(P, T, CURV, GRAD, NADP, NPTS, NTOT, XEND, TIN, str(u), CH4, NH3, O2, N2, "input.zip")
         finalsol = open("FinalSolution.txt", "a")
@@ -258,7 +258,7 @@ while last < 2:  # While no go to end of calcultion condition is observed (loopl
         calcul = Popen("job.sh")
         Popen.wait(calcul, timeout=None)
 
-        ## calculation is done, solution.out is produced by chemkin
+        ## calculation is done, solution.out is produced by chemkin_external
 
         ### 3.1.1 For iteration ite, check fail/success
 
@@ -276,7 +276,7 @@ while last < 2:  # While no go to end of calcultion condition is observed (loopl
 
         if fail == 0:
 
-            ### 3.1.2 For iteration ite, extract the output data from chemkin
+            ### 3.1.2 For iteration ite, extract the output data from chemkin_external
 
             source = open("solution.out", "r")
             destination = open("solution.txt", "w")

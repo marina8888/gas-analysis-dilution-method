@@ -1,0 +1,28 @@
+TRAN        !Transient simulation
+CONV        !Constant vol
+QLOS 0.0    !Adiabatic simulation
+PRES 1.     !Pressure
+TEMP 1500.  !Temperature
+
+EQUI 1.0   ! Equivalence Ratio
+CPROD CO2   ! Complete-Combustion Products
+CPROD H2O   ! Complete-Combustion Products
+CPROD N2   ! Complete-Combustion Products
+FUEL CH4 1.0   ! Fuel Fraction of Total Fuel Species (mole fraction)
+OXID N2 0.79   ! Oxidizer Fraction of Total Oxidizer Species (mole fraction)
+OXID O2 0.21   ! Oxidizer Fraction of Total Oxidizer Species (mole fraction)
+
+
+!Added to prevent convergence issues in CKPro 15101
+!REAC AR  1e-10
+!REAC HE  1e-10
+!REAC H2O 1e-8
+
+!ASEN TEMP    ! Temperature A-factor Sensitivity
+!EPST 1e-10   ! Threshold for Temperature Sensitivity
+
+TIME 10.     !End time for the simulation
+ADAP
+AVALUE 1
+AVAR temperature
+END

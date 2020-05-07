@@ -1,0 +1,12 @@
+
+!get ckcsv with instruction of CKSolnList.txt
+GetSolution
+
+!convert ckcsv to csv
+CKSolnTranspose
+
+!get possible instruction to CKSolnList.txt
+GetSolution -listonly
+
+
+

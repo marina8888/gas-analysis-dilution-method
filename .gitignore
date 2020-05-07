@@ -1,5 +1,5 @@
 *.cfg
-
+.DS_Store
 *.bas
 *.frm
 *.xls*

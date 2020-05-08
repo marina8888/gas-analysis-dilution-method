@@ -26,7 +26,7 @@ def plot_by_legend(gas_list: list, instance_list: [Workbook], final_part_title: 
             # plot scatter graph with legends (default legends and colours available here)
             graph_funcs.plot_scatter(d_mini, fig, colour, l)
 
-        plt.savefig('../excel_external/image_plots/' + 'broad_eq' + gas)
+        plt.savefig('../excel_external/image_plots/' + 'redoNH3' + gas)
 
 #note there may be an error relating to legend_list not being a list:
 def plot_by_workbook(gas_list: list, instance_list: [Workbook], final_part_title: str, colour_list: list=None, legend_list:list=None):

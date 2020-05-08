@@ -37,7 +37,7 @@ def main():
 
     # create all columns and calculate uncertainties for all workbooks:
     # instance_list = [test1, test2, test3, test4, test5, test6]
-    instance_list = [test1, test3, test4, test5, test6]
+    instance_list = [test1, test2, test3, test4, test5, test6]
     for instance in instance_list:
         create_workbook.create_workbook(instance)
         # if required: save to csv file:
@@ -45,10 +45,10 @@ def main():
 
     # create lists and labels for all objects that need plotting:
     title = 'concentration by equivalence ratio'
-    colour_list = ['firebrick', 'blue', 'green', 'orange']
+    colour_list = ['firebrick', 'blue', 'green', 'orange', 'darkgrey']
     legend= 'mean_eq'
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
-    legend_list=[0.9, 1, 1.1, 1.2]
+    legend_list=[0.85, 0.95, 1.05, 1.15, 1.25]
     #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
     create_graphs.plot_by_legend(test1.full_gas_list, instance_list, title, colour_list, legend, legend_list)
 

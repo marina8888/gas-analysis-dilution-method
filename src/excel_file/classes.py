@@ -25,6 +25,14 @@ class Workbook():
         # add new cols and prepare dataframe with correct headers:
         self.prepare_df()
         self.init_cols()
+
+        # check for duplicate columns before any concat function and print duplicates (as concat on duplicates causes issues):
+        dup_cols:pd.Series = (self.df.columns[self.df.columns.duplicated(keep=False)])
+        if dup_cols.empty==False:
+            raise AssertionError(
+                'in instance: ' + self.workbook_name + 'these duplicate columns need renaming: ' + str(
+                    dup_cols))
+
         self.df_0 = self.split_df_mode0()
         self.df_1 = self.split_df_mode1()
         self.df_2 = self.split_df_mode2()
@@ -512,9 +520,19 @@ class Workbook():
 class Big_Workbook():
     def __init__(self, instance_list: [Workbook]):
         self.instance_list=instance_list
+        #raise error for any duplicate cols before concat/append functions go crazy due to duplicate cols:
+
+        for instance in self.instance_list:
+            dup_cols: pd.Series = (instance.df.columns[instance.df.columns.duplicated(keep=False)])
+            if dup_cols.empty==False:
+                raise AssertionError(
+                    'in : ' + instance.workbook_name + 'these duplicate columns need renaming: ' + str(
+                        dup_cols))
+
         self.df_list = self.concat_instances()
 
     def concat_instances(self):
+
         #define split dataframes to store dfs from each instance:
         split0=[]
         split1=[]

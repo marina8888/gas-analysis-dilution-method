@@ -6,7 +6,7 @@ Often, the equipment used for product gas analysis has a limited measurement ran
 Equations and parameters are labelled and defined in Hayakawa et. al, 2020. 
 
 ### Notes
-Recently, the project has been moved from VBA to Python as the base language - using Pandas for data manipulation. The Woorkbook class will create three dataframes based on number of dilution gases used and perform the relevant calculations. 
+Now complete. Can be further improved by making column headers clearer and using column names instead of index numbers in calculations. 
 
 ### Functions
 These files perform calculations, given an excel spreadsheet of results:
@@ -18,11 +18,11 @@ These files perform calculations, given an excel spreadsheet of results:
 3. Code is run from the main.py file and allows dataframes to be saved as csv and graphs to be saved to a seperate folder.  
 
 ### Standard Format 
-1. The code will only work given the requirements.txt is installed to the user's environment and that the inital column headers and formats listed in the code match the spreadsheet used. When running the code, as initial input, please list the starting row number (as given by excel) that the data is taken from (excluding MFM calibration data rows) and the gases for which data has been transferred into the spreadsheet as 2 seperate lists - first those measured by ppmv and then those measured by %. 
+1. The code will only work given the requirements.txt is installed to the user's environment and that the inital column headers and formats listed in the code match the src/excel_file/template used. When running the code, as initial input, please list the starting row number (as given by excel) that the data is taken from (excluding MFM calibration data rows) and the gases for which data has been transferred into the spreadsheet as 2 seperate lists - first those measured by ppmv and then those measured by %. 
 
-2. Calculations are valid whether there is no dilution gas, or when one or two dilution gases are used in the experiment. Each set of measured values should be populated on a new row and the equations used are decided based on the tracer gas value column. 
+2. Calculations are valid whether there is no dilution gas, or when one or two dilution gases are used in the experiment. Each set of measured values should be populated on a new row and the equations used are decided based on the tracer gas value column (saved as a string value!):
 0 - no dilution gas used
-1 - single dilution gas method used (all values should be marked as 1)
+1 - 1st dilution gas method used
 2- 2nd dilution gas used
 Please note that for using 2 dilution gases, the reading has to be repeated for both dilution gases (at the same dilution gas flowrate). Hence the same condition has to be recorded twice, on two different rows, and the 1st dilution gas row must always be above the 2nd dilution gas row. If this is not practical during the experiment, rows should be rearranged manually so that the tracer gas column reads as 1,2,1,2... for any sections that use two dilution gases. 
 
@@ -33,8 +33,8 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 5. Please note that colours listed on template (especially for MFM full scale value) can change depending on colour theme that the user has installed locally. 
 
 ### To Run
-1. Save all src/*.py files to one folder and open them in a text editor and ensure the code is run from main.py-please change the file paths in main.py and graphfuncs.py so that files are saved to a location on your computer (currently uses my computer's folder names)
-2. please ensure that the columns labels are the same (particularly tracer gas values, range %, and epsilon tr 1,2)
+1. Code must be run from main.py, with the directory being src. Please change the file paths in main.py and graphfuncs.py so that files are saved to a location on the user's computer and with the preferred names (currently using my filepaths). 
+2. Please ensure that input excel spreadsheet column names match the template. Errors will occur if duplicate column names are present (apart from range columns). Column names are taken from the row above where the data starts (row above the row initialised in creating a Workbook instance).
 3. Install/update python to python3: https://packaging.python.org/tutorials/installing-packages/
 4. Install 'Requirements Files' to use the correct libraries https://pip.pypa.io/en/stable/user_guide/
 

@@ -2,7 +2,6 @@
 .DS_Store
 *.bas
 *.frm
-*.xls*
 
 
 excel_external/

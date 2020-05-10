@@ -6,8 +6,8 @@ from graph_creator import create_graphs
 import warnings
 
 
-# ensure that all column headers match to code- that they are correct
-# however, change the range columns for H2, O2 to 'range %' !
+# ensure that all column headers match the excel template file in excel_file folder and there are no duplicates. 
+# Ensure all gases measured by percentage are marked as 'range %' and that two gas lists are passed as Workbookclass arguments - first for ppmv and second for %
 
 def main():
     warnings.filterwarnings("ignore")
@@ -36,14 +36,13 @@ def main():
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
     # create all columns and calculate uncertainties for all workbooks:
-    # instance_list = [test1, test2, test3, test4, test5, test6]
     instance_list = [test1, test2, test3, test4, test5, test6]
     for instance in instance_list:
         create_workbook.create_workbook(instance)
         # if required: save to csv file:
         # test.df.to_csv('../excel_external/image_plots/out.csv')
 
-    # create lists and labels for all objects that need plotting:
+    # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     title = 'concentration by equivalence ratio'
     colour_list = ['firebrick', 'blue', 'green', 'orange', 'darkgrey']
     legend= 'mean_eq'

@@ -18,7 +18,7 @@ These files perform calculations, given an excel spreadsheet of results:
 3. Code is run from the main.py file and allows dataframes to be saved as csv and graphs to be saved to a seperate folder.  
 
 ### Standard Format 
-1. The code will only work given the requirements.txt is installed to the user's environment and that the inital column headers and formats listed in the code match the src/excel_file/template used. When running the code, as initial input, please list the starting row number (as given by excel) that the data is taken from (excluding MFM calibration data rows) and the gases for which data has been transferred into the spreadsheet as 2 seperate lists - first those measured by ppmv and then those measured by %. 
+1. The code will only work given the requirements.txt is installed to the user's environment and that the inital column headers and formats listed in the code match the src/excel_file/template.xlsx used. When running the code, as initial input, please list the starting row number (as given by excel) that the data is taken from (excluding MFM calibration data rows) and the gases for which data has been transferred into the spreadsheet as 2 seperate lists - first those measured by ppmv and then those measured by %. 
 
 2. Calculations are valid whether there is no dilution gas, or when one or two dilution gases are used in the experiment. Each set of measured values should be populated on a new row and the equations used are decided based on the tracer gas value column (saved as a string value!):
 0 - no dilution gas used

@@ -54,9 +54,6 @@ def plot_error(d: dict, figure, colour=None):
         d_x.extend(d["x" +str(num)+ '_val'])
         d_y.extend((d["y" +str(num)+ '_val']))
         y_err.extend((d["y" +str(num)+ '_error']))
-    # d_x.append(d['x0_val']) d['x0_val'], d['x1_val'], d['x2_val']
-    # d_y = [d['y0_val'], d['y1_val'], d['y2_val']]
-    # y_err = [d['x0_error'], d['x1_error'], d['x2_error']]
     print(y_err)
     print(d_x)
     print(d_y)

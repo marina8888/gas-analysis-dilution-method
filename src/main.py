@@ -1,5 +1,5 @@
 # before running this code pip install pandas, matplotlib and numpy libraries to your environment:
-from excel_file.classes import Workbook
+from excel_file.classes import Workbook, BigWorkbook
 from excel_file import create_workbook
 from graph_creator import create_graphs
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting
@@ -39,17 +39,21 @@ def main():
     instance_list = [test1, test2, test3, test4, test5, test6]
     for instance in instance_list:
         create_workbook.create_workbook(instance)
-        # if required: save to csv file:
-        # test.df.to_csv('../excel_external/image_plots/out.csv')
+
+    #save all data with complete uncertainty calcs to one large csv file:
+    my_workbook = BigWorkbook(instance_list)
+    my_workbook.df.to_csv('../excel_external/image_plots/my_workbook.csv')
 
     # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     title = 'concentration by equivalence ratio'
-    colour_list = ['firebrick', 'blue', 'green', 'orange', 'darkgrey']
+    colour_list = ['green', 'orange']
     legend= 'mean_eq'
     heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
-    legend_list=[0.85, 0.95, 1.05, 1.15, 1.25]
+    legend_list=[0.9, 0.95]
+    gas_list=['NH3']
+
     #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
-    create_graphs.plot_by_legend(test1.full_gas_list, instance_list, title, colour_list, legend, legend_list)
+    create_graphs.plot_by_legend(gas_list, instance_list, title, colour_list, legend, legend_list)
 
 
 if __name__ == "__main__":

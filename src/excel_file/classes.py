@@ -517,7 +517,7 @@ class Workbook():
                 + ((self.df_2['X_Q2_' + gas]*self.df_2['Delta_Qd2_' + gas])**2)
                 + ((self.df_2['delta_x_' + gas] * self.df_2['X_x_' + gas])**2))**0.5)
 
-class Big_Workbook():
+class BigWorkbook():
     def __init__(self, instance_list: [Workbook]):
         self.instance_list=instance_list
         #raise error for any duplicate cols before concat/append functions go crazy due to duplicate cols:
@@ -530,6 +530,7 @@ class Big_Workbook():
                         dup_cols))
 
         self.df_list = self.concat_instances()
+        self.df = self.create_single_df()
 
     def concat_instances(self):
 
@@ -554,6 +555,11 @@ class Big_Workbook():
             self.df_2.reset_index(drop=True)
         df_list=[self.df_0, self.df_1, self.df_2]
         return df_list
+
+#create one large df containing df_0, 1 and 2:
+    def create_single_df(self):
+        df = pd.concat(self.df_list)
+        return df
 
     def round_col(self, value_to_round: str):
         for df in self.df_list:

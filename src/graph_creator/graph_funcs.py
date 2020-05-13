@@ -54,9 +54,6 @@ def plot_error(d: dict, figure, colour=None):
         d_x.extend(d["x" +str(num)+ '_val'])
         d_y.extend((d["y" +str(num)+ '_val']))
         y_err.extend((d["y" +str(num)+ '_error']))
-    print(y_err)
-    print(d_x)
-    print(d_y)
 
 
     for x, y, y_err in zip(d_x, d_y, y_err):
@@ -73,25 +70,26 @@ def polyfit_xy(d: dict, figure, colour=None):
     local_dataframe = local_dataframe.groupby('n_x2_val').mean()
     n_x2_val = local_dataframe.index.to_list()
     n_y2_val = local_dataframe['n_y2_val'].to_list()
-
+    list_x_val = []
+    list_y_val = []
     # concat list
-    n_x_val = d.get('x0_val', None) + d.get('x1_val', None) + n_x2_val
-    n_y_val = d.get('y0_val', None) + d.get('y1_val', None) + n_y2_val
+    list_x_val = d.get('x0_val', None) + d.get('x1_val') + n_x2_val
+    list_y_val = d.get('y0_val', None) + d.get('y1_val') + n_y2_val
 
     # sort it in order of x for polyfit 😜
-    tuples = list(zip(n_x_val, n_y_val))
+    tuples = list(zip(list_x_val, list_y_val))
     tuples = sorted(tuples, key=lambda tup: tup[0])
-    n_x_val = [tup[0] for tup in tuples]
-    n_y_val = [tup[1] for tup in tuples]
+    list_x_val = [tup[0] for tup in tuples]
+    list_y_val = [tup[1] for tup in tuples]
 
     # polyfit to assign coefficients from an x,y dataset
     # poly1d to create a polynomial line from coefficient inputs
-    if n_x2_val and n_y2_val is not None:
-        trend = np.polyfit(n_x_val, n_y_val, 32)
+    if list_x_val and list_y_val is not None:
+        trend = np.polyfit(list_x_val, list_y_val, 32)
         trendpoly = np.poly1d(trend)
 
     # plot polyfit line:
-        plt.plot(n_x_val, trendpoly(n_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3',
+        plt.plot(list_x_val, trendpoly(list_x_val), linestyle=':', dashes=(6, 5), linewidth='1.3',
                  color='gray' if colour is None else colour, zorder=9, figure=figure)
 
 

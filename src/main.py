@@ -35,8 +35,17 @@ def main():
         24,
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
 
+    # test7 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/N2ARESULTSbook12final(20022020).xlsx',
+    #     15,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    # test8 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/N2RESULTSbook15final(04012020).xlsx',
+    #     15,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    # test9 = Workbook('/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/CO2RESULTSbook13final(21022020).xlsx', 15, ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
     # create all columns and calculate uncertainties for all workbooks:
-    instance_list = [test1, test2, test3, test4, test5, test6]
+    instance_list = [test1,test2,test3,test4,test5,test6]
     for instance in instance_list:
         create_workbook.create_workbook(instance)
 
@@ -45,15 +54,15 @@ def main():
     my_workbook.df.to_csv('../excel_external/image_plots/my_workbook.csv')
 
     # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
-    title = 'concentration by equivalence ratio'
-    colour_list = ['green', 'orange']
-    legend= 'mean_eq'
-    heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
-    legend_list=[0.9, 0.95]
-    gas_list=['NH3']
+    # title = 'Concentration vs Dilution Gas Flowrate'
+    # colour_list = ['green']
+    # legend= 'Qd Ar/CO2 upper'
+    # heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
+    # legend_list=[0.5, 0.9]
+    # gas_list=['NH3']
 
     #plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
-    create_graphs.plot_by_legend(gas_list, instance_list, title, colour_list, legend, legend_list)
+    # create_graphs.plot_by_workbook(test9.full_gas_list, instance_list, title, colour_list)
 
 
 if __name__ == "__main__":

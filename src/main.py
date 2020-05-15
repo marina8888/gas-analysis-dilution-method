@@ -61,11 +61,6 @@ def main():
 
     # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     title = 'Gas Concentration vs Dilution Method 60% Heat Ratio'
-    colour_list = []
-    legend = 'Qd Ar/CO2 upper'
-    heat_ratio_list = ['100%', '60%', '40%', '30%', '20%', '10%']
-    legend_list = []
-    gas_list = ['H2O', 'CO']
 
     # plot graph_creator for all gases and lists given above as input parameters to the graph_creator:
     create_graphs.plot_by_workbook(test1.full_gas_list, my_workbook, title)

@@ -1,7 +1,6 @@
 import pandas as pd
 import copy
 import numpy as np
-import math
 
 # class workbook imports variables as arrays from excel_external file given an excel_external starting row number from which data collection begins
 # intialises a list of lists (from a pandas dataframe) and into np arrays that represent each variable

@@ -1,4 +1,4 @@
-from excel_file.classes import Workbook, BigWorkbook
+from excel_file.classes import Workbook
 
 
 

@@ -40,7 +40,7 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 
 Please see references for experimental method and further information:
 ## References 
-<a id="1">[1]</a> Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, <https://doi.org/10.1299/mej.19-00193, https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja>, 抄録:
+<a id="1">[1]</a> Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, <https://doi.org/10.1299/mej.19-00193>, <https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja>, 抄録:
 
 ## Contributions
 To contribute please raise an issue then open a pull request for review.

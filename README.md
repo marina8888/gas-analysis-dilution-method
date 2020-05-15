@@ -1,5 +1,7 @@
 # Gas Analysis Dilution Method
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/861af44f4f2c45ce895392ac620c56d9)](https://app.codacy.com/manual/marina8888/gas-analysis-dilution-method?utm_source=github.com&utm_medium=referral&utm_content=marina8888/gas-analysis-dilution-method&utm_campaign=Badge_Grade_Dashboard)
+
 ## Overview
 Often, the equipment used for product gas analysis has a limited measurement range and a dilution gas(es) is added so that the measured gas values (such as NOx) do not exceed equipment tolerances. Often the tracer gas (within the dilution gas mixture) can also be the target species that the user needs to measure (as can often be the case with CO2 and N2). In this case one dilution gas is insufficient and two dilution gases must be used during the experiment. Calculating parameters and uncertainties for two dilution gases involves long equations and multiple parameters, that can be cumbersome and time-consuming to write within the constraints of the standard excel functions. This file defines the user defined functions for gas analysis (when zero, one or two dilution gases are used).
 

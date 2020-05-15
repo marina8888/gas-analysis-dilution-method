@@ -1,5 +1,5 @@
 # before running this code pip install pandas, matplotlib and numpy libraries to your environment:
-from excel_file.classes import Workbook
+from excel_file.classes import BigWorkbook
 from excel_file import create_workbook
 from graph_creator import create_graphs
 # run file with -W in script parameters. Warnings related to dataslice copies can be ignored because original dataframe is never used after splitting

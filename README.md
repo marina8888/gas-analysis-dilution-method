@@ -35,12 +35,12 @@ Please note that for using 2 dilution gases, the reading has to be repeated for 
 ## To Run
 1.Code must be run from main.py, with the directory being src. Please change the file paths in main.py and graphfuncs.py so that files are saved to a location on the user's computer and with the preferred names (currently using my filepaths). 
 2.Please ensure that input excel spreadsheet column names match the template. Errors will occur if duplicate column names are present (apart from range columns). Column names are taken from the row above where the data starts (row above the row initialised in creating a Workbook instance).
-3.Install/update python to python3: https://packaging.python.org/tutorials/installing-packages/
-4.Install 'Requirements Files' to use the correct libraries https://pip.pypa.io/en/stable/user_guide/
+3.Install/update python to python3: <https://packaging.python.org/tutorials/installing-packages/>
+4.Install 'Requirements Files' to use the correct libraries <https://pip.pypa.io/en/stable/user_guide/>
 
 Please see references for experimental method and further information:
 ## References 
-<a id="1">[1]</a> Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, https://doi.org/10.1299/mej.19-00193, https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja, 抄録:
+<a id="1">[1]</a> Akihiro HAYAKAWA, Yuta HIRANO, Akinori ICHIKAWA, Keishi MATSUO, Taku KUDO, Hideaki KOBAYASHI, Novel dilution sampling method for gas analysis with a low sampling rate, Mechanical Engineering Journal, 論文ID 19-00193, [早期公開] 公開日 2020/03/09, Online ISSN 2187-9745, <https://doi.org/10.1299/mej.19-00193, https://www.jstage.jst.go.jp/article/mej/advpub/0/advpub_19-00193/_article/-char/ja>, 抄録:
 
 ## Contributions
 To contribute please raise an issue then open a pull request for review.

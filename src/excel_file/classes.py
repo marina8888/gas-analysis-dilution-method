@@ -10,9 +10,9 @@ class Workbook():
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number
         self.gas_list = gas_list
-        self.CO2_gas_list = copy.deepcopy(gas_list)
         self.gas_list_percent = gas_list_percent
         self.full_gas_list = self.gas_list + self.gas_list_percent
+        self.CO2_gas_list = copy.deepcopy(self.full_gas_list)
 
         self.tr_gas_uncert = 0.02
         self.ftir_uncert = 0.02

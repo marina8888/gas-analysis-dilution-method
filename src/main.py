@@ -15,27 +15,27 @@ def main():
     test1 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/60All.xlsx',
         15,
-         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test2 = Workbook(
           '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/100RESULTS(hayakawa).xlsx',
         15,
-          ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+          ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test3 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/40All.xlsx',
         21,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test4 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/30All.xlsx',
         24,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test5 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/20All.xlsx',
         24,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test6 = Workbook(
         '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/10All.xlsx',
         24,
-         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
 
     # test7 = Workbook(
     #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/N2ARESULTSbook12final(20022020).xlsx',
@@ -61,7 +61,7 @@ def main():
 
     # save all data with complete uncertainty calcs to one large csv file:
     all_heat_workbook = BigWorkbook(instance_list)
-    all_heat_workbook.df.to_csv('../excel_external/image_plots/all_results_ever.csv')
+    all_heat_workbook.df.to_csv('../excel_external/image_plots/hcn.csv')
     #
     # # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     # title = 'Gas Concentration vs Dilution Method 60% Heat Ratio'

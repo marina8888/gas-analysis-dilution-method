@@ -6,6 +6,8 @@ from excel_file.classes import Workbook
 
 def create_workbook(instance: Workbook):
     #fill columns with basic initial values
+    print('created' + str(instance))
+    print(instance.df.columns)
     instance.Qd()
     instance.Epsilon()
     instance.Xitr()

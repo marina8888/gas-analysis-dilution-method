@@ -2,7 +2,8 @@ from excel_file.classes import Workbook
 
 
 
-#all functions in this file create a new plot, assist with creating workbooks,and are general 'create' fucntions
+# call all functions to calculate dilution gas properties, with a workbook object input.
+# this function modifies the workbook object so that it can then be saved in .csv format
 
 def create_workbook(instance: Workbook):
     #fill columns with basic initial values

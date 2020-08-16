@@ -13,7 +13,7 @@ Now complete. Can be further improved by making column headers clearer and using
 ## Functions
 These files perform calculations, given an excel spreadsheet of results:
 
-1.The Workbook class contains all methods for calculating the uncertainties and values for the dilution gas. 
+1.The Workbook class contains all methods for calculating the uncertainties and values for the dilution gas. An additional function for adjusting for a pressure dependency has also been added.
 
 2.The graph functions file contains all functions to plot the graphs required
 

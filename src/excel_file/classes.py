@@ -595,13 +595,17 @@ class Workbook():
     def dry_to_wet(self):
         # H2 and O2 gases are measured as dry percentage. This function adjusts H2 and O2 values so that the wet fraction is now taken for all gases
         print("converting H2 and O2 from dry to wet fraction...")
-        self.df_0['x_H2_old'] = (1-(self.df_0['x_H2O']*1000000)*self.df_0['x_H2'])
-        self.df_1['x_H2_old'] = (1-(self.df_1['x_H2O']*1000000)*self.df_1['x_H2'])
-        self.df_2['x_H2_old'] = (1 - (self.df_2['x_H2O'] * 1000000) * self.df_2['x_H2'])
+        if self.df_0 is not None:
+            self.df_0['x_O2'] = (1 - (self.df_0['x_H2O']/ 1000000)) * self.df_0['x_O2_old']
+            self.df_0['x_H2'] = (1-(self.df_0['x_H2O']/1000000)) *self.df_0['x_H2_old']
 
-        self.df_0['x_O2_old'] = (1-(self.df_0['x_H2O']*1000000)*self.df_0['x_O2'])
-        self.df_1['x_O2_old'] = (1-(self.df_1['x_H2O']*1000000)*self.df_1['x_O2'])
-        self.df_2['x_O2_old'] = (1 - (self.df_2['x_H2O'] * 1000000) * self.df_2['x_O2'])
+        if self.df_1 is not None:
+            self.df_1['x_H2'] = (1-(self.df_1['x_H2O']/1000000))*self.df_1['x_H2_old']
+            self.df_1['x_O2'] = (1-(self.df_1['x_H2O']/1000000))*self.df_1['x_O2_old']
+
+        if self.df_2 is not None:
+            self.df_2['x_O2'] = (1 - (self.df_2['x_H2O']/ 1000000)) * self.df_2['x_O2_old']
+            self.df_2['x_H2'] = (1 - (self.df_2['x_H2O']/ 1000000)) * self.df_2['x_H2_old']
 
 
 class BigWorkbook():

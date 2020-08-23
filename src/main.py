@@ -12,41 +12,46 @@ import warnings
 def main():
     warnings.filterwarnings("ignore")
     # import workbooks as dataframe objects
-    test1 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/60%E_14-08-2020_BOOK1.xlsx',
-        27,
-         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test2 = Workbook(
-          '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/40%E_15-08-2020_BOOK2.xlsx',
-        27,
-          ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test3 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/30%E_16-08-2020_BOOK3.xlsx',
-        27,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test4 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/20%E_17-08-2020BOOK4.xlsx',
-        27,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test5 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/10%E_18-08-2020BOOK5.xlsx',
+    # test1 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/60%E_14-08-2020_BOOK1.xlsx',
+    #     27,
+    #      ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+    # test2 = Workbook(
+    #       '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/40%E_15-08-2020_BOOK2.xlsx',
+    #     27,
+    #       ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+    # test3 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/30%E_16-08-2020_BOOK3.xlsx',
+    #     27,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+    # test4 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/20%E_17-08-2020BOOK4.xlsx',
+    #     27,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+    # test5 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/10%E_18-08-2020BOOK5.xlsx',
+    #     27,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+
+    test8 = Workbook(
+        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/Pressure_matrix_18-08-2020_BOOK7.xlsx',
         27,
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
 
-    # test7 = Workbook(
-    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/plotting_data/N2ARESULTSbook12final(20022020).xlsx',
-    #     15,
-    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3'], ['H2', 'O2'])
+    # test9 = Workbook(
+    #     '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/Pressure_matrix_16-08-2020BOOK6.xlsx',
+    #     27,
+    #     ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
 
     # create all columns and calculate uncertainties for all workbooks:
-    instance_list = [test1, test2, test3, test4, test5]
+    instance_list = [test8]
 
     for instance in instance_list:
         create_workbook.create_workbook(instance)
 
     # save all data with complete uncertainty calcs to one large csv file:
     all_heat_workbook = BigWorkbook(instance_list)
-    all_heat_workbook.df.to_csv('../excel_external/image_plots/augall.csv')
+    all_heat_workbook.df.to_csv('../excel_external/image_plots/test1.csv')
     #
     # # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     # title = 'Gas Concentration vs Dilution Method 60% Heat Ratio'

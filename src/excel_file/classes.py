@@ -49,6 +49,7 @@ class Workbook():
     # initialising new columns for storing variables
     def init_cols(self):
         # for mode0 and mode1 calculations, use 1 as default, e.g Qd1=Qd and X_Epsilon1=X_Epilson
+
         self.df['Qd1_upper'] = None
         self.df['Qd1_lower'] = None
         self.df['Qd2_upper'] = None
@@ -84,6 +85,10 @@ class Workbook():
         dups4 = self.df.columns.get_loc('range %')
         for gas, index in zip(self.gas_list_percent, np.where(dups4 == True)[0].tolist()):
             self.df.columns.values[index] = 'range_' + gas
+
+        # for converting dry gases to wet:
+        self.df['x_H2_old'] = self.df['x_H2']
+        self.df['x_O2_old'] = self.df['x_O2']
 
         for gas in self.CO2_gas_list:
             # values per gas
@@ -579,6 +584,25 @@ class Workbook():
                 + ((self.df_2['X_Q1_' + gas]*self.df_2['Delta_Qd1_' + gas])**2)
                 + ((self.df_2['X_Q2_' + gas]*self.df_2['Delta_Qd2_' + gas])**2)
                 + ((self.df_2['delta_x_' + gas] * self.df_2['X_x_' + gas])**2))**0.5)
+
+
+        # the fuunctions below are correction functions that adjust the data:
+
+    def pressure_correct(self):
+        # adding pressure correction which is a factor based on flowrate of CO2 gas. Each gas is adjusted based on a trend line from dilution gas flowrate.
+        print("adding pressure correction...")
+
+    def dry_to_wet(self):
+        # H2 and O2 gases are measured as dry percentage. This function adjusts H2 and O2 values so that the wet fraction is now taken for all gases
+        print("converting H2 and O2 from dry to wet fraction...")
+        self.df_0['x_H2_old'] = (1-(self.df_0['x_H2O']*1000000)*self.df_0['x_H2'])
+        self.df_1['x_H2_old'] = (1-(self.df_1['x_H2O']*1000000)*self.df_1['x_H2'])
+        self.df_2['x_H2_old'] = (1 - (self.df_2['x_H2O'] * 1000000) * self.df_2['x_H2'])
+
+        self.df_0['x_O2_old'] = (1-(self.df_0['x_H2O']*1000000)*self.df_0['x_O2'])
+        self.df_1['x_O2_old'] = (1-(self.df_1['x_H2O']*1000000)*self.df_1['x_O2'])
+        self.df_2['x_O2_old'] = (1 - (self.df_2['x_H2O'] * 1000000) * self.df_2['x_O2'])
+
 
 class BigWorkbook():
     def __init__(self, instance_list: [Workbook]):

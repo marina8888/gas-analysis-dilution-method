@@ -9,6 +9,7 @@ def create_workbook(instance: Workbook):
     #fill columns with basic initial values
     print('created' + str(instance))
     print(instance.df.columns)
+    instance.dry_to_wet()
     instance.Qd()
     instance.Epsilon()
     instance.Xitr()
@@ -26,6 +27,11 @@ def create_workbook(instance: Workbook):
     instance.X_Q_gas()
     instance.X_x_gas()
     instance.delta_X_gas()
+
+    # add correction factors to the results:
+    instance.dry_to_wet()
+    instance.pressure_correct()
+
     # concat and print
     instance.concat_df()
 

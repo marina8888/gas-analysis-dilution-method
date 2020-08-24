@@ -328,9 +328,7 @@ class Workbook():
 
         if self.df_2 is not None:
             self.df_2['X_CO2'] = ((self.df_2['Epsilontr2'] * self.df_2['Qd1_upper']*(self.df_2['Xitr1'] - self.df_2['Epsilontr1']))
-            - ((self.df_2['Epsilontr1'] * self.df_2['Qd2_upper'])*(self.df_2['Xitr2'] - self.df_2['Epsilontr2'])))/\
-                                 ((self.df_2['Qd1_upper'] * (self.df_2['Xitr1'] - self.df_2['Epsilontr1'])) -
-            (self.df_2['Qd2_upper']*(self.df_2['Xitr2'] - self.df_2['Epsilontr2'])))
+            - ((self.df_2['Epsilontr1'] * self.df_2['Qd2_upper'])*(self.df_2['Xitr2'] - self.df_2['Epsilontr2'])))/ ((self.df_2['Qd1_upper'] * (self.df_2['Xitr1'] - self.df_2['Epsilontr1'])) -(self.df_2['Qd2_upper']*(self.df_2['Xitr2'] - self.df_2['Epsilontr2'])))
 
             for gas in self.full_gas_list:
                 self.df_2['X_' + gas] = self.df_2['Z'] * self.df_2['x_' + gas]

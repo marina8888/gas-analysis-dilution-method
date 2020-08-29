@@ -6,6 +6,7 @@ import numpy as np
 # intialises a list of lists (from a pandas dataframe) and into np arrays that represent each variable
 class Workbook():
     def __init__(self, workbook_name, start_row_number: int, gas_list: list, gas_list_percent: list):
+        print('creating a new workbook...')
         self.df = pd.read_excel(workbook_name, sheet_name='Main')
         self.workbook_name = workbook_name
         self.start_row_number = start_row_number

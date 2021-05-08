@@ -13,40 +13,33 @@ def main():
     warnings.filterwarnings("ignore")
     # import workbooks as dataframe objects
     test1 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/60%E_14-08-2020_BOOK1.xlsx',
+        '/Users/marina/Documents/Work/Tohoku-Uni/CH4-NH3/For_Paper/c_dependency_27-07-2020BOOK14_rangeedit.xlsx',
         27,
          ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test2 = Workbook(
-          '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/40%E_15-08-2020_BOOK2.xlsx',
-        27,
+          '/Users/marina/Documents/Work/Tohoku-Uni/CH4-NH3/For_Paper/N2ARESULTSbook12final(20022020)_rangeedit.xlsx',
+        15,
           ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test3 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/30%E_16-08-2020_BOOK3.xlsx',
+        '/Users/marina/Documents/Work/Tohoku-Uni/CH4-NH3/For_Paper/Sampling_rate_matrix_27-08-2020BOOK12.xlsx',
         27,
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
     test4 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/20%E_17-08-2020BOOK4.xlsx',
+        '/Users/marina/Documents/Work/Tohoku-Uni/CH4-NH3/For_Paper/Temperature_27-08-2020_BOOK13.xlsx',
         27,
         ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test5 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/10%E_26-08-2020BOOK10.xlsx',
-        27,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
-    test6 = Workbook(
-        '/Users/marina/Documents/Work/Tohoku Uni/strain stabiolised product gas/repeat_experiments/AllE_Confirmation_Experiment_27-08-2020BOOOK11.xlsx',
-        27,
-        ['CO', 'H2O', 'NO', 'NO2', 'N2O', 'NH3', 'HCN'], ['H2', 'O2'])
+
 
 
     # create all columns and calculate uncertainties for all workbooks:
-    instance_list = [test1,test2,test3,test4,test5,test6]
+    instance_list = [test1,test2,test3,test4]
 
     for instance in instance_list:
         create_workbook.create_workbook(instance)
 
     # save all data with complete uncertainty calcs to one large csv file:
     all_heat_workbook = BigWorkbook(instance_list)
-    all_heat_workbook.df.to_csv('../excel_external/image_plots/repeatfinal4.csv')
+    all_heat_workbook.df.to_csv('../excel_external/image_plots/appendix.csv')
     #
     # # create lists and labels for all objects that need plotting. These can be modified to suit the plots:
     # title = 'Gas Concentration vs Dilution Method 60% Heat Ratio'
